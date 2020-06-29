@@ -36,9 +36,32 @@ gem 'jbuilder', '~> 2.5'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
+# Other gems
+gem 'validates_timeliness', '4.0.2'
+gem 'time_date_helpers', '0.0.4'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  # Adds support for Capybara system testing and webdrivers
+  gem 'capybara'
+  gem 'webdrivers'
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'meta_request'
+  gem 'hirb'
+  gem 'faker'
+  gem 'populator'
+  gem 'factory_bot_rails'
+  gem 'simplecov'
+  gem 'shoulda', '3.5.0'
+  gem 'shoulda-matchers', '2.8.0'
+  gem 'minitest-rails', '3.0.0'
+  gem 'minitest-reporters', '1.1.19'
+  gem 'rails-controller-testing'
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner'
+  gem 'launchy'
 end
 
 group :development do
@@ -52,7 +75,7 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15'
+  # gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'

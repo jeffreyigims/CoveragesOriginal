@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  has_coverage_line: false
+  notes: MyString
+  start_date: 2020-06-29
+  end_date: 2020-06-29
+  club_group: one
+  sub_category: 
+
+two:
+  has_coverage_line: false
+  notes: MyString
+  start_date: 2020-06-29
+  end_date: 2020-06-29
+  club_group: two
+  sub_category: 
