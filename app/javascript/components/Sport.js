@@ -8,7 +8,7 @@ class Sport extends React.Component {
   sportOptions = () => {
     return this.props.sports.map((sport, index) => {
       return (
-          <option key={index} value={index}> {sport.name} </option>
+          <option key={index} value={sport.id}> {sport.name} </option>
       )
   })}
 
@@ -18,7 +18,7 @@ class Sport extends React.Component {
         <Form>
         <Form.Group controlId="sport">
           <Form.Label>Sport:</Form.Label>
-          <Form.Control as="select"  name="selectedSport" onChange={this.props.handleSportChange}>
+          <Form.Control as="select"  name="selectedSport" defaultValue={this.props.selectedSport?.id} onChange={this.props.handleSportChange}>
             <option></option>
             { this.sportOptions() }
           </Form.Control>

@@ -6,10 +6,10 @@ import Button from 'react-bootstrap/Button';
 class League extends React.Component {
 
   leagueOptions = () => {
-    return this.props.leagues.filter(object => object.sport.id == this.props.sport.id)
+    return this.props.leagues.filter(object => object.sport.id == this.props.selectedSport.id)
                              .map((league, index) => {
       return (
-          <option key={index} value={index}> {league.name} </option>
+          <option key={index} value={league.id}> {league.name} </option>
       )
   })}
 
@@ -19,12 +19,12 @@ class League extends React.Component {
         <Form>
         <Form.Group controlId="league">
           <Form.Label>League:</Form.Label>
-          <Form.Control as="select"  name="selectedLeague" onChange={this.props.handleLeagueChange}>
+          <Form.Control as="select"  name="selectedLeague" defaultValue={this.props.selectedLeague?.id} onChange={this.props.handleLeagueChange}>
             <option></option>
             { this.leagueOptions() }
           </Form.Control>
         </Form.Group>
-        <Button variant="secondary" onClick={this.props.previousPage}>Previous</Button>
+        <Button variant="primary" onClick={this.props.previousPage}>Previous</Button>
         <Button variant="primary" onClick={this.props.nextPage}>Next</Button>
         </Form>
       </React.Fragment>
