@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :categories
   resources :sub_categories
   resources :carriers
+  resources :companies
   root 'coverages#index'
 
 end

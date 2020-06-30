@@ -1,0 +1,2 @@
+class CoverageCarriersController < ApplicationController
+end

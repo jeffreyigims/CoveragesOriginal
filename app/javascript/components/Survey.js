@@ -8,6 +8,7 @@ import League from './League';
 import Sport from './Sport';
 import Club from './Club';
 import ClubGroup from './ClubGroup';
+import Coverages from './Coverages';
 
 class Survey extends React.Component {
 
@@ -126,7 +127,7 @@ previousPage = () => {
       <React.Fragment>
         <Jumbotron >
           <Container>
-        {this.state.page == 1 && <Sport 
+        {this.state.page == 5 && <Sport 
           previousPage={this.previousPage}
           nextPage={this.nextPage}
           sports={this.state.sports}
@@ -151,6 +152,10 @@ previousPage = () => {
            selectedClub={this.state.selectedClub}
            clubGroups={this.state.clubGroups}
            handleClubGroupChange={this.handleClubGroupChange}/>}
+         {this.state.page == 1 && <Coverages
+           previousPage={this.previousPage}
+           nextPage={this.nextPage}
+           selectedClubGroup={this.state.selectedClubGroup}/>}
            </Container>
          </Jumbotron>
       </React.Fragment>

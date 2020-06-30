@@ -13,12 +13,11 @@
 ActiveRecord::Schema.define(version: 2020_06_29_133430) do
 
   create_table "brokers", force: :cascade do |t|
-    t.integer "contact_id", null: false
+    t.string "name"
     t.integer "company_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_brokers_on_company_id"
-    t.index ["contact_id"], name: "index_brokers_on_contact_id"
   end
 
   create_table "carrier_contacts", force: :cascade do |t|

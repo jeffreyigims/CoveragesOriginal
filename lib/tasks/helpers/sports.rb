@@ -24,6 +24,42 @@ module Populator
             FactoryBot.create(:club_group, club: club, group: group)
           end
         end
+
+        @life = FactoryBot.create(:category, name: "DI & Life")
+        @group_health = FactoryBot.create(:category, name: "Group Health")
+        @pc = FactoryBot.create(:category, name: "P&C")
+
+        puts("Create subs")
+        FactoryBot.create(:sub_category, name: "Individual Term", category: @life)
+        FactoryBot.create(:sub_category, name: "Individual Term", category: @life)
+        FactoryBot.create(:sub_category, name: "Whole Life", category: @life)
+        FactoryBot.create(:sub_category, name: "League Wide Life", category: @life)
+        FactoryBot.create(:sub_category, name: "COBRA Vendor", category: @group_health)
+        FactoryBot.create(:sub_category, name: "Sponsorship", category: @group_health)
+        FactoryBot.create(:sub_category, name: "Prospective Funding", category: @group_health)
+        FactoryBot.create(:sub_category, name: "Retrospective Funding", category: @group_health)
+        FactoryBot.create(:sub_category, name: "Employer's Liability", category: @pc)
+        FactoryBot.create(:sub_category, name: "Environmental", category: @pc)
+        FactoryBot.create(:sub_category, name: "Worker's Comp", category: @pc)
+        FactoryBot.create(:sub_category, name: "Auto Liability", category: @pc)
+
+        puts("Create carriers")
+        FactoryBot.create(:carrier, name: "BCC")
+        FactoryBot.create(:carrier, name: "Highmark")
+        FactoryBot.create(:carrier, name: "United Concordia")
+        FactoryBot.create(:carrier, name: "PFS")
+
+        puts("Create companies")
+        @team_scotti = FactoryBot.create(:company, name: "Team Scotti")
+        @nfp = FactoryBot.create(:company, name: "NFP")
+        @hcc = FactoryBot.create(:company, name: "HCC")
+        @pcc = FactoryBot.create(:company, name: "PCC")
+
+        puts("Create brokers")
+        FactoryBot.create(:broker, name: "Jake", company: @team_scotti)
+        FactoryBot.create(:broker, name: "Jim", company: @team_scotti)
+        FactoryBot.create(:broker, name: "Aly", company: @nfp)
+        FactoryBot.create(:broker, name: "Emily", company: @nfp)
         
       end 
     end 
