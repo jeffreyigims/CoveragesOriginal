@@ -11,6 +11,11 @@ module Populator
         @baseball_mlb = FactoryBot.create(:league, name: "MLB", sport: @baseball)
         @baseball_milb = FactoryBot.create(:league, name: "MiLB", sport: @baseball)
 
+        FactoryBot.create(:club, name: "Steelers", league: @football_nfl)
+        FactoryBot.create(:club, name: "Patriots", league: @football_nfl)
+        FactoryBot.create(:club, name: "Pirates", league: @baseball_mlb)
+        FactoryBot.create(:club, name: "Yankees", league: @baseball_mlb)
+
       end 
 
     end 
