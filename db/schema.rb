@@ -10,11 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_29_133430) do
+ActiveRecord::Schema.define(version: 2020_07_01_143826) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "brokers", force: :cascade do |t|
     t.string "name"
-    t.integer "company_id", null: false
+    t.bigint "company_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_brokers_on_company_id"
@@ -25,8 +28,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_133430) do
     t.date "end_date"
     t.string "notes"
     t.boolean "active"
-    t.integer "contact_id", null: false
-    t.integer "carrier_id", null: false
+    t.bigint "contact_id", null: false
+    t.bigint "carrier_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["carrier_id"], name: "index_carrier_contacts_on_carrier_id"
@@ -50,8 +53,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_133430) do
     t.date "end_date"
     t.string "notes"
     t.boolean "active"
-    t.integer "contact_id", null: false
-    t.integer "club_id", null: false
+    t.bigint "contact_id", null: false
+    t.bigint "club_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["club_id"], name: "index_club_contacts_on_club_id"
@@ -59,8 +62,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_133430) do
   end
 
   create_table "club_groups", force: :cascade do |t|
-    t.integer "club_id", null: false
-    t.integer "group_id", null: false
+    t.bigint "club_id", null: false
+    t.bigint "group_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["club_id"], name: "index_club_groups_on_club_id"
@@ -70,7 +73,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_133430) do
   create_table "clubs", force: :cascade do |t|
     t.string "name"
     t.string "abbreviation"
-    t.integer "league_id", null: false
+    t.bigint "league_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["league_id"], name: "index_clubs_on_league_id"
@@ -93,19 +96,19 @@ ActiveRecord::Schema.define(version: 2020_06_29_133430) do
   end
 
   create_table "coverage_brokers", force: :cascade do |t|
-    t.integer "broker_id", null: false
-    t.integer "coverage_id", null: false
+    t.bigint "broker_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "coverage_id", null: false
     t.index ["broker_id"], name: "index_coverage_brokers_on_broker_id"
     t.index ["coverage_id"], name: "index_coverage_brokers_on_coverage_id"
   end
 
   create_table "coverage_carriers", force: :cascade do |t|
-    t.integer "carrier_id", null: false
-    t.integer "coverage_id", null: false
+    t.bigint "carrier_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "coverage_id", null: false
     t.index ["carrier_id"], name: "index_coverage_carriers_on_carrier_id"
     t.index ["coverage_id"], name: "index_coverage_carriers_on_coverage_id"
   end
@@ -115,8 +118,9 @@ ActiveRecord::Schema.define(version: 2020_06_29_133430) do
     t.string "notes"
     t.date "start_date"
     t.date "end_date"
-    t.integer "club_group_id", null: false
-    t.integer "sub_category_id", null: false
+    t.boolean "verified"
+    t.bigint "club_group_id", null: false
+    t.bigint "sub_category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["club_group_id"], name: "index_coverages_on_club_group_id"
@@ -132,7 +136,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_133430) do
   create_table "leagues", force: :cascade do |t|
     t.string "name"
     t.string "level"
-    t.integer "sport_id", null: false
+    t.bigint "sport_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["sport_id"], name: "index_leagues_on_sport_id"
@@ -146,10 +150,26 @@ ActiveRecord::Schema.define(version: 2020_06_29_133430) do
 
   create_table "sub_categories", force: :cascade do |t|
     t.string "name"
-    t.integer "category_id", null: false
+    t.bigint "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_sub_categories_on_category_id"
   end
 
+  add_foreign_key "brokers", "companies"
+  add_foreign_key "carrier_contacts", "carriers"
+  add_foreign_key "carrier_contacts", "contacts"
+  add_foreign_key "club_contacts", "clubs"
+  add_foreign_key "club_contacts", "contacts"
+  add_foreign_key "club_groups", "clubs"
+  add_foreign_key "club_groups", "groups"
+  add_foreign_key "clubs", "leagues"
+  add_foreign_key "coverage_brokers", "brokers"
+  add_foreign_key "coverage_brokers", "coverages"
+  add_foreign_key "coverage_carriers", "carriers"
+  add_foreign_key "coverage_carriers", "coverages"
+  add_foreign_key "coverages", "club_groups"
+  add_foreign_key "coverages", "sub_categories"
+  add_foreign_key "leagues", "sports"
+  add_foreign_key "sub_categories", "categories"
 end

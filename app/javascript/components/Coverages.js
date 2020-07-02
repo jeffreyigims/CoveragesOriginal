@@ -12,7 +12,9 @@ class Coverages extends React.Component {
     selectedCategory: null,
     selectedSubCategoryID: null,
     coverageCarriers: [],
-    coverageBrokers: []
+    coverageBrokers: [],
+    rese: null,
+    value: ''
   }
 
   run_ajax = (link, method = "GET", data = {}, callback = () => { }) => {
@@ -39,6 +41,7 @@ class Coverages extends React.Component {
       })
       .then(
         (result) => {
+          console.log(result)
           callback(result);
         })
       .catch((error) => {
@@ -140,36 +143,91 @@ class Coverages extends React.Component {
     );
   }
 
+  handleSubmitCarriersBrokers = (response) => {
+    let id = response.id
+    for (var i = 0, l = this.state.coverageCarriers.length; i < l; i++) {
+      const new_coverage_carrier = {
+        carrier_id: this.state.coverageCarriers[i],
+        coverage_id: id
+      }
+      this.run_ajax('/coverage_carriers', 'POST', { "coverage_carrier": new_coverage_carrier });
+    }
+    for (var i = 0, l = this.state.coverageBrokers.length; i < l; i++) {
+      const new_coverage_broker = {
+        broker_id: this.state.coverageBrokers[i],
+        coverage_id: id
+      }
+      this.run_ajax('/coverage_brokers', 'POST', { "coverage_broker": new_coverage_broker });
+    }
+  }
+
+  handleSubmitFinish = (event) => {
+    event.preventDefault();
+    const new_coverage = {
+      has_coverage_line: true,
+      notes: "",
+      start_date: "12/10/1999",
+      end_date: "12/10/1999",
+      sub_category_id: this.state.selectedSubCategoryID,
+      club_group_id: this.props.selectedClubGroup.id
+    }
+    this.run_ajax('/coverages', 'POST', { "coverage": new_coverage }, (response) => { this.handleSubmitCarriersBrokers(response) });
+    return
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const new_coverage = {
+      has_coverage_line: true,
+      notes: "",
+      start_date: "12/10/1999",
+      end_date: "12/10/1999",
+      verified: false,
+      sub_category_id: this.state.selectedSubCategoryID,
+      club_group_id: this.props.selectedClubGroup.id
+    }
+    this.run_ajax('/coverages', 'POST', { "coverage": new_coverage }, (response) => { this.handleSubmitCarriersBrokers(response) });
+    this.clearForm()
+    return
+  }
+
+  clearForm = () => {
+    console.log("Rerender")
+    this.forceUpdate();  
+  }
+
   render() {
     return (
       <React.Fragment>
         <Form>
           <Form.Group controlId="categories">
             <Form.Label>Category:</Form.Label>
-            <Form.Control as="select" name="selectedCategory" onChange={this.handleCategoryChange}>
+            <Form.Control as="select" inputref={input => this.selectedCategory = input} onChange={this.handleCategoryChange}>
               <option></option>
               {this.categoryOptions()}
             </Form.Control>
+          </Form.Group>
+          <Form.Group controlId="categories">
             <Form.Label>Sub Category:</Form.Label>
-            <Form.Control as="select" name="selectedCategory" onChange={this.handleSubCategoryChange}>
+            <Form.Control as="select" inputref={input => this.selectedSubCategory = input} onChange={this.handleSubCategoryChange}>
               <option></option>
               {this.subCategoryOptions()}
             </Form.Control>
           </Form.Group>
           <Form.Group controlId="carriers">
             <Form.Label>Carriers:</Form.Label>
-            <Form.Control as="select" multiple name="coverageCarriers" onChange={this.handleCarriersChange}>
+            <Form.Control as="select" multiple inputref={input => this.coverageCarriers = input} onChange={this.handleCarriersChange}>
               {this.carriersOptions()}
             </Form.Control>
           </Form.Group>
           <Form.Group controlId="brokers">
             <Form.Label>Brokers:</Form.Label>
-            <Form.Control as="select" multiple name="coverageBrokers" onChange={this.handleBrokersChange}>
+            <Form.Control as="select" multiple inputref={input => this.coverageBrokers = input} onChange={this.handleBrokersChange}>
               {this.brokersOptions()}
             </Form.Control>
           </Form.Group>
-          <Button variant="primary" onClick={this.props.previousPage}>Submit and Create Another</Button>
-          <Button variant="primary" onClick={this.props.nextPage}>Submit and Finish</Button>
+          <Button variant="primary" onClick={this.handleSubmit}>Submit and Create Another</Button>{" "}
+          <Button variant="primary" onClick={this.handleSubmit}>Submit and Finish</Button>
         </Form>
       </React.Fragment>
     );

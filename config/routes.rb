@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   resources :sub_categories
   resources :carriers
   resources :companies
+  resources :coverage_brokers
+  resources :coverage_carriers
   root 'coverages#index'
 
 end

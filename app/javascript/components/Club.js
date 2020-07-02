@@ -24,7 +24,7 @@ class Club extends React.Component {
             { this.clubOptions() }
           </Form.Control>
         </Form.Group>
-        <Button variant="primary" onClick={this.props.previousPage}>Previous</Button>
+        <Button variant="primary" onClick={this.props.previousPage}>Previous</Button>{" "}
         <Button variant="primary" onClick={this.props.nextPage}>Next</Button>
         </Form>
       </React.Fragment>

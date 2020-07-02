@@ -6,7 +6,8 @@ ruby '2.5.7'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.3'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+# gem 'sqlite3'
+gem 'pg'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
@@ -86,8 +87,21 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'jquery-rails'
 gem 'popper_js', '~> 1.14.5'
-gem 'bootstrap-sass', '~> 3.4.1'
+# gem 'bootstrap-sass', '~> 3.4.1'
 gem 'sassc-rails', '>= 2.1.0'
 gem 'react-rails'
 gem 'webpacker'
 gem 'react-bootstrap-rails', '~> 0.30.2'
+gem 'bootstrap', '~> 4.4.1'
+
+# gem 'formic'# , '~> 0.2.5'
+# gem 'yup', '~> 0.2.1'
+# gem 'bdb', '~> 0.2.6.5'
+# gem 'bundler', '~> 2.1', '>= 2.1.4'
+# gem 'jeweler', '~> 2.3', '>= 2.3.9'
+# gem 'minitest', '~> 5.14', '>= 5.14.1'
+# gem 'redis-namespace', '~> 1.7'
+# gem 'simplecov', '~> 0.18.5'
+# gem 'simplecov-rcov', '~> 0.2.3'
+# gem 'travis-lint', '~> 2.0'
+# gem 'yard', '~> 0.9.25'
