@@ -93,6 +93,9 @@ gem "react-rails"
 gem "webpacker"
 gem "react-bootstrap-rails", "~> 0.30.2"
 gem "bootstrap", "~> 4.4.1"
+gem "cancancan"
+# Use ActiveModel has_secure_password
+gem "bcrypt", "~> 3.1.7"
 
 # gem 'formic'# , '~> 0.2.5'
 # gem 'yup', '~> 0.2.1'

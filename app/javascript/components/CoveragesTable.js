@@ -76,7 +76,6 @@ class CoveragesTable extends React.Component {
           show={this.state.modal_show}
           run_ajax={this.props.run_ajax}
           switchModal={this.switchModal}
-          handleInputChange={this.handleInputChange}
         />
       </>
     );

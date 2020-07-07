@@ -53,3 +53,32 @@ a.nav-link {
 #footer a {
   color: white;
 }
+
+.btn-link:visited {
+  color: white;
+  text-decoration: None;
+}
+
+
+.btn.btn-link {
+  color: white;
+  text-decoration: None;
+}
+
+.btn.btn-link:hover {
+  text-decoration: None;
+}
+
+.btn.btn-link:visited {
+  text-decoration: None;
+}
+
+.btn.btn-link:active {
+  color: white;
+  text-decoration: None;
+}
+
+.btn:active {
+  color: white;
+  text-decoration: None;
+}

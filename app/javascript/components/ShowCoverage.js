@@ -35,7 +35,7 @@ class ShowCoverage extends React.Component {
       "PATCH",
       { coverage: updatedCoverage }
     );
-    this.props.switchModal((name = this.props.name));
+    this.handleClose();
   };
 
   updateHelper = (name) => {
@@ -51,7 +51,7 @@ class ShowCoverage extends React.Component {
       "DELETE",
       { coverage: this.props.selected }
     );
-    this.props.switchModal((name = this.props.name));
+    this.handleClose();
   };
 
   handleClose = () => {

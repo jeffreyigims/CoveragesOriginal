@@ -1,7 +1,71 @@
-<nav class="navbar navbar-dark bg-primary">
-    <div class="container">
-        <ul class="right">
-          <li><%= link_to 'Login', login_path %></li>
-        </ul>
-    </div>
+<nav class="navbar navbar-dark bg-dark">
+  <div class="nav">
+    <a class="nav-item nav-link" href="/home">Home</a>
+  </div>
+  <div class="nav justify-content-end">
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#login" style="text-decoration: None;">
+      Login
+    </button>
+  </div>
 </nav>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="login"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: sessions_path, local: true do |f| %>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            class="form-control"
+            id="user_email"
+            name="user[username]"
+            type="text"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            class="form-control"
+            id="user_password"
+            name="user[password]"
+            type="password"
+          />
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <input
+            class="btn btn-primary"
+            name="commit"
+            type="submit"
+            value="Log In"
+          />
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

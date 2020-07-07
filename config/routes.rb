@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   resources :coverage_brokers
   resources :coverage_carriers
 
+  resources :sessions
+  get "login", to: "sessions#new", as: :login
+  get "logout", to: "sessions#destroy", as: :logout
+
   get "home", to: "home#index", as: :home
 
   root "home#index"
