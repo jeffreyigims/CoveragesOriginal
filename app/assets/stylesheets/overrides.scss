@@ -1,0 +1,55 @@
+/********** TOPBAR & NAV ********/
+
+.topbar {
+    border-top: 0px;
+    padding: 0px;
+    margin-bottom: 0px;
+    //height: 100px;
+    font-family: 'Arial Black';
+    font-style: italic;
+    font-size: 65px;;
+    color: black;
+    text-align: center
+  }
+
+  .image-size {
+    max-width: 20px;;
+    max-height: 20px;;
+  }
+  
+a.nav-link {
+  color: white;
+  }
+
+@media (min-width: 1200px) {
+  .container{
+    max-width: 970px;
+    padding: 40px;
+  }
+}
+
+.card-content {
+}
+
+.card {
+    margin: 20px;
+    padding: 20px;
+}
+
+/********** FOOTER ********/
+
+#bottom-contents {
+  
+}
+
+#footer {
+  background-color: rgb(29, 25, 25);
+  margin-top: 0px;
+  margin-bottom: 0px;
+  color: white;
+  line-height: 2rem;
+}
+
+#footer a {
+  color: white;
+}

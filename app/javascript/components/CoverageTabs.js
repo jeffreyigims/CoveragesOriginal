@@ -15,7 +15,7 @@ class CoverageTabs extends React.Component {
     unverifiedCoverages: []
   }
 
-  run_ajax = (link, method = "GET", data = {}, callback = () => { this.get_players() }) => {
+  run_ajax = (link, method = "GET", data = {}, callback = () => { this.get_coverages() }) => {
     let options
     if (method == "GET") {
       options = { method: method }
@@ -57,29 +57,32 @@ class CoverageTabs extends React.Component {
     this.run_ajax('/coverages.json?verified=false', 'GET', {}, (res) => { this.setState({ unverifiedCoverages: res }) });
   }
 
-  componentDidMount() {
+  get_coverages = () => {
     this.get_verifiedCoverages()
     this.get_unverifiedCoverages()
+  }
+
+  componentDidMount() {
+    this.get_coverages()
   }
 
   render() {
     return (
       <React.Fragment>
-        <TopBar />
-        <NavGuest />
-        <Container style={{margin:"40px"}}>
+        <Container>
           <Tabs transition={false}>
             <Tab eventKey="Verified" title="Verified">
               <CoveragesTable
-                coverages={this.state.verifiedCoverages} />
+                coverages={this.state.verifiedCoverages} 
+                run_ajax={this.run_ajax} />
             </Tab>
             <Tab eventKey="Unverified" title="Unverified">
               <CoveragesTable
-                coverages={this.state.unverifiedCoverages} />
+                coverages={this.state.unverifiedCoverages}
+                run_ajax={this.run_ajax} />
             </Tab>
           </Tabs>
         </Container>
-        <Footer />
       </React.Fragment>
     );
   }

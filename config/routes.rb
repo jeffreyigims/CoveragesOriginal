@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   resources :companies
   resources :coverage_brokers
   resources :coverage_carriers
-  root 'coverages#index'
 
+  get "home", to: "home#index", as: :home
+
+  root "home#index"
 end

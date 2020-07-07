@@ -9,7 +9,8 @@ class CoveragesTable extends React.Component {
   state = {
     modal_show: false,
     modal_new: false,
-    selected: null
+    selected: null,
+    notes: null
   }
 
   showCoverages = () => {
@@ -73,8 +74,9 @@ class CoveragesTable extends React.Component {
           selected={this.state.selected}
           name={"modal_show"}
           show={this.state.modal_show}
-          run_ajax={this.run_ajax}
+          run_ajax={this.props.run_ajax}
           switchModal={this.switchModal}
+          handleInputChange={this.handleInputChange}
         />
       </>
     );
