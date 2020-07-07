@@ -3,13 +3,11 @@ import PropTypes from "prop-types";
 import Table from "react-bootstrap/Table";
 import Container from "react-bootstrap/Tabs";
 import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import ShowSport from "./ShowSport";
-import NewSport from "./NewSport";
-import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
+import ShowLeague from "./ShowLeague";
+import {run_ajax, getObjects, switchModal, showSelected} from 'Utils.js';
 
-class Sports extends React.Component {
-  constructor() {
+class Leagues extends React.Component {
+  constructor(){
     super();
     this.run_ajax = run_ajax.bind(this);
     this.getObjects = getObjects.bind(this);
@@ -22,8 +20,8 @@ class Sports extends React.Component {
     modal_show: false,
     modal_new: false,
     selected: null,
-    objectName: "sports",
-    attributes: ["name"],
+    objectName: "leagues",
+    attributes: ["name", "level"]
   };
 
   componentDidMount() {
@@ -35,13 +33,13 @@ class Sports extends React.Component {
       return (
         <tr key={index} onClick={(slot) => this.showSelected(object)}>
           <td width="200" align="left">
-            {object.id}
-          </td>
-          <td width="200" align="left">
             {object.name}
           </td>
           <td width="200" align="left">
-            {object.associated_leagues}
+            {object.level}
+          </td>
+          <td width="200" align="left">
+            {object.sport.name}
           </td>
         </tr>
       );
@@ -52,41 +50,24 @@ class Sports extends React.Component {
     return (
       <>
         <Card>
-          <Card.Title>All Sports</Card.Title>
+          <Card.Title>All Leagues</Card.Title>
           <Card.Body>
             <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th>Identification</th>
                   <th>Name</th>
-                  <th>Associated Leagues</th>
+                  <th>Level</th>
+                  <th>Sport</th>
                 </tr>
               </thead>
               <tbody>{this.showObjects()}</tbody>
             </Table>
           </Card.Body>
-          <Card.Footer>
-            <Button
-              className="btn btn-theme float-right"
-              variant="primary"
-              onClick={(slot) => this.switchModal("modal_new")}
-            >
-              New Sport
-            </Button>
-          </Card.Footer>
         </Card>
-        <ShowSport
+        <ShowLeague
           selected={this.state.selected}
           name={"modal_show"}
           show={this.state.modal_show}
-          run_ajax={this.run_ajax}
-          switchModal={this.switchModal}
-          objectName={this.state.objectName}
-          attributes={this.state.attributes}
-        />
-        <NewSport
-          name={"modal_new"}
-          show={this.state.modal_new}
           run_ajax={this.run_ajax}
           switchModal={this.switchModal}
           objectName={this.state.objectName}
@@ -97,4 +78,4 @@ class Sports extends React.Component {
   }
 }
 
-export default Sports;
+export default Leagues;

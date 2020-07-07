@@ -10,7 +10,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {handleInputChange, handleClose, handleUpdate, updateHelper, handleDelete} from 'Utils.js';
 
-class ShowSport extends React.Component {
+class ShowLeague extends React.Component {
   constructor(){
     super();
     this.handleInputChange = handleInputChange.bind(this);
@@ -31,7 +31,7 @@ class ShowSport extends React.Component {
     return (
       <Modal show={this.props.show} onHide={this.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Sport Details</Modal.Title>
+          <Modal.Title>League Details</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -48,10 +48,13 @@ class ShowSport extends React.Component {
               </Form.Group>
 
               <Form.Group as={Col}>
-                <Form.Label>Leagues:</Form.Label>
-                <ListGroup>
-                    { this.props.selected.leagues.map((league, index) => <ListGroup.Item key={index}>{league.name}</ListGroup.Item>) }
-                </ListGroup>
+                <Form.Label>Level:</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="level"
+                  defaultValue={this.props.selected.level}
+                  onChange={this.handleInputChange}             
+                />
               </Form.Group>
             </Row>
 
@@ -74,4 +77,4 @@ class ShowSport extends React.Component {
   }
 }
 
-export default ShowSport;
+export default ShowLeague;

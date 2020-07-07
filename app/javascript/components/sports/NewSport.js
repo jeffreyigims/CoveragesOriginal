@@ -8,16 +8,14 @@ import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {handleInputChange, handleClose, handleUpdate, updateHelper, handleDelete} from 'Utils.js';
+import {handleInputChange, handleClose, handleCreate} from 'Utils.js';
 
-class ShowSport extends React.Component {
+class NewSport extends React.Component {
   constructor(){
     super();
     this.handleInputChange = handleInputChange.bind(this);
     this.handleClose = handleClose.bind(this);
-    this.handleUpdate = handleUpdate.bind(this);
-    this.updateHelper = updateHelper.bind(this);
-    this.handleDelete = handleDelete.bind(this);
+    this.handleCreate = handleCreate.bind(this);
   }
   
   state = {
@@ -25,9 +23,6 @@ class ShowSport extends React.Component {
   };
 
   render() {
-    if (this.props.selected == null) {
-      return null;
-    }
     return (
       <Modal show={this.props.show} onHide={this.handleClose}>
         <Modal.Header closeButton>
@@ -42,16 +37,8 @@ class ShowSport extends React.Component {
                 <Form.Control
                   type="text"
                   name="name"
-                  defaultValue={this.props.selected.name}
-                  disabled             
+                  onChange={this.handleInputChange}
                 />
-              </Form.Group>
-
-              <Form.Group as={Col}>
-                <Form.Label>Leagues:</Form.Label>
-                <ListGroup>
-                    { this.props.selected.leagues.map((league, index) => <ListGroup.Item key={index}>{league.name}</ListGroup.Item>) }
-                </ListGroup>
               </Form.Group>
             </Row>
 
@@ -59,14 +46,11 @@ class ShowSport extends React.Component {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="danger" onClick={this.handleDelete}>
-            Delete Sport
-          </Button>
           <Button variant="secondary" onClick={this.handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={this.handleUpdate}>
-            Update Sport
+          <Button variant="primary" onClick={this.handleCreate}>
+            Create Sport
           </Button>
         </Modal.Footer>
       </Modal>
@@ -74,4 +58,4 @@ class ShowSport extends React.Component {
   }
 }
 
-export default ShowSport;
+export default NewSport;

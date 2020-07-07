@@ -1,26 +1,38 @@
 module Populator
-  module Sports
+  module All
     def create_sports
       @user = FactoryBot.create(:user, password: "secret", password_confirmation: "secret")
 
       @football = FactoryBot.create(:sport, name: "football")
       @baseball = FactoryBot.create(:sport, name: "baseball")
+      @hockey = FactoryBot.create(:sport, name: "hockey")
+      @soccer = FactoryBot.create(:sport, name: "soccer")
 
       @football_nfl = FactoryBot.create(:league, name: "NFL", sport: @football)
       @football_xfl = FactoryBot.create(:league, name: "XFL", sport: @football)
       @baseball_mlb = FactoryBot.create(:league, name: "MLB", sport: @baseball)
       @baseball_milb = FactoryBot.create(:league, name: "MiLB", sport: @baseball)
+      @hockey_nhl = FactoryBot.create(:league, name: "NHL", sport: @hockey)
+      @hockey_ahl = FactoryBot.create(:league, name: "AHL", sport: @hockey)
+      @soccer_mls = FactoryBot.create(:league, name: "MLS", sport: @soccer)
+      @soccer_nwsl = FactoryBot.create(:league, name: "NWSL", sport: @soccer)
 
       @steelers = FactoryBot.create(:club, name: "Steelers", league: @football_nfl)
       @patriots = FactoryBot.create(:club, name: "Patriots", league: @football_nfl)
       @pirates = FactoryBot.create(:club, name: "Pirates", league: @baseball_mlb)
       @yankees = FactoryBot.create(:club, name: "Yankees", league: @baseball_mlb)
+      @penguins = FactoryBot.create(:club, name: "Penguins", league: @hockey_nhl)
+      @rangers = FactoryBot.create(:club, name: "Rangers", league: @hockey_nhl)
+      @united = FactoryBot.create(:club, name: "Atlanta United", league: @soccer_mls)
+      @impact = FactoryBot.create(:club, name: "Montreal Impact", league: @soccer_mls)
 
       @players = FactoryBot.create(:group, name: "players")
       @front_office = FactoryBot.create(:group, name: "front office")
+      @operations = FactoryBot.create(:group, name: "operations")
+      @crew = FactoryBot.create(:group, name: "crew")
 
-      for club in [@steelers, @patriots, @pirates, @yankees]
-        for group in [@players, @front_office]
+      for club in [@steelers, @patriots, @pirates, @yankees, @penguins, @rangers, @impact, @united]
+        for group in [@players, @front_office, @operations, @crew]
           FactoryBot.create(:club_group, club: club, group: group)
         end
       end
