@@ -4,6 +4,7 @@
   "dependencies": {
     "@babel/preset-react": "^7.10.4",
     "@babel/runtime": "^7.10.4",
+    "@nivo/pie": "^0.62.0",
     "@rails/webpacker": "5.1.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "bootstrap": "^4.5.0",
@@ -15,6 +16,7 @@
     "react-datepicker": "^3.0.0",
     "react-dom": "^16.13.1",
     "react_ujs": "^2.6.1",
+    "recharts": "^1.8.5",
     "yup": "^0.29.1"
   },
   "devDependencies": {

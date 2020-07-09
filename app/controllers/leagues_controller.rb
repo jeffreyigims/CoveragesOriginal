@@ -1,5 +1,5 @@
 class LeaguesController < ApplicationController
-  before_action :set_league, only: [:update, :destroy]
+  before_action :set_league, only: [:update, :show, :destroy]
 
   def index
     @leagues = League.all
@@ -8,6 +8,13 @@ class LeaguesController < ApplicationController
       format.json { @leagues }
     end
   end
+
+  def show 
+    respond_to do |format|
+      format.html { @league }
+      format.json { render json: LeagueSerializer.new(@league).serializable_hash }
+    end
+  end 
 
   def create
     @league = League.new(league_params)

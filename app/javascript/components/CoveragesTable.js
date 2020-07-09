@@ -17,16 +17,11 @@ class CoveragesTable extends React.Component {
     return this.props.coverages.map((coverage, index) => {
       return (
         <tr key={index} onClick={slot => this.showCoverage(coverage)}>
-          <td width="200" align="left">{coverage.sport.name}</td>
           <td width="200" align="left">{coverage.league.name}</td>
           <td width="200" align="left">{coverage.club.name}</td>
           <td width="200" align="left">{coverage.group.name}</td>
           <td width="200" align="left">{coverage.category.name}</td>
           <td width="200" align="left">{coverage.sub_category.name}</td>
-          <td width="200" align="left">{coverage.has_coverage_line ? "true" : "false"}</td>
-          <td width="200" align="left">{coverage.notes}</td>
-          <td width="200" align="left">{coverage.start_date}</td>
-          <td width="200" align="left">{coverage.end_date}</td>
           <td width="200" align="left">{coverage.verified ? "true" : "false"}</td>
         </tr>
       )
@@ -53,16 +48,11 @@ class CoveragesTable extends React.Component {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Sport</th>
               <th>League</th>
               <th>Club</th>
               <th>Group</th>
               <th>Category</th>
               <th>Sub</th>
-              <th>Coverage</th>
-              <th>Notes</th>
-              <th>Start</th>
-              <th>End</th>
               <th>Verified</th>
             </tr>
           </thead>

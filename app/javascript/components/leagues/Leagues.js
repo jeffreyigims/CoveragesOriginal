@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Tabs";
 import Card from "react-bootstrap/Card";
 import ShowLeague from "./ShowLeague";
+import NewLeague from "./NewLeague";
 import {run_ajax, getObjects, switchModal, showSelected} from 'Utils.js';
 
 class Leagues extends React.Component {
@@ -21,7 +23,7 @@ class Leagues extends React.Component {
     modal_new: false,
     selected: null,
     objectName: "leagues",
-    attributes: ["name", "level"]
+    attributes: ["name", "level", "sport_id"]
   };
 
   componentDidMount() {
@@ -63,11 +65,28 @@ class Leagues extends React.Component {
               <tbody>{this.showObjects()}</tbody>
             </Table>
           </Card.Body>
+          <Card.Footer>
+            <Button
+              className="btn btn-theme float-right"
+              variant="primary"
+              onClick={(slot) => this.switchModal("modal_new")}
+            >
+              New League
+            </Button>
+          </Card.Footer>
         </Card>
         <ShowLeague
           selected={this.state.selected}
           name={"modal_show"}
           show={this.state.modal_show}
+          run_ajax={this.run_ajax}
+          switchModal={this.switchModal}
+          objectName={this.state.objectName}
+          attributes={this.state.attributes}
+        />
+        <NewLeague
+          name={"modal_new"}
+          show={this.state.modal_new}
           run_ajax={this.run_ajax}
           switchModal={this.switchModal}
           objectName={this.state.objectName}

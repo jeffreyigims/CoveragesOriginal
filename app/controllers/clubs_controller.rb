@@ -1,13 +1,51 @@
 class ClubsController < ApplicationController
+    before_action :set_club, only: [:update, :show, :destroy]
 
     def index
-        respond_to do |format|
-            format.html { @clubs = Club.all }
-            format.json { @clubs = Club.all }
-        end 
+      @clubs = Club.all
+      respond_to do |format|
+        format.html { @clubs }
+        format.json { @clubs }
+      end
     end
-
+  
     def show 
+      respond_to do |format|
+        format.html { @club }
+        format.json { render json: @club }
+      end
     end 
-
-end
+  
+    def create
+      @club = Club.new(club_params)
+      if @club.save
+        render json: @club
+      else
+        render json: @club.errors, status: :unprocessable_entity
+      end
+    end
+  
+    def update
+      if !@club.update(club_params)
+        render json: @club.errors, status: :unprocessable_entity
+      end
+    end
+  
+    def destroy
+      @club.destroy
+      if !@club.destroyed?
+        render json: @club.errors, status: :unprocessable_entity
+      end
+    end
+  
+    private
+  
+    def set_club
+      @club = Club.find(params[:id])
+    end
+  
+    def club_params
+      params.require(:club).permit(:id, :name, :abbreviation, :league_id)
+    end
+  end
+  

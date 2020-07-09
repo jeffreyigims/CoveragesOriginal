@@ -2,12 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import ListGroup from "react-bootstrap/ListGroup";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+
 import {
   handleInputChange,
   handleClose,
@@ -16,7 +15,7 @@ import {
   handleDelete,
 } from "Utils.js";
 
-class ShowSport extends React.Component {
+class ShowCompany extends React.Component {
   constructor() {
     super();
     this.handleInputChange = handleInputChange.bind(this);
@@ -37,7 +36,7 @@ class ShowSport extends React.Component {
     return (
       <Modal show={this.props.show} onHide={this.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Sport Details</Modal.Title>
+          <Modal.Title>Company Details</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -49,15 +48,15 @@ class ShowSport extends React.Component {
                   type="text"
                   name="name"
                   defaultValue={this.props.selected.name}
-                  disabled
+                  onChange={this.handleInputChange}
                 />
               </Form.Group>
 
               <Form.Group as={Col}>
-                <Form.Label>Leagues:</Form.Label>
+                <Form.Label>Brokers:</Form.Label>
                 <ListGroup>
-                  {this.props.selected.leagues.map((league, index) => (
-                    <ListGroup.Item key={index}>{league.name}</ListGroup.Item>
+                  {this.props.selected.brokers.map((object, index) => (
+                    <ListGroup.Item key={index}>{object.name}</ListGroup.Item>
                   ))}
                 </ListGroup>
               </Form.Group>
@@ -66,9 +65,9 @@ class ShowSport extends React.Component {
         </Modal.Body>
 
         <Modal.Footer>
-          {this.props.selected.leagues.count === 0 ? (
+        {this.props.selected.brokers.count === 0 ? (
             <Button variant="danger" onClick={this.handleDelete}>
-              Delete Sport
+              Delete Company
             </Button>
           ) : (
             ""
@@ -77,7 +76,7 @@ class ShowSport extends React.Component {
             Close
           </Button>
           <Button variant="primary" onClick={this.handleUpdate}>
-            Update Sport
+            Update Company
           </Button>
         </Modal.Footer>
       </Modal>
@@ -85,4 +84,4 @@ class ShowSport extends React.Component {
   }
 }
 
-export default ShowSport;
+export default ShowCompany;

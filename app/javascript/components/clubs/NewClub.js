@@ -8,30 +8,50 @@ import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {handleInputChange, handleClose, handleUpdate, updateHelper, handleDelete} from 'Utils.js';
+import { handleInputChange, run_ajax, handleClose, handleCreate } from "Utils.js";
 
-class ShowLeague extends React.Component {
-  constructor(){
+class NewClub extends React.Component {
+  constructor() {
     super();
     this.handleInputChange = handleInputChange.bind(this);
     this.handleClose = handleClose.bind(this);
-    this.handleUpdate = handleUpdate.bind(this);
-    this.updateHelper = updateHelper.bind(this);
-    this.handleDelete = handleDelete.bind(this);
+    this.handleCreate = handleCreate.bind(this);
+    this.run_ajax = run_ajax.bind(this);
   }
-  
+
   state = {
+    leagues: [],
     name: null,
+    abbreviation: null,
+    league_id: null,
+  };
+
+  componentDidMount() {
+    this.getObjects();
+  }
+
+  getObjects() {
+    this.run_ajax("/leagues.json", "GET", {}, (res) => {
+      this.setState({ leagues: res, league_id: res[0]?.id});
+    });
+  }
+
+  leagueOptions = () => {
+    return this.state.leagues.map((object, index) => {
+      return (
+        <option key={index} value={object.id}>
+          {" "}
+          {object.name}{" "}
+        </option>
+      );
+    });
   };
 
   render() {
-    if (this.props.selected == null) {
-      return null;
-    }
     return (
       <Modal show={this.props.show} onHide={this.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>League Details</Modal.Title>
+          <Modal.Title>New Club</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -42,34 +62,30 @@ class ShowLeague extends React.Component {
                 <Form.Control
                   type="text"
                   name="name"
-                  defaultValue={this.props.selected.name}
-                  disabled             
+                  onChange={this.handleInputChange}
                 />
               </Form.Group>
-
               <Form.Group as={Col}>
-              <Form.Label>Sport:</Form.Label>
+                <Form.Label>Code:</Form.Label>
                 <Form.Control
                   type="text"
-                  name="sport"
-                  defaultValue={this.props.selected.sport.name}
-                  disabled             
+                  name="abbreviation"
+                  onChange={this.handleInputChange}
                 />
               </Form.Group>
             </Row>
-
             <Row>
               <Form.Group as={Col}>
-                <Form.Label>Level:</Form.Label>
+                <Form.Label>League:</Form.Label>
                 <Form.Control
-                  type="text"
-                  name="level"
-                  defaultValue={this.props.selected.level}
-                  onChange={this.handleInputChange}             
-                />
+                  as="select"
+                  name="league_id"
+                  onChange={this.handleInputChange}
+                >
+                  {this.leagueOptions()}
+                </Form.Control>
               </Form.Group>
             </Row>
-
           </Form>
         </Modal.Body>
 
@@ -77,8 +93,8 @@ class ShowLeague extends React.Component {
           <Button variant="secondary" onClick={this.handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={this.handleUpdate}>
-            Update League
+          <Button variant="primary" onClick={this.handleCreate}>
+            Create Club
           </Button>
         </Modal.Footer>
       </Modal>
@@ -86,4 +102,4 @@ class ShowLeague extends React.Component {
   }
 }
 
-export default ShowLeague;
+export default NewClub;

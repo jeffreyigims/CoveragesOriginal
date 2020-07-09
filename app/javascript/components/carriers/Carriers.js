@@ -1,14 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Table from "react-bootstrap/Table";
-import Container from "react-bootstrap/Tabs";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import ShowSport from "./ShowSport";
-import NewSport from "./NewSport";
+import Table from "react-bootstrap/Table";
+import ShowCarrier from "./ShowCarrier";
+import NewCarrier from "./NewCarrier";
 import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
 
-class Sports extends React.Component {
+class Carriers extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
@@ -22,7 +21,7 @@ class Sports extends React.Component {
     modal_show: false,
     modal_new: false,
     selected: null,
-    objectName: "sports",
+    objectName: "carriers",
     attributes: ["name"],
   };
 
@@ -37,9 +36,6 @@ class Sports extends React.Component {
           <td width="200" align="left">
             {object.name}
           </td>
-          <td width="200" align="left">
-            {object.associated_leagues}
-          </td>
         </tr>
       );
     });
@@ -49,13 +45,12 @@ class Sports extends React.Component {
     return (
       <>
         <Card>
-          <Card.Title>All Sports</Card.Title>
+          <Card.Title>All Carriers</Card.Title>
           <Card.Body>
             <Table striped bordered hover>
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Associated Leagues</th>
                 </tr>
               </thead>
               <tbody>{this.showObjects()}</tbody>
@@ -67,11 +62,11 @@ class Sports extends React.Component {
               variant="primary"
               onClick={(slot) => this.switchModal("modal_new")}
             >
-              New Sport
+              New Carrier
             </Button>
           </Card.Footer>
         </Card>
-        <ShowSport
+        <ShowCarrier
           selected={this.state.selected}
           name={"modal_show"}
           show={this.state.modal_show}
@@ -80,7 +75,7 @@ class Sports extends React.Component {
           objectName={this.state.objectName}
           attributes={this.state.attributes}
         />
-        <NewSport
+        <NewCarrier
           name={"modal_new"}
           show={this.state.modal_new}
           run_ajax={this.run_ajax}
@@ -93,4 +88,4 @@ class Sports extends React.Component {
   }
 }
 
-export default Sports;
+export default Carriers;

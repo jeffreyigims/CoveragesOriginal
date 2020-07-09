@@ -8,16 +8,10 @@ import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {
-  handleInputChange,
-  handleClose,
-  handleUpdate,
-  updateHelper,
-  handleDelete,
-} from "Utils.js";
+import {handleInputChange, handleClose, handleUpdate, updateHelper, handleDelete} from 'Utils.js';
 
-class ShowSport extends React.Component {
-  constructor() {
+class ShowClub extends React.Component {
+  constructor(){
     super();
     this.handleInputChange = handleInputChange.bind(this);
     this.handleClose = handleClose.bind(this);
@@ -25,9 +19,10 @@ class ShowSport extends React.Component {
     this.updateHelper = updateHelper.bind(this);
     this.handleDelete = handleDelete.bind(this);
   }
-
+  
   state = {
     name: null,
+    abbreviation: null,
   };
 
   render() {
@@ -37,7 +32,7 @@ class ShowSport extends React.Component {
     return (
       <Modal show={this.props.show} onHide={this.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Sport Details</Modal.Title>
+          <Modal.Title>Club Details</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -49,35 +44,42 @@ class ShowSport extends React.Component {
                   type="text"
                   name="name"
                   defaultValue={this.props.selected.name}
-                  disabled
+                  disabled             
                 />
               </Form.Group>
 
               <Form.Group as={Col}>
-                <Form.Label>Leagues:</Form.Label>
-                <ListGroup>
-                  {this.props.selected.leagues.map((league, index) => (
-                    <ListGroup.Item key={index}>{league.name}</ListGroup.Item>
-                  ))}
-                </ListGroup>
+                <Form.Label>League:</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="league"
+                  defaultValue={this.props.selected.league.name}
+                  disabled
+                />
               </Form.Group>
             </Row>
+
+            <Row>
+              <Form.Group as={Col}>
+                <Form.Label>Code:</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="abbreviation"
+                  defaultValue={this.props.selected.abbreviation}
+                  onChange={this.handleInputChange}             
+                />
+              </Form.Group>
+            </Row>
+
           </Form>
         </Modal.Body>
 
         <Modal.Footer>
-          {this.props.selected.leagues.count === 0 ? (
-            <Button variant="danger" onClick={this.handleDelete}>
-              Delete Sport
-            </Button>
-          ) : (
-            ""
-          )}
           <Button variant="secondary" onClick={this.handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={this.handleUpdate}>
-            Update Sport
+            Update Club
           </Button>
         </Modal.Footer>
       </Modal>
@@ -85,4 +87,4 @@ class ShowSport extends React.Component {
   }
 }
 
-export default ShowSport;
+export default ShowClub;

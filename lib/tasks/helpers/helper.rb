@@ -31,29 +31,23 @@ module Populator
       @operations = FactoryBot.create(:group, name: "operations")
       @crew = FactoryBot.create(:group, name: "crew")
 
-      for club in [@steelers, @patriots, @pirates, @yankees, @penguins, @rangers, @impact, @united]
-        for group in [@players, @front_office, @operations, @crew]
-          FactoryBot.create(:club_group, club: club, group: group)
-        end
-      end
-
       @life = FactoryBot.create(:category, name: "DI & Life")
       @group_health = FactoryBot.create(:category, name: "Group Health")
       @pc = FactoryBot.create(:category, name: "P&C")
 
       puts("Create subs")
-      FactoryBot.create(:sub_category, name: "Individual Term", category: @life)
-      FactoryBot.create(:sub_category, name: "Individual Term", category: @life)
-      FactoryBot.create(:sub_category, name: "Whole Life", category: @life)
-      FactoryBot.create(:sub_category, name: "League Wide Life", category: @life)
-      FactoryBot.create(:sub_category, name: "COBRA Vendor", category: @group_health)
-      FactoryBot.create(:sub_category, name: "Sponsorship", category: @group_health)
-      FactoryBot.create(:sub_category, name: "Prospective Funding", category: @group_health)
-      FactoryBot.create(:sub_category, name: "Retrospective Funding", category: @group_health)
-      FactoryBot.create(:sub_category, name: "Employer's Liability", category: @pc)
-      FactoryBot.create(:sub_category, name: "Environmental", category: @pc)
-      FactoryBot.create(:sub_category, name: "Worker's Comp", category: @pc)
-      FactoryBot.create(:sub_category, name: "Auto Liability", category: @pc)
+      @individual_term = FactoryBot.create(:sub_category, name: "Individual Term", category: @life)
+      @worker_liability = FactoryBot.create(:sub_category, name: "Worker's Liability", category: @life)
+      @whole_life = FactoryBot.create(:sub_category, name: "Whole Life", category: @life)
+      @league_wide_life = FactoryBot.create(:sub_category, name: "League Wide Life", category: @life)
+      @vendor = FactoryBot.create(:sub_category, name: "COBRA Vendor", category: @group_health)
+      @sponsorship = FactoryBot.create(:sub_category, name: "Sponsorship", category: @group_health)
+      @prospective = FactoryBot.create(:sub_category, name: "Prospective Funding", category: @group_health)
+      @retrospective = FactoryBot.create(:sub_category, name: "Retrospective Funding", category: @group_health)
+      @employer = FactoryBot.create(:sub_category, name: "Employer's Liability", category: @pc)
+      @environmental = FactoryBot.create(:sub_category, name: "Environmental", category: @pc)
+      @compnesation = FactoryBot.create(:sub_category, name: "Worker's Comp", category: @pc)
+      @auto = FactoryBot.create(:sub_category, name: "Auto Liability", category: @pc)
 
       puts("Create carriers")
       FactoryBot.create(:carrier, name: "BCC")
@@ -68,10 +62,28 @@ module Populator
       @pcc = FactoryBot.create(:company, name: "PCC")
 
       puts("Create brokers")
-      FactoryBot.create(:broker, name: "Jake", company: @team_scotti)
-      FactoryBot.create(:broker, name: "Jim", company: @team_scotti)
-      FactoryBot.create(:broker, name: "Aly", company: @nfp)
-      FactoryBot.create(:broker, name: "Emily", company: @nfp)
+      @jake = FactoryBot.create(:broker, name: "Jake", company: @team_scotti)
+      @jim = FactoryBot.create(:broker, name: "Jim", company: @team_scotti)
+      @aly = FactoryBot.create(:broker, name: "Aly", company: @nfp)
+      @emily = FactoryBot.create(:broker, name: "Emily", company: @nfp)
+      @emmit = FactoryBot.create(:broker, name: "Emmit", company: @hcc)
+      @tim = FactoryBot.create(:broker, name: "Tim", company: @hcc)
+      @kim = FactoryBot.create(:broker, name: "Kim", company: @pcc)
+      @abby = FactoryBot.create(:broker, name: "Abby", company: @pcc)
+      @brokers = [@jake, @jim, @aly, @emily, @emmit, @tim, @kim, @abby]
+
+      puts("Create coverages")
+      for club in [@steelers, @patriots, @pirates, @yankees, @penguins, @rangers, @impact, @united]
+        for group in [@players, @front_office, @operations, @crew]
+          @club_group = FactoryBot.create(:club_group, club: club, group: group)
+          for category in [@individual_term, @vendor, @employer]
+            verified = rand(2) == 1 ? true : false
+            @coverage = FactoryBot.create(:coverage, club_group: @club_group, sub_category: category, verified: verified)
+            FactoryBot.create(:coverage_broker, coverage: @coverage, broker: @brokers[rand(@brokers.length)])
+          end 
+        end
+      end
+
     end
   end
 end

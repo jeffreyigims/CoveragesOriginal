@@ -111,6 +111,9 @@ gem "bcrypt", "~> 3.1.7"
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem "rack-cors", "1.0.2"
+# For serializing models to json for the API
+# gem 'active_model_serializers', '0.10.7'
+gem "fast_jsonapi", "1.5"
 
 source "https://rails-assets.org" do
   gem "rails-assets-react-date-picker"
