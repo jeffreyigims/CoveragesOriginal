@@ -99,7 +99,6 @@ class SportDetails extends React.Component {
             </Button>
           </Card.Footer>
         </Card>
-        
       </>
     );
   }
