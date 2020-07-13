@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :sub_categories
   resources :carriers
   resources :companies
+  resources :brokers
   resources :coverage_brokers
   resources :coverage_carriers
 

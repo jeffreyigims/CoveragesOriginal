@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
-import ShowCarrier from "./ShowCarrier";
 import NewCarrier from "./NewCarrier";
 import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
 
@@ -11,17 +10,14 @@ class Carriers extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
-    this.getObjects = getObjects.bind(this);
     this.switchModal = switchModal.bind(this);
-    this.showSelected = showSelected.bind(this);
   }
 
   state = {
     objects: [],
-    modal_show: false,
     modal_new: false,
-    selected: null,
-    objectName: "carriers",
+    objectName: "Carrier",
+    objectPlural: "carriers",
     attributes: ["name"],
   };
 
@@ -29,12 +25,27 @@ class Carriers extends React.Component {
     this.getObjects();
   }
 
+  getObjects = () => {
+    this.run_ajax("/" + this.state.objectPlural + ".json", "GET", {}, (res) => {
+      this.setState({ objects: res.data });
+    });
+  };
+
   showObjects = () => {
     return this.state.objects.map((object, index) => {
       return (
-        <tr key={index} onClick={(slot) => this.showSelected(object)}>
+        <tr key={index}>
           <td width="200" align="left">
-            {object.name}
+            <Button
+              variant="link"
+              href={"/" + this.state.objectPlural + "/" + object.attributes.id}
+              style={{ color: "black" }}
+            >
+              {object.attributes.name}
+            </Button>{" "}
+          </td>
+          <td width="200" align="left">
+            {object.attributes.associated_coverages}
           </td>
         </tr>
       );
@@ -51,6 +62,7 @@ class Carriers extends React.Component {
               <thead>
                 <tr>
                   <th>Name</th>
+                  <th>Coverages</th>
                 </tr>
               </thead>
               <tbody>{this.showObjects()}</tbody>
@@ -62,25 +74,16 @@ class Carriers extends React.Component {
               variant="primary"
               onClick={(slot) => this.switchModal("modal_new")}
             >
-              New Carrier
+              New {this.state.objectName}
             </Button>
           </Card.Footer>
         </Card>
-        <ShowCarrier
-          selected={this.state.selected}
-          name={"modal_show"}
-          show={this.state.modal_show}
-          run_ajax={this.run_ajax}
-          switchModal={this.switchModal}
-          objectName={this.state.objectName}
-          attributes={this.state.attributes}
-        />
         <NewCarrier
           name={"modal_new"}
           show={this.state.modal_new}
           run_ajax={this.run_ajax}
           switchModal={this.switchModal}
-          objectName={this.state.objectName}
+          objectName={this.state.objectPlural}
           attributes={this.state.attributes}
         />
       </>

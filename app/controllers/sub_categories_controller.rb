@@ -41,7 +41,7 @@ class SubCategoriesController < ApplicationController
     private
   
     def set_sub_category
-      @sub_category = League.find(params[:id])
+      @sub_category = SubCategory.find(params[:id])
     end
   
     def sub_category_params

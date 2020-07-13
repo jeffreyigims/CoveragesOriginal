@@ -58,7 +58,7 @@ class ClubDetails extends React.Component {
       "GET",
       {},
       (res) => {
-        this.setState({ coverages: res, selectedCoverages: res });
+        this.setState({ coverages: res.data, selectedCoverages: res.data });
       }
     );
   };
@@ -79,19 +79,19 @@ class ClubDetails extends React.Component {
       return (
         <tr key={index} onClick={(slot) => this.showCoverage(coverage)}>
           <td width="200" align="left">
-            {coverage.category.name}
+            {coverage.attributes.category.name}
           </td>
           <td width="300" align="left">
-            {coverage.sub_category.name}
+            {coverage.attributes.sub_category.name}
           </td>
           <td width="200" align="left">
-            {coverage.start_date}
+            {coverage.attributes.start_date}
           </td>
           <td width="200" align="left">
-            {coverage.end_date}
+            {coverage.attributes.end_date}
           </td>
           <td width="100" align="left">
-            {coverage.verified ? "true" : "false"}
+            {coverage.attributes.verified ? "true" : "false"}
           </td>
         </tr>
       );

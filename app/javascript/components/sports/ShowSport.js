@@ -6,8 +6,8 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { Formik } from "formik";
+import * as yup from "yup";
 import {
   handleInputChange,
   handleClose,
@@ -16,18 +16,33 @@ import {
   handleDelete,
 } from "Utils.js";
 
+const schema = yup.object({
+  name: yup.string().required(),
+});
+
 class ShowSport extends React.Component {
   constructor() {
     super();
     this.handleInputChange = handleInputChange.bind(this);
-    this.handleClose = handleClose.bind(this);
-    this.handleUpdate = handleUpdate.bind(this);
-    this.updateHelper = updateHelper.bind(this);
     this.handleDelete = handleDelete.bind(this);
   }
 
-  state = {
-    name: null,
+  state = {};
+
+  handleClose = () => {
+    this.props.switchModal(this.props.name);
+  };
+
+  handleUpdate = (values) => {
+    let data = {
+      name: values.name,
+    };
+    this.props.run_ajax(
+      "/sports/".concat(this.props.selected.attributes.id, ".json"),
+      "PATCH",
+      data
+    );
+    this.handleClose();
   };
 
   render() {
@@ -35,55 +50,65 @@ class ShowSport extends React.Component {
       return null;
     }
     return (
-      <Modal show={this.props.show} onHide={this.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Sport Details</Modal.Title>
-        </Modal.Header>
+      <>
+        <Modal show={this.props.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit Sport</Modal.Title>
+          </Modal.Header>
 
-        <Modal.Body>
-          <Form>
-            <Row>
-              <Form.Group as={Col}>
-                <Form.Label>Name:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="name"
-                  defaultValue={this.props.selected.name}
-                  disabled
-                />
-              </Form.Group>
-
-              <Form.Group as={Col}>
-                <Form.Label>Leagues:</Form.Label>
-                <ListGroup>
-                  {this.props.selected.leagues.length > 0 ? (
-                    this.props.selected.leagues.map((league, index) => (
-                      <ListGroup.Item key={index}>{league.name}</ListGroup.Item>
-                    ))
+          <Modal.Body>
+            <Formik
+              validationSchema={schema}
+              onSubmit={(values) => this.handleUpdate(values)}
+              initialValues={{
+                name: this.props.selected?.attributes.name,
+              }}
+            >
+              {({
+                handleSubmit,
+                handleChange,
+                handleBlur,
+                values,
+                touched,
+                isValid,
+                errors,
+              }) => (
+                <Form noValidate onSubmit={handleSubmit}>
+                  <Row>
+                    <Form.Group as={Col}>
+                      <Form.Label>Name:</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="name"
+                        value={values.name}
+                        onChange={handleChange}
+                        isInvalid={!!errors.name}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.name}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Row>
+                  {this.props.leagues.length === 0 ? (
+                    <Button variant="danger" onClick={this.handleDelete}>
+                      Delete Sport
+                    </Button>
                   ) : (
-                    <ListGroup.Item key={0}>
-                      There are no associated leagues.
-                    </ListGroup.Item>
+                    ""
                   )}
-                </ListGroup>
-              </Form.Group>
-            </Row>
-          </Form>
-        </Modal.Body>
-
-        <Modal.Footer>
-          {this.props.selected.leagues.length === 0 ? (
-            <Button variant="danger" onClick={this.handleDelete}>
-              Delete Sport
-            </Button>
-          ) : (
-            ""
-          )}
-          <Button variant="primary" onClick={this.handleUpdate}>
-            Update Sport
-          </Button>
-        </Modal.Footer>
-      </Modal>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    className="btn btn-theme float-right"
+                  >
+                    Update Sport
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+          </Modal.Body>
+        </Modal>
+      </>
     );
   }
 }

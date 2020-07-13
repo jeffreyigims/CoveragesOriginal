@@ -5,6 +5,8 @@ class League < ApplicationRecord
     has_many :club_groups, through: :clubs
 
     # Scopes
+    scope :for_sport, ->(sport_id) { where('sport_id = ?', sport_id) } 
+
 end
 
 

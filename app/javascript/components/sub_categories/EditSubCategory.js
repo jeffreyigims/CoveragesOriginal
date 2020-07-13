@@ -14,7 +14,7 @@ const schema = yup.object({
   name: yup.string().required(),
 });
 
-class NewCompany extends React.Component {
+class EditSubCategory extends React.Component {
   constructor() {
     super();
     this.handleInputChange = handleInputChange.bind(this);
@@ -23,13 +23,17 @@ class NewCompany extends React.Component {
 
   handleClose = () => {
     this.props.switchModal(this.props.name);
-  }
+  };
 
-  handleCreate = (values) => {
+  handleUpdate = (values) => {
     let data = {
-      name: values.name
-    }
-    this.props.run_ajax("/companies.json", "POST", data);
+      name: values.name,
+    };
+    this.props.run_ajax(
+      "/sub_categories/".concat(this.props.object.attributes.id, ".json"),
+      "PATCH",
+      data
+    );
     this.handleClose();
   };
 
@@ -37,15 +41,15 @@ class NewCompany extends React.Component {
     return (
       <Modal show={this.props.show} onHide={this.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>New Company</Modal.Title>
+          <Modal.Title>New Sub</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <Formik
             validationSchema={schema}
-            onSubmit={(values) => this.handleCreate(values)}
+            onSubmit={(values) => this.handleUpdate(values)}
             initialValues={{
-              name: "",
+              name: this.props.object?.attributes.name,
             }}
           >
             {({
@@ -78,7 +82,7 @@ class NewCompany extends React.Component {
                   type="submit"
                   variant="primary"
                 >
-                  Create Company
+                  Update Sub
                 </Button>
               </Form>
             )}
@@ -89,4 +93,4 @@ class NewCompany extends React.Component {
   }
 }
 
-export default NewCompany;
+export default EditSubCategory;

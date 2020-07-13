@@ -14,48 +14,24 @@ const schema = yup.object({
   name: yup.string().required(),
 });
 
-class NewLeague extends React.Component {
+class NewBroker extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
   }
 
-  state = {
-    sports: [],
-  };
-
-  componentDidMount() {
-    this.getObjects();
-  }
-
-  getObjects() {
-    this.run_ajax("/sports.json", "GET", {}, (res) => {
-      this.setState({ sports: res.data });
-    });
-  }
-
-  sportOptions = () => {
-    return this.state.sports.map((object, index) => {
-      return (
-        <option key={index} value={object.attributes.id}>
-          {" "}
-          {object.attributes.name}{" "}
-        </option>
-      );
-    });
-  };
+  componentDidMount() {}
 
   handleClose = () => {
     this.props.switchModal(this.props.name);
-  }
+  };
 
   handleCreate = (values) => {
     let data = {
-      sport_id: values.sport_id,
+      company_id: this.props.selected.attributes.id,
       name: values.name,
-      level: values.level,
     };
-    this.props.run_ajax("/leagues.json", "POST", data);
+    this.props.run_ajax("/brokers.json", "POST", data);
     this.handleClose();
   };
 
@@ -63,7 +39,7 @@ class NewLeague extends React.Component {
     return (
       <Modal show={this.props.show} onHide={this.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>New League</Modal.Title>
+          <Modal.Title>New Broker</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -71,9 +47,8 @@ class NewLeague extends React.Component {
             validationSchema={schema}
             onSubmit={(values) => this.handleCreate(values)}
             initialValues={{
+              company: this.props.selected?.attributes.name,
               name: "",
-              level: "",
-              sport_id: this.props.selected?.attributes.id || this.state.sports[0]?.id,
             }}
           >
             {({
@@ -88,6 +63,15 @@ class NewLeague extends React.Component {
                 {" "}
                 <Row>
                   <Form.Group as={Col}>
+                    <Form.Label>Company:</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="category"
+                      value={values.company}
+                      disabled
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col}>
                     <Form.Label>Name:</Form.Label>
                     <Form.Control
                       type="text"
@@ -100,43 +84,13 @@ class NewLeague extends React.Component {
                       {errors.name}
                     </Form.Control.Feedback>
                   </Form.Group>
-                  <Form.Group as={Col}>
-                    <Form.Label>Level:</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="level"
-                      value={values.level}
-                      onChange={handleChange}
-                      isInvalid={!!errors.level}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.level}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Row>
-                <Row>
-                  <Form.Group as={Col}>
-                    <Form.Label>Sport:</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="sport_id"
-                      value={values.sport_id}
-                      onChange={handleChange}
-                      isInvalid={!!errors.sport_id}
-                    >
-                      {this.sportOptions()}
-                    </Form.Control>
-                  </Form.Group>
-                  <Form.Control.Feedback type="invalid">
-                    {errors.sport_id}
-                  </Form.Control.Feedback>
                 </Row>
                 <Button
                   type="submit"
                   variant="primary"
                   className="btn btn-theme float-right"
                 >
-                  Create League
+                  Create Broker
                 </Button>
               </Form>
             )}
@@ -147,4 +101,4 @@ class NewLeague extends React.Component {
   }
 }
 
-export default NewLeague;
+export default NewBroker;

@@ -1,46 +1,83 @@
-import React from "react"
-import PropTypes from "prop-types"
-import Table from 'react-bootstrap/Table'
-import Container from 'react-bootstrap/Tabs'
-import ShowCoverage from './ShowCoverage'
+import React from "react";
+import PropTypes from "prop-types";
+import Table from "react-bootstrap/Table";
+import Container from "react-bootstrap/Tabs";
+import Button from "react-bootstrap/Button";
+import ShowCoverage from "./ShowCoverage";
 
 class CoveragesTable extends React.Component {
-
   state = {
     modal_show: false,
     modal_new: false,
     selected: null,
-    notes: null
-  }
+    notes: null,
+  };
 
   showCoverages = () => {
     return this.props.coverages.map((coverage, index) => {
       return (
-        <tr key={index} onClick={slot => this.showCoverage(coverage)}>
-          <td width="200" align="left">{coverage.league.name}</td>
-          <td width="200" align="left">{coverage.club.name}</td>
-          <td width="200" align="left">{coverage.group.name}</td>
-          <td width="200" align="left">{coverage.category.name}</td>
-          <td width="200" align="left">{coverage.sub_category.name}</td>
-          <td width="200" align="left">{coverage.verified ? "true" : "false"}</td>
+        <tr key={index} onClick={(slot) => this.showCoverage(coverage)}>
+          <td width="200" align="left">
+            {" "}
+            <Button
+              variant="link"
+              href={"/leagues/" + coverage.attributes.league.id}
+              style={{ color: "black" }}
+            >
+              {coverage.attributes.league.name}
+            </Button>
+          </td>
+          <td width="200" align="left">
+            <Button
+              variant="link"
+              href={"/clubs/" + coverage.attributes.club.id}
+              style={{ color: "black" }}
+            >
+              {coverage.attributes.club.name}
+            </Button>{" "}
+          </td>
+          <td width="200" align="left">
+            {coverage.attributes.group.name}
+          </td>
+          <td width="200" align="left">
+            <Button
+              variant="link"
+              href={"/categories/" + coverage.attributes.category.id}
+              style={{ color: "black" }}
+            >
+              {coverage.attributes.category.name}
+            </Button>{" "}
+          </td>
+          <td width="200" align="left">
+            <Button
+              variant="link"
+              href={"/sub_categories/" + coverage.attributes.sub_category.id}
+              style={{ color: "black" }}
+            >
+              {coverage.attributes.sub_category.name}
+            </Button>{" "}
+          </td>
+          <td width="200" align="left">
+            {coverage.attributes.verified ? "true" : "false"}
+          </td>
         </tr>
-      )
-    })
-  }
+      );
+    });
+  };
 
   switchModal = (name) => {
-    const modal = name
-    this.setState(prevState => ({
-      [modal]: !prevState[modal]
+    const modal = name;
+    this.setState((prevState) => ({
+      [modal]: !prevState[modal],
     }));
-  }
+  };
 
   showCoverage = (id) => {
     this.setState({
-      selected: id
+      selected: id,
     });
-    this.switchModal("modal_show")
-  }
+    this.switchModal("modal_show");
+  };
 
   render() {
     return (
@@ -56,9 +93,7 @@ class CoveragesTable extends React.Component {
               <th>Verified</th>
             </tr>
           </thead>
-          <tbody>
-            {this.showCoverages()}
-          </tbody>
+          <tbody>{this.showCoverages()}</tbody>
         </Table>
         <ShowCoverage
           selected={this.state.selected}
@@ -72,4 +107,4 @@ class CoveragesTable extends React.Component {
   }
 }
 
-export default CoveragesTable
+export default CoveragesTable;

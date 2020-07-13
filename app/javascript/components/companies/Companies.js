@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
-import ShowCompany from "./ShowCompany";
 import NewCompany from "./NewCompany";
 import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
 
@@ -11,9 +10,7 @@ class Companies extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
-    this.getObjects = getObjects.bind(this);
     this.switchModal = switchModal.bind(this);
-    this.showSelected = showSelected.bind(this);
   }
 
   state = {
@@ -29,15 +26,27 @@ class Companies extends React.Component {
     this.getObjects();
   }
 
+  getObjects = () => {
+    this.run_ajax("/companies.json", "GET", {}, (res) => {
+      this.setState({ objects: res.data });
+    });
+  };
+
   showObjects = () => {
     return this.state.objects.map((object, index) => {
       return (
-        <tr key={index} onClick={(slot) => this.showSelected(object)}>
+        <tr key={index}>
           <td width="200" align="left">
-            {object.name}
+            <Button
+              variant="link"
+              href={"/companies/" + object.attributes.id}
+              style={{ color: "black" }}
+            >
+              {object.attributes.name}
+            </Button>{" "}
           </td>
           <td width="200" align="left">
-            {object.brokers.length}
+            {object.attributes.brokers.length}
           </td>
         </tr>
       );
@@ -70,15 +79,6 @@ class Companies extends React.Component {
             </Button>
           </Card.Footer>
         </Card>
-        <ShowCompany
-          selected={this.state.selected}
-          name={"modal_show"}
-          show={this.state.modal_show}
-          run_ajax={this.run_ajax}
-          switchModal={this.switchModal}
-          objectName={this.state.objectName}
-          attributes={this.state.attributes}
-        />
         <NewCompany
           name={"modal_new"}
           show={this.state.modal_new}

@@ -7,23 +7,22 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import EditSport from "./ShowSport";
-import NewLeague from "../leagues/NewLeague.js";
+import EditBroker from "./EditBroker";
 
-import { run_ajax, getObjects, switchModal } from "Utils.js";
+import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
 
-class SportDetails extends React.Component {
+class BrokerDetails extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
     this.switchModal = switchModal.bind(this);
+    this.showSelected = showSelected.bind(this);
   }
 
   state = {
-    sport: null,
-    leagues: [],
+    object: null,
+    coverages: [],
     modal_edit: false,
-    modal_add: false,
   };
 
   componentDidMount() {
@@ -31,34 +30,35 @@ class SportDetails extends React.Component {
   }
 
   getObjects = () => {
-    this.run_ajax("/sports/" + this.props.id + ".json", "GET", {}, (res) => {
-      this.setState({ sport: res.data });
+    this.run_ajax("/brokers/" + this.props.id + ".json", "GET", {}, (res) => {
+      this.setState({ object: res.data, coverages: res.data.attributes.coverages});
     });
-    this.run_ajax(
-      "/leagues.json?for_sport=" + this.props.id,
-      "GET",
-      {},
-      (res) => {
-        this.setState({ leagues: res.data });
-      }
-    );
   };
 
-  showLeagues = () => {
-    return this.state.leagues.map((object, index) => {
+  showCoverages = () => {
+    return this.state.coverages.map((object, index) => {
       return (
         <tr key={index}>
           <td width="200" align="left">
             <Button
               variant="link"
-              href={"/leagues/" + object.id}
+              href={"/clubs/" + object.data.attributes.club.id}
               style={{ color: "black" }}
             >
-              {object.attributes.name}
+              {object.data.attributes.club.name}
             </Button>
           </td>
           <td width="200" align="left">
-            {object.attributes.level}
+            {object.data.attributes.group.name}
+          </td>
+          <td width="200" align="left">
+            {object.data.attributes.start_date}
+          </td>
+          <td width="200" align="left">
+            {object.data.attributes.end_date}
+          </td>
+          <td width="200" align="left">
+            {object.data.attributes.verified ? "true" : "false"}
           </td>
         </tr>
       );
@@ -69,48 +69,36 @@ class SportDetails extends React.Component {
     return (
       <>
         <Card>
-          <Card.Title>{this.state.sport?.attributes.name}</Card.Title>
+          <Card.Title>{this.state.object?.attributes.name}</Card.Title>
           <Card.Body>
-            <Table striped bordered hover>
+          <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Level</th>
+                  <th>Club</th>
+                  <th>Group</th>
+                  <th>Start</th>
+                  <th>End</th>
+                  <th>Verified</th>
                 </tr>
               </thead>
-              <tbody>{this.showLeagues()}</tbody>
+              <tbody>{this.showCoverages()}</tbody>
             </Table>
           </Card.Body>
           <Card.Footer>
             <Button
               className="btn btn-theme float-right"
               variant="primary"
-              onClick={(slot) => this.switchModal("modal_add")}
-            >
-              Add League
-            </Button>
-            <Button
-              className="btn btn-theme float-right"
-              variant="primary"
               onClick={(slot) => this.switchModal("modal_edit")}
               style={{ marginRight: "10px" }}
             >
-              Edit Sport
+              Edit Broker
             </Button>
           </Card.Footer>
         </Card>
-        <EditSport
-          selected={this.state.sport}
-          leagues={this.state.leagues}
+        <EditBroker
+          selected={this.state.object}
           name={"modal_edit"}
           show={this.state.modal_edit}
-          run_ajax={this.run_ajax}
-          switchModal={this.switchModal}
-        />
-        <NewLeague
-          selected={this.state.sport}
-          name={"modal_add"}
-          show={this.state.modal_add}
           run_ajax={this.run_ajax}
           switchModal={this.switchModal}
         />
@@ -119,4 +107,4 @@ class SportDetails extends React.Component {
   }
 }
 
-export default SportDetails;
+export default BrokerDetails;

@@ -6,17 +6,24 @@ class CoveragesController < ApplicationController
 
   BOOLEAN_FILTERING_PARAMS = [[:verified, :unverified]]
   PARAM_FILTERING_PARAMS = [:for_league, :for_club, :for_club_group]
-  # ORDERING_PARAMS = [:alphabetical]
+  ORDERING_PARAMS = []
 
   def index
     @coverages = boolean_filter(Coverage.all, BOOLEAN_FILTERING_PARAMS)
     @coverages = param_filter(@coverages, PARAM_FILTERING_PARAMS)
-    # @coverages = order(@coverages, ORDERING_PARAMS)
+    @coverages = order(@coverages, ORDERING_PARAMS)
     respond_to do |format|
       format.html { @coverages }
-      format.json { @coverages }
+      format.json { render json: CoverageSerializer.new(@coverages).serializable_hash }
     end
   end
+
+  def show 
+    respond_to do |format|
+      format.html { @sport }
+      format.json { render json: CoverageSerializer.new(@coverages).serializable_hash }
+    end
+  end 
 
   def create
     @coverage = Coverage.new(coverage_params)

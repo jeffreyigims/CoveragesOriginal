@@ -57,13 +57,13 @@ class CoverageTabs extends React.Component {
 
   get_verifiedCoverages = () => {
     this.run_ajax("/coverages.json?verified=true", "GET", {}, (res) => {
-      this.setState({ verifiedCoverages: res });
+      this.setState({ verifiedCoverages: res.data });
     });
   };
 
   get_unverifiedCoverages = () => {
     this.run_ajax("/coverages.json?verified=false", "GET", {}, (res) => {
-      this.setState({ unverifiedCoverages: res });
+      this.setState({ unverifiedCoverages: res.data });
     });
   };
 

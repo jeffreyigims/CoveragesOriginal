@@ -1,8 +1,17 @@
 class LeaguesController < ApplicationController
   before_action :set_league, only: [:update, :show, :destroy]
 
-  def index
-    @leagues = League.all
+    include Filterable
+    include Orderable
+
+    BOOLEAN_FILTERING_PARAMS = [[]]
+    PARAM_FILTERING_PARAMS = [:for_sport]
+    ORDERING_PARAMS = []
+
+    def index
+      @leagues = boolean_filter(League.all, BOOLEAN_FILTERING_PARAMS)
+      @leagues = param_filter(@leagues, PARAM_FILTERING_PARAMS)
+      @leagues = order(@leagues, ORDERING_PARAMS)
     respond_to do |format|
       format.html { @leagues }
       format.json { render json: LeagueSerializer.new(@leagues).serializable_hash }
