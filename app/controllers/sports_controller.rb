@@ -1,13 +1,20 @@
 class SportsController < ApplicationController
-  before_action :set_sport, only: [:update, :destroy]
+  before_action :set_sport, only: [:update, :show, :destroy]
 
   def index
     @sports = Sport.all
     respond_to do |format|
       format.html { @sports }
-      format.json { @sports }
+      format.json { render json: SportSerializer.new(@sports).serializable_hash }
     end
   end
+
+  def show 
+    respond_to do |format|
+      format.html { @sport }
+      format.json { render json: SportSerializer.new(@sport).serializable_hash }
+    end
+  end 
 
   def create
     @sport = Sport.new(sport_params)

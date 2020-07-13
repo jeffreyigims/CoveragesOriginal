@@ -1,6 +1,6 @@
 class CoverageSerializer
     include FastJsonapi::ObjectSerializer
-    attributes :id
+    attributes :id, :has_coverage_line, :notes, :start_date, :verified, :end_date
 
     attribute :subcategory do |object|
         object.sub_category

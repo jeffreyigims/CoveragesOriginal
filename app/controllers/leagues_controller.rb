@@ -5,7 +5,7 @@ class LeaguesController < ApplicationController
     @leagues = League.all
     respond_to do |format|
       format.html { @leagues }
-      format.json { @leagues }
+      format.json { render json: LeagueSerializer.new(@leagues).serializable_hash }
     end
   end
 

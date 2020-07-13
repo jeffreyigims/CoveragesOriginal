@@ -2,50 +2,82 @@ import React from "react";
 import PropTypes from "prop-types";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Tabs";
+import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
-import ShowLeague from "./ShowLeague";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import NewLeague from "./NewLeague";
-import {run_ajax, getObjects, switchModal, showSelected} from 'Utils.js';
+import { run_ajax, switchModal } from "Utils.js";
 
 class Leagues extends React.Component {
-  constructor(){
+  constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
-    this.getObjects = getObjects.bind(this);
     this.switchModal = switchModal.bind(this);
-    this.showSelected = showSelected.bind(this);
   }
 
   state = {
-    objects: [],
-    modal_show: false,
+    leagues: [],
+    selectedLeagues: [],
+    sports: [],
     modal_new: false,
-    selected: null,
-    objectName: "leagues",
-    attributes: ["name", "level", "sport_id"]
   };
 
   componentDidMount() {
     this.getObjects();
   }
 
-  showObjects = () => {
-    return this.state.objects.map((object, index) => {
+  getObjects = () => {
+    this.run_ajax("/leagues.json", "GET", {}, (res) => {
+      this.setState({ leagues: res.data, selectedLeagues: res.data });
+    });
+    this.run_ajax("/sports.json", "GET", {}, (res) => {
+      this.setState({ sports: res.data });
+    });
+  };
+
+  sportOptions = () => {
+    return this.state.sports.map((object, index) => {
       return (
-        <tr key={index} onClick={(slot) => this.showSelected(object)}>
+        <option key={index} value={object.attributes.id}>
+          {" "}
+          {object.attributes.name}{" "}
+        </option>
+      );
+    });
+  };
+
+  showObjects = () => {
+    return this.state.selectedLeagues.map((object, index) => {
+      return (
+        <tr key={index}>
           <td width="200" align="left">
-            {object.name}
+            <Button
+              variant="link"
+              href={"/leagues/" + object.attributes.id}
+              style={{ color: "black" }}
+            >
+              {object.attributes.name}
+            </Button>
           </td>
           <td width="200" align="left">
-            {object.level}
-          </td>
-          <td width="200" align="left">
-            {object.sport.name}
+            {object.attributes.level}
           </td>
         </tr>
       );
     });
+  };
+
+  handleSportChange = (event) => {
+    var leagues = [];
+    if (event.target.value == -1) {
+      leagues = this.state.leagues;
+    } else {
+      leagues = this.state.leagues.filter(
+        (object) => object.attributes.sport_id == event.target.value
+      );
+    }
+    this.setState({ selectedLeagues: leagues });
   };
 
   render() {
@@ -54,12 +86,26 @@ class Leagues extends React.Component {
         <Card>
           <Card.Title>All Leagues</Card.Title>
           <Card.Body>
+            <Form>
+              <Row>
+                <Form.Group as={Col}>
+                  <Form.Label>Sport:</Form.Label>
+                  <Form.Control
+                    as="select"
+                    name="selectedSport"
+                    onChange={this.handleSportChange}
+                  >
+                    <option value={-1}>All</option>
+                    {this.sportOptions()}
+                  </Form.Control>
+                </Form.Group>
+              </Row>
+            </Form>
             <Table striped bordered hover>
               <thead>
                 <tr>
                   <th>Name</th>
                   <th>Level</th>
-                  <th>Sport</th>
                 </tr>
               </thead>
               <tbody>{this.showObjects()}</tbody>
@@ -75,22 +121,12 @@ class Leagues extends React.Component {
             </Button>
           </Card.Footer>
         </Card>
-        <ShowLeague
-          selected={this.state.selected}
-          name={"modal_show"}
-          show={this.state.modal_show}
-          run_ajax={this.run_ajax}
-          switchModal={this.switchModal}
-          objectName={this.state.objectName}
-          attributes={this.state.attributes}
-        />
         <NewLeague
           name={"modal_new"}
           show={this.state.modal_new}
-          run_ajax={this.run_ajax}
           switchModal={this.switchModal}
-          objectName={this.state.objectName}
-          attributes={this.state.attributes}
+          run_ajax={this.run_ajax}
+          sports={this.state.sports}
         />
       </>
     );

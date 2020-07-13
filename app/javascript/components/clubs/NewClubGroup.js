@@ -5,44 +5,59 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import ListGroup from "react-bootstrap/ListGroup";
 import { Formik } from "formik";
 import * as yup from "yup";
+
 import {
   handleInputChange,
   handleClose,
-  handleUpdate,
-  updateHelper,
-  handleDelete,
+  run_ajax,
+  handleCreate,
 } from "Utils.js";
 
 const schema = yup.object({
-  level: yup.string(),
+  group_id: yup.string().required(),
 });
 
-class EditLeague extends React.Component {
+class NewClubGroup extends React.Component {
   constructor() {
     super();
-    this.handleInputChange = handleInputChange.bind(this);
-    this.handleDelete = handleDelete.bind(this);
+    this.handleClose = handleClose.bind(this);
+    this.run_ajax = run_ajax.bind(this);
   }
 
   state = {
-    name: null,
+    groups: [],
   };
 
-  handleClose = () => {
-    this.props.switchModal(this.props.name);
+  componentDidMount() {
+    this.getObjects();
+  }
+
+  getObjects() {
+    this.run_ajax("/groups.json", "GET", {}, (res) => {
+      this.setState({ groups: res.data });
+    });
+  }
+
+  groupOptions = () => {
+    return this.state.groups.map((object, index) => {
+      return (
+        <option key={index} value={object.attributes.id}>
+          {" "}
+          {object.attributes.name}{" "}
+        </option>
+      );
+    });
   };
 
-  handleUpdate = (values) => {
+  handleCreate = (values) => {
     let data = {
-      level: values.level,
-    };
-    this.props.run_ajax(
-      "/leagues/".concat(this.props.league.attributes.id, ".json"),
-      "PATCH",
-      data
-    );
+        club_id: this.props.club?.attributes.id,
+        group_id: values.group_id
+    }
+    this.props.run_ajax("/club_groups.json", "POST", data);
     this.handleClose();
   };
 
@@ -50,17 +65,16 @@ class EditLeague extends React.Component {
     return (
       <Modal show={this.props.show} onHide={this.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit League</Modal.Title>
+          <Modal.Title>New Group</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <Formik
             validationSchema={schema}
-            onSubmit={(values) => this.handleUpdate(values)}
+            onSubmit={(values) => this.handleCreate(values)}
             initialValues={{
-              name: this.props.league?.attributes.name,
-              sport: this.props.league?.attributes.sport.name,
-              level: this.props.league?.attributes.level,
+              name: this.props.club?.attributes.name,
+              group_id: this.state.groups[0]?.attributes.id,
             }}
           >
             {({
@@ -73,10 +87,9 @@ class EditLeague extends React.Component {
               errors,
             }) => (
               <Form noValidate onSubmit={handleSubmit}>
-                {" "}
                 <Row>
                   <Form.Group as={Col}>
-                    <Form.Label>Name:</Form.Label>
+                    <Form.Label>Club:</Form.Label>
                     <Form.Control
                       type="text"
                       name="name"
@@ -84,34 +97,24 @@ class EditLeague extends React.Component {
                       disabled
                     />
                   </Form.Group>
-
                   <Form.Group as={Col}>
-                    <Form.Label>Sport:</Form.Label>
+                    <Form.Label>Group:</Form.Label>
                     <Form.Control
-                      type="text"
-                      name="sport"
-                      value={values.sport}
-                      disabled
-                    />
-                  </Form.Group>
-                </Row>
-                <Row>
-                  <Form.Group as={Col}>
-                    <Form.Label>Level:</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="level"
-                      value={values.level}
+                      as="select"
+                      name="group_id"
+                      value={values.group_id}
                       onChange={handleChange}
-                    />
+                    >
+                      {this.groupOptions()}
+                    </Form.Control>
                   </Form.Group>
                 </Row>
                 <Button
+                  className="btn btn-theme float-right"
                   type="submit"
                   variant="primary"
-                  className="btn btn-theme float-right"
                 >
-                  Update League
+                  Create Group
                 </Button>
               </Form>
             )}
@@ -122,4 +125,4 @@ class EditLeague extends React.Component {
   }
 }
 
-export default EditLeague;
+export default NewClubGroup;

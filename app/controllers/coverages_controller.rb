@@ -5,12 +5,12 @@ class CoveragesController < ApplicationController
   include Orderable
 
   BOOLEAN_FILTERING_PARAMS = [[:verified, :unverified]]
-  #nPARAM_FILTERING_PARAMS = [:for_owner, :by_animal, :born_before]
+  PARAM_FILTERING_PARAMS = [:for_league, :for_club, :for_club_group]
   # ORDERING_PARAMS = [:alphabetical]
 
   def index
     @coverages = boolean_filter(Coverage.all, BOOLEAN_FILTERING_PARAMS)
-    # @coverages = param_filter(@coverages, PARAM_FILTERING_PARAMS)
+    @coverages = param_filter(@coverages, PARAM_FILTERING_PARAMS)
     # @coverages = order(@coverages, ORDERING_PARAMS)
     respond_to do |format|
       format.html { @coverages }

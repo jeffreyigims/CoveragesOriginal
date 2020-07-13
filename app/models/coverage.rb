@@ -15,6 +15,8 @@ class Coverage < ApplicationRecord
   scope :verified, -> { where(verified: true) }
   scope :unverified, -> { where(verified: false) }
   scope :for_league, ->(league_id) { joins(:club_group).joins(:club).where('league_id = ?', league_id) } 
+  scope :for_club, ->(club_id) { joins(:club_group).where('club_id = ?', club_id) } 
+  scope :for_club_group, ->(club_group_id) { where('club_group_id = ?', club_group_id) } 
 
   before_destroy :destroy_attachments
 

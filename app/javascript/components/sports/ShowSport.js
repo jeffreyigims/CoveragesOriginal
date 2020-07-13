@@ -56,9 +56,15 @@ class ShowSport extends React.Component {
               <Form.Group as={Col}>
                 <Form.Label>Leagues:</Form.Label>
                 <ListGroup>
-                  {this.props.selected.leagues.map((league, index) => (
-                    <ListGroup.Item key={index}>{league.name}</ListGroup.Item>
-                  ))}
+                  {this.props.selected.leagues.length > 0 ? (
+                    this.props.selected.leagues.map((league, index) => (
+                      <ListGroup.Item key={index}>{league.name}</ListGroup.Item>
+                    ))
+                  ) : (
+                    <ListGroup.Item key={0}>
+                      There are no associated leagues.
+                    </ListGroup.Item>
+                  )}
                 </ListGroup>
               </Form.Group>
             </Row>
@@ -66,16 +72,13 @@ class ShowSport extends React.Component {
         </Modal.Body>
 
         <Modal.Footer>
-          {this.props.selected.leagues.count === 0 ? (
+          {this.props.selected.leagues.length === 0 ? (
             <Button variant="danger" onClick={this.handleDelete}>
               Delete Sport
             </Button>
           ) : (
             ""
           )}
-          <Button variant="secondary" onClick={this.handleClose}>
-            Close
-          </Button>
           <Button variant="primary" onClick={this.handleUpdate}>
             Update Sport
           </Button>
