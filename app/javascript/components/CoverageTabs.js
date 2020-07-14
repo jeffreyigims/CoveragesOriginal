@@ -4,6 +4,7 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 import TopBar from "./TopBar";
 import NavGuest from "./NavGuest";
 import Footer from "./Footer";
@@ -99,7 +100,22 @@ class CoverageTabs extends React.Component {
               </Card.Body>
             </Tab>
           </Tabs>
+          <Card.Footer>
+            <Button
+              className="btn btn-theme float-right"
+              variant="primary"
+              onClick={(slot) => this.switchModal("modal_new")}
+            >
+              New Coverage
+            </Button>
+          </Card.Footer>
         </Card>
+        {/* <NewCoverage
+          name={"modal_show"}
+          show={this.state.modal_show}
+          run_ajax={this.props.run_ajax}
+          switchModal={this.switchModal}
+        /> */}
       </React.Fragment>
     );
   }

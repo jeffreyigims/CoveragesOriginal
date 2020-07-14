@@ -4,6 +4,7 @@ import Table from "react-bootstrap/Table";
 import Container from "react-bootstrap/Tabs";
 import Button from "react-bootstrap/Button";
 import ShowCoverage from "./ShowCoverage";
+import { EyeFill } from "react-bootstrap-icons";
 
 class CoveragesTable extends React.Component {
   state = {
@@ -16,17 +17,7 @@ class CoveragesTable extends React.Component {
   showCoverages = () => {
     return this.props.coverages.map((coverage, index) => {
       return (
-        <tr key={index} onClick={(slot) => this.showCoverage(coverage)}>
-          <td width="200" align="left">
-            {" "}
-            <Button
-              variant="link"
-              href={"/leagues/" + coverage.attributes.league.id}
-              style={{ color: "black" }}
-            >
-              {coverage.attributes.league.name}
-            </Button>
-          </td>
+        <tr key={index}>
           <td width="200" align="left">
             <Button
               variant="link"
@@ -60,6 +51,15 @@ class CoveragesTable extends React.Component {
           <td width="200" align="left">
             {coverage.attributes.verified ? "true" : "false"}
           </td>
+          <td width="100" align="center">
+            <Button
+              variant="link"
+              href={"/coverages/" + coverage.attributes.id}
+              style={{ color: "black" }}
+            >
+              <EyeFill />
+            </Button>
+          </td>
         </tr>
       );
     });
@@ -85,23 +85,16 @@ class CoveragesTable extends React.Component {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>League</th>
               <th>Club</th>
               <th>Group</th>
               <th>Category</th>
               <th>Sub</th>
               <th>Verified</th>
+              <th>View</th>
             </tr>
           </thead>
           <tbody>{this.showCoverages()}</tbody>
         </Table>
-        <ShowCoverage
-          selected={this.state.selected}
-          name={"modal_show"}
-          show={this.state.modal_show}
-          run_ajax={this.props.run_ajax}
-          switchModal={this.switchModal}
-        />
       </>
     );
   }

@@ -1,5 +1,5 @@
 class CoveragesController < ApplicationController
-  before_action :set_coverage, only: [:update, :destroy]
+  before_action :set_coverage, only: [:show, :update, :destroy]
 
   include Filterable
   include Orderable
@@ -20,8 +20,8 @@ class CoveragesController < ApplicationController
 
   def show 
     respond_to do |format|
-      format.html { @sport }
-      format.json { render json: CoverageSerializer.new(@coverages).serializable_hash }
+      format.html { @coverage }
+      format.json { render json: CoverageSerializer.new(@coverage).serializable_hash }
     end
   end 
 

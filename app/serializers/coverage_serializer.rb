@@ -26,7 +26,19 @@ class CoverageSerializer
         object.coverage_brokers.map do |coverage_broker|
           CoverageBrokerSerializer.new(coverage_broker).serializable_hash
         end
-      end
+    end
+
+    attribute :carriers do |object|
+        object.carriers.map do |carrier|
+          carrier
+        end
+    end
+
+    attribute :brokers do |object|
+        object.brokers.map do |broker|
+          CoverageBrokersSerializer.new(broker).serializable_hash
+        end
+    end
   
   end
   

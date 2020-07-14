@@ -10,6 +10,8 @@ class Coverage < ApplicationRecord
   has_one :sport, through: :league
   has_many :coverage_carriers
   has_many :coverage_brokers
+  has_many :carriers, through: :coverage_carriers
+  has_many :brokers, through: :coverage_brokers
 
   # Scopes
   scope :verified, -> { where(verified: true) }

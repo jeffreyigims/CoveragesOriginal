@@ -11,6 +11,10 @@ class BrokerSerializer
         CoverageSerializer.new(coverage_broker.coverage).serializable_hash
       end
     end
+
+    attribute :company do |object|
+      object.company
+    end
   
   end
   
