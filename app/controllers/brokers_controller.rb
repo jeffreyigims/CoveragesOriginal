@@ -27,9 +27,7 @@ end
 
   def create
     @broker = Company.new(broker_params)
-    if @broker.save
-      render json: @broker
-    else
+    if !@broker.save
       render json: @broker.errors, status: :unprocessable_entity
     end
   end

@@ -1,17 +1,17 @@
 class ClubsController < ApplicationController
-    before_action :set_club, only: [:update, :show, :destroy]
+    before_action :set_club, only: [:show, :update, :destroy]
 
     include Filterable
     include Orderable
 
     BOOLEAN_FILTERING_PARAMS = [[]]
     PARAM_FILTERING_PARAMS = [:for_league]
-    # ORDERING_PARAMS = [:alphabetical]
+    ORDERING_PARAMS = []
 
     def index
       @clubs = boolean_filter(Club.all, BOOLEAN_FILTERING_PARAMS)
       @clubs = param_filter(@clubs, PARAM_FILTERING_PARAMS)
-      # @coverages = order(@coverages, ORDERING_PARAMS)
+      @clubs = order(@clubs, ORDERING_PARAMS)
       respond_to do |format|
         format.html { @clubs }
         format.json { render json: ClubSerializer.new(@clubs).serializable_hash }
@@ -27,9 +27,7 @@ class ClubsController < ApplicationController
   
     def create
       @club = Club.new(club_params)
-      if @club.save
-        render json: @club
-      else
+      if !@club.save
         render json: @club.errors, status: :unprocessable_entity
       end
     end

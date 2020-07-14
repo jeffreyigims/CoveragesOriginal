@@ -27,9 +27,7 @@ class CompaniesController < ApplicationController
   
     def create
       @company = Company.new(company_params)
-      if @company.save
-        render json: @company
-      else
+      if !@company.save
         render json: @company.errors, status: :unprocessable_entity
       end
     end

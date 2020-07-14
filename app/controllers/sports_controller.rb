@@ -1,26 +1,33 @@
 class SportsController < ApplicationController
-  before_action :set_sport, only: [:update, :show, :destroy]
+  before_action :set_sport, only: [:show, :update, :destroy]
+
+  include Filterable
+  include Orderable
+
+  BOOLEAN_FILTERING_PARAMS = [[]]
+  PARAM_FILTERING_PARAMS = []
+  ORDERING_PARAMS = []
 
   def index
-    @sports = Sport.all
+    @sports = boolean_filter(Sport.all, BOOLEAN_FILTERING_PARAMS)
+    @sports = param_filter(@sports, PARAM_FILTERING_PARAMS)
+    @sports = order(@sports, ORDERING_PARAMS)
     respond_to do |format|
       format.html { @sports }
       format.json { render json: SportSerializer.new(@sports).serializable_hash }
     end
   end
 
-  def show 
+  def show
     respond_to do |format|
       format.html { @sport }
       format.json { render json: SportSerializer.new(@sport).serializable_hash }
     end
-  end 
+  end
 
   def create
     @sport = Sport.new(sport_params)
-    if @sport.save
-      render json: @sport
-    else
+    if !@sport.save!
       render json: @sport.errors, status: :unprocessable_entity
     end
   end

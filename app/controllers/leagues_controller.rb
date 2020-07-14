@@ -1,35 +1,33 @@
 class LeaguesController < ApplicationController
   before_action :set_league, only: [:update, :show, :destroy]
 
-    include Filterable
-    include Orderable
+  include Filterable
+  include Orderable
 
-    BOOLEAN_FILTERING_PARAMS = [[]]
-    PARAM_FILTERING_PARAMS = [:for_sport]
-    ORDERING_PARAMS = []
+  BOOLEAN_FILTERING_PARAMS = [[]]
+  PARAM_FILTERING_PARAMS = [:for_sport]
+  ORDERING_PARAMS = []
 
-    def index
-      @leagues = boolean_filter(League.all, BOOLEAN_FILTERING_PARAMS)
-      @leagues = param_filter(@leagues, PARAM_FILTERING_PARAMS)
-      @leagues = order(@leagues, ORDERING_PARAMS)
+  def index
+    @leagues = boolean_filter(League.all, BOOLEAN_FILTERING_PARAMS)
+    @leagues = param_filter(@leagues, PARAM_FILTERING_PARAMS)
+    @leagues = order(@leagues, ORDERING_PARAMS)
     respond_to do |format|
       format.html { @leagues }
       format.json { render json: LeagueSerializer.new(@leagues).serializable_hash }
     end
   end
 
-  def show 
+  def show
     respond_to do |format|
       format.html { @league }
       format.json { render json: LeagueSerializer.new(@league).serializable_hash }
     end
-  end 
+  end
 
   def create
     @league = League.new(league_params)
-    if @league.save
-      render json: @league
-    else
+    if !@league.save
       render json: @league.errors, status: :unprocessable_entity
     end
   end

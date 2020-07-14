@@ -28,6 +28,12 @@ class CoverageSerializer
         end
     end
 
+    attribute :coverage_carriers do |object|
+        object.coverage_carriers.map do |coverage_carrier|
+          CoverageCarrierSerializer.new(coverage_carrier).serializable_hash
+        end
+    end
+
     attribute :carriers do |object|
         object.carriers.map do |carrier|
           carrier

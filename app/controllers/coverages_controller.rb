@@ -27,9 +27,7 @@ class CoveragesController < ApplicationController
 
   def create
     @coverage = Coverage.new(coverage_params)
-    if @coverage.save
-      render json: @coverage
-    else
+    if !@coverage.save
       render json: @coverage.errors, status: :unprocessable_entity
     end
   end

@@ -1,28 +1,39 @@
 class CoverageBrokersController < ApplicationController
   before_action :set_coverage_broker, only: [:show, :update, :destroy]
 
+  include Filterable
+  include Orderable
+
+  BOOLEAN_FILTERING_PARAMS = [[]]
+  PARAM_FILTERING_PARAMS = []
+  ORDERING_PARAMS = []
+
   def index
-    @coverage_brokers = CoverageBroker.all
-    render json: @coverage_brokers
+    @coverage_brokers = boolean_filter(CoverageBroker.all, BOOLEAN_FILTERING_PARAMS)
+    @coverage_brokers = param_filter(@coverage_brokers, PARAM_FILTERING_PARAMS)
+    @coverage_brokers = order(@coverage_brokers, ORDERING_PARAMS)
+    respond_to do |format|
+      format.html { @coverage_brokers }
+      format.json { render json: CoverageBrokerSerializer.new(@coverage_brokers).serializable_hash }
+    end
   end
 
   def show
-    render json: @coverage_broker
+    respond_to do |format|
+      format.html { @coverage_broker }
+      format.json { render json: CoverageBrokerSerializer.new(@coverage_broker).serializable_hash }
+    end
   end
 
   def create
     @coverage_broker = CoverageBroker.new(coverage_broker_params)
-    if @coverage_broker.save
-      render json: @coverage_broker
-    else
+    if !@coverage_broker.save
       render json: @coverage_broker.errors, status: :unprocessable_entity
     end
   end
 
   def update
-    if @coverage_broker.update(coverage_broker_params)
-      render json: @coverage_broker
-    else
+    if !@coverage_broker.update(coverage_broker_params)
       render json: @coverage_broker.errors, status: :unprocessable_entity
     end
   end

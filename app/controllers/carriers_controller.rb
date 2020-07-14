@@ -27,9 +27,7 @@ end
 
   def create
     @carrier = Carrier.new(carrier_params)
-    if @carrier.save
-      render json: @carrier
-    else
+    if !@carrier.save
       render json: @carrier.errors, status: :unprocessable_entity
     end
   end
