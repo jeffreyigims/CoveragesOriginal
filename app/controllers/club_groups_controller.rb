@@ -1,5 +1,5 @@
 class ClubGroupsController < ApplicationController
-  before_action :set_club_group, only: [:show, :update, :destroy]
+  before_action :set_club_group, only: [:destroy]
 
   include Filterable
   include Orderable
@@ -18,22 +18,9 @@ class ClubGroupsController < ApplicationController
     end
   end
 
-  def show
-    respond_to do |format|
-      format.html { @club_group }
-      format.json { render json: ClubGroupSerializer.new(@club_group).serializable_hash }
-    end
-  end
-
   def create
     @club_group = ClubGroup.new(club_group_params)
     if !@club_group.save
-      render json: @club_group.errors, status: :unprocessable_entity
-    end
-  end
-
-  def update
-    if !@club_group.update(club_group_params)
       render json: @club_group.errors, status: :unprocessable_entity
     end
   end

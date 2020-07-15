@@ -4,7 +4,7 @@ class GroupSerializer
 
   attribute :club_groups do |object|
     object.club_groups.map do |club_group|
-      GroupClubGroupSerializer.new(club_group).serializable_hash
+      ClubGroupSerializer.new(club_group).serializable_hash
     end
-end
+  end
 end

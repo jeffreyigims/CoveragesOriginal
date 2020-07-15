@@ -1,23 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Table from "react-bootstrap/Table";
-import Container from "react-bootstrap/Tabs";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import NewGroup from "./NewGroup";
-import { run_ajax, switchModal } from "Utils.js";
+import { run_ajax, switchModal, capitalize, pluralize} from "Utils.js";
 
 class Groups extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
     this.switchModal = switchModal.bind(this);
+    this.capitalize = capitalize.bind(this);
+    this.pluralize = pluralize.bind(this);
   }
 
   state = {
     objects: [],
     modal_new: false,
-    objectName: "groups",
+    objectName: "group",
     attributes: ["name"],
   };
 
@@ -26,7 +27,7 @@ class Groups extends React.Component {
   }
 
   getObjects = () => {
-    this.run_ajax("/groups.json", "GET", {}, (res) => {
+    this.run_ajax("/" + this.pluralize(this.state.objectName) + ".json", "GET", {}, (res) => {
       this.setState({ objects: res.data });
     });
   };
@@ -38,14 +39,14 @@ class Groups extends React.Component {
           <td width="200" align="left">
             <Button
               variant="link"
-              href={"/groups/" + object.attributes.id}
+              href={"/" + this.pluralize(this.state.objectName) + "/" + object.attributes.id}
               style={{ color: "black" }}
             >
               {object.attributes.name}
             </Button>{" "}
           </td>
           <td width="200" align="left">
-            {object.attributes.associated_clubs}
+            {object.attributes.club_groups.length}
           </td>
         </tr>
       );
@@ -56,7 +57,8 @@ class Groups extends React.Component {
     return (
       <>
         <Card>
-          <Card.Title>All Groups</Card.Title>
+          <Card.Header></Card.Header>
+          <Card.Title style={{marginTop: "10px"}}>All {this.capitalize(this.pluralize(this.state.objectName))}</Card.Title>
           <Card.Body>
             <Table striped bordered hover>
               <thead>
@@ -74,11 +76,11 @@ class Groups extends React.Component {
               variant="primary"
               onClick={(slot) => this.switchModal("modal_new")}
             >
-              New Group
+              New {this.capitalize(this.state.objectName)}
             </Button>
           </Card.Footer>
         </Card>
-        <NewSport
+        <NewGroup
           name={"modal_new"}
           show={this.state.modal_new}
           run_ajax={this.run_ajax}

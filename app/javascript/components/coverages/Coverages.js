@@ -2,18 +2,22 @@ import React from "react";
 import PropTypes from "prop-types";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
-import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import TopBar from "./TopBar";
-import NavGuest from "./NavGuest";
-import Footer from "./Footer";
 import CoveragesTable from "./CoveragesTable";
+import NewCoverage from "./NewCoverage";
+import { switchModal } from "Utils.js";
 
-class CoverageTabs extends React.Component {
+class Coverages extends React.Component {
+  constructor() {
+    super();
+    this.switchModal = switchModal.bind(this);
+  }
+
   state = {
     verifiedCoverages: [],
     unverifiedCoverages: [],
+    modal_new: false,
   };
 
   run_ajax = (
@@ -110,15 +114,15 @@ class CoverageTabs extends React.Component {
             </Button>
           </Card.Footer>
         </Card>
-        {/* <NewCoverage
-          name={"modal_show"}
-          show={this.state.modal_show}
+        <NewCoverage
+          name={"modal_new"}
+          show={this.state.modal_new}
           run_ajax={this.props.run_ajax}
           switchModal={this.switchModal}
-        /> */}
+        />
       </React.Fragment>
     );
   }
 }
 
-export default CoverageTabs;
+export default Coverages;

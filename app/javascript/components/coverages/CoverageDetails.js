@@ -9,7 +9,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import EditCoverage from "./EditCoverage";
 import { Formik } from "formik";
 import * as yup from "yup";
 
@@ -75,55 +74,63 @@ class CoverageDetails extends React.Component {
     });
   };
 
-//   includes = (item, arr) => {
-//       for(let i = 0; i < arr.length; i++) {
-//           if(arr[i].data.attributes.carrier_id == item) {
-//               return true;
-//           }
-//       }
-//       return false;
-//   }
-
-//   handleCarriers = (carriers) => {
-//     let curr = this.state.coverageCarriers;
-//     let needAdded = carriers.filter((carrier) => !this.includes(carrier, curr));
-//     let needDestroyed = curr.filter((carrier) => !carriers.includes(carrier.data.attributes.carrier_id));
-//     for (let i = 0; i < needAdded.length; i++) {
-//       let data = {
-//         coverage_id: this.state.object.attributes.id,
-//         carrier_id: needAdded[i],
-//       };
-//       this.props.run_ajax("/coverage_carriers.json", "POST", data);
-//     }
-//     for (let i = 0; i < needDestroyed.length; i++) {
-//         this.props.run_ajax("/coverage_carriers/" + needDestroyed[i].data.attributes.id + ".json", "DELETE", data);
-//       }
-//   };
-
-  includes = (item, arr) => {
-    for(let i = 0; i < arr.length; i++) {
-        if(arr[i].data.attributes.broker_id == item) {
-            return true;
-        }
+  includesCarrier = (item, arr) => {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].data.attributes.carrier_id == item) {
+        return true;
+      }
     }
     return false;
-}
+  };
 
-handleBrokers = (objects) => {
-  let curr = this.state.coverageBrokers;
-  let needAdded = objects.filter((object) => !this.includes(object, curr));
-  let needDestroyed = curr.filter((object) => !objects.includes(object.data.attributes.broker_id));
-  for (let i = 0; i < needAdded.length; i++) {
-    let data = {
-      coverage_id: this.state.object.attributes.id,
-      broker_id: needAdded[i],
-    };
-    this.run_ajax("/coverage_brokers.json", "POST", data);
-  }
-  for (let i = 0; i < needDestroyed.length; i++) {
-      this.run_ajax("/coverage_brokers/" + (needDestroyed[i])[data][attributes][id] + ".json", "DELETE", data);
+  handleCarriers = (objects) => {
+    let curr = this.state.coverageCarriers;
+    let needAdded = objects.filter((object) => !this.includesCarrier(object, curr));
+    let needDestroyed = curr.filter(
+      (object) => !objects.includes(object.data.attributes.carrier_id.toString())
+    );
+    for (let i = 0; i < needAdded.length; i++) {
+      let data = {
+        coverage_id: this.state.object.attributes.id,
+        carrier_id: needAdded[i],
+      };
+      this.run_ajax("/coverage_carriers.json", "POST", data);
     }
-};
+    for (let i = 0; i < needDestroyed.length; i++) {
+      let id = needDestroyed[i].data.attributes.id;
+      this.run_ajax("/coverage_carriers/" + id + ".json", "DELETE");
+    }
+  };
+
+  includesBroker = (item, arr) => {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].data.attributes.broker_id == item) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  handleBrokers = (objects) => {
+    let curr = this.state.coverageBrokers;
+    let needAdded = objects.filter(
+      (object) => !this.includesBroker(object, curr)
+    );
+    let needDestroyed = curr.filter(
+      (object) => !objects.includes(object.data.attributes.broker_id.toString())
+    );
+    for (let i = 0; i < needAdded.length; i++) {
+      let data = {
+        coverage_id: this.state.object.attributes.id,
+        broker_id: needAdded[i],
+      };
+      this.run_ajax("/coverage_brokers.json", "POST", data);
+    }
+    for (let i = 0; i < needDestroyed.length; i++) {
+      let id = needDestroyed[i].data.attributes.id;
+      this.run_ajax("/coverage_brokers/" + id + ".json", "DELETE");
+    }
+  };
 
   handleUpdate = (values) => {
     let data = {
@@ -136,9 +143,8 @@ handleBrokers = (objects) => {
       "PATCH",
       data
     );
-    // this.handleCarriers(values.carriers);
+    this.handleCarriers(values.carriers);
     this.handleBrokers(values.brokers);
-    console.log("Updated")
   };
 
   render() {
@@ -158,11 +164,11 @@ handleBrokers = (objects) => {
                 group: this.state.object?.attributes.group.name,
                 category: this.state.object?.attributes.category.name,
                 sub_category: this.state.object?.attributes.sub_category.name,
-                carriers: this.state.object?.attributes.carriers.map(
-                  (broker) => broker.data.attributes.id
+                carriers: this.state.coverageCarriers.map(
+                  (carrier) => carrier.data.attributes.carrier_id
                 ),
-                brokers: this.state.object?.attributes.brokers.map(
-                  (broker) => broker.data.attributes.id
+                brokers: this.state.coverageBrokers.map(
+                  (broker) => broker.data.attributes.broker_id
                 ),
                 notes: this.state.object?.attributes.notes,
                 has_coverage_line: this.state.object?.attributes

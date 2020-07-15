@@ -69,7 +69,7 @@ Rails.application.routes.draw do
   # We do not need to update or get individual entries
   get "coverage_carriers", to: "coverage_carriers#index"
   post "coverage_carriers", to: "coverage_carriers#create"
-  delete "coverage_carriers/id", to: "coverage_carriers#destroy"
+  delete "coverage_carriers/:id", to: "coverage_carriers#destroy"
 
   get "coverage_brokers", to: "coverage_brokers#index"
   post "coverage_brokers", to: "coverage_brokers#create"

@@ -38,7 +38,7 @@ class EditGroup extends React.Component {
       name: values.name,
     };
     this.props.run_ajax(
-      "/groups/".concat(this.props.selected.attributes.id, ".json"),
+      "/groups/".concat(this.props.object.attributes.id, ".json"),
       "PATCH",
       data
     );
@@ -58,7 +58,7 @@ class EditGroup extends React.Component {
               validationSchema={schema}
               onSubmit={(values) => this.handleUpdate(values)}
               initialValues={{
-                name: this.props.selected?.attributes.name,
+                name: this.props.object?.attributes.name,
               }}
             >
               {({

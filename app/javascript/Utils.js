@@ -126,3 +126,14 @@ export function showSelected(id) {
   });
   this.switchModal("modal_show");
 }
+
+export function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function pluralize(string, suffix = 's') {
+  if (suffix == "ies") {
+    string = string.slice(-1)
+  }
+  return string + suffix
+}

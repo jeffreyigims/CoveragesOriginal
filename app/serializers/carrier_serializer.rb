@@ -7,8 +7,8 @@ class CarrierSerializer
     end
 
     attribute :coverages do |object|
-      object.coverage_carriers.map do |coverage_carriers|
-        CoverageSerializer.new(coverage_broker.coverage).serializable_hash
+      object.coverage_carriers.map do |coverage_carrier|
+        CoverageSerializer.new(coverage_carrier.coverage).serializable_hash
       end
     end
   

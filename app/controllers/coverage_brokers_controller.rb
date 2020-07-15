@@ -1,5 +1,5 @@
 class CoverageBrokersController < ApplicationController
-  before_action :set_coverage_broker, only: [:show, :update, :destroy]
+  before_action :set_coverage_broker, only: [:destroy]
 
   include Filterable
   include Orderable
@@ -18,13 +18,6 @@ class CoverageBrokersController < ApplicationController
     end
   end
 
-  def show
-    respond_to do |format|
-      format.html { @coverage_broker }
-      format.json { render json: CoverageBrokerSerializer.new(@coverage_broker).serializable_hash }
-    end
-  end
-
   def create
     @coverage_broker = CoverageBroker.new(coverage_broker_params)
     if !@coverage_broker.save
@@ -32,15 +25,9 @@ class CoverageBrokersController < ApplicationController
     end
   end
 
-  def update
-    if !@coverage_broker.update(coverage_broker_params)
-      render json: @coverage_broker.errors, status: :unprocessable_entity
-    end
-  end
-
   def destroy
     @coverage_broker.destroy
-    if !@coverage_broker.destroyed
+    if !@coverage_broker.destroyed?
       render json: @coverage_broker.errors, status: :unprocessable_entity
     end
   end

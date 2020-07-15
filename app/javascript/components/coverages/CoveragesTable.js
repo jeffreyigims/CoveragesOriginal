@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import Table from "react-bootstrap/Table";
 import Container from "react-bootstrap/Tabs";
 import Button from "react-bootstrap/Button";
-import ShowCoverage from "./ShowCoverage";
 import { EyeFill } from "react-bootstrap-icons";
 
 class CoveragesTable extends React.Component {

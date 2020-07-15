@@ -1,6 +1,6 @@
 class CoverageSerializer
     include FastJsonapi::ObjectSerializer
-    attributes :id, :has_coverage_line, :notes, :start_date, :verified, :end_date
+    attributes :id, :has_coverage_line, :notes, :start_date, :end_date, :verified, :club_group_id
 
     attribute :league do |object|
         object.club_group.club.league

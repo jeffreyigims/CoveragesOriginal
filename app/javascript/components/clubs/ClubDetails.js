@@ -13,7 +13,6 @@ import NewClubGroup from "./NewClubGroup";
 import NewCoverage from "../coverages/NewCoverage";
 import ShowCoverage from "./ShowCoverage";
 import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
-import { ArrowRight } from "react-bootstrap-icons";
 
 class ClubDetails extends React.Component {
   constructor() {
@@ -88,7 +87,7 @@ class ClubDetails extends React.Component {
             {coverage.attributes.start_date}
           </td>
           <td width="200" align="left">
-            {coverage.attributes.end_date}
+            {coverage.attributes.notes}
           </td>
           <td width="100" align="left">
             {coverage.attributes.verified ? "true" : "false"}
@@ -106,10 +105,10 @@ class ClubDetails extends React.Component {
     } else {
       target = this.state.groups[event.target.value];
       coverages = this.state.coverages.filter(
-        (object) => object.club_group_id == target.data.attributes.id
+        (object) => object.attributes.club_group_id == target.data.attributes.id
       );
     }
-    this.setState({ selectedCoverages: coverages, group: target.data });
+    this.setState({ selectedCoverages: coverages, group: target?.data });
   };
 
   render() {
@@ -139,7 +138,7 @@ class ClubDetails extends React.Component {
                   <th>Category</th>
                   <th>Sub</th>
                   <th>Start</th>
-                  <th>End</th>
+                  <th>Notes</th>
                   <th>Verified</th>
                 </tr>
               </thead>
