@@ -94,11 +94,11 @@ class CoverageDetails extends React.Component {
         coverage_id: this.state.object.attributes.id,
         carrier_id: needAdded[i],
       };
-      this.run_ajax("/coverage_carriers.json", "POST", data);
+      this.run_ajax("/coverage_carriers.json", "POST", data, () => {});
     }
     for (let i = 0; i < needDestroyed.length; i++) {
       let id = needDestroyed[i].data.attributes.id;
-      this.run_ajax("/coverage_carriers/" + id + ".json", "DELETE");
+      this.run_ajax("/coverage_carriers/" + id + ".json", "DELETE", {}, () => {});
     }
   };
 
@@ -124,11 +124,11 @@ class CoverageDetails extends React.Component {
         coverage_id: this.state.object.attributes.id,
         broker_id: needAdded[i],
       };
-      this.run_ajax("/coverage_brokers.json", "POST", data);
+      this.run_ajax("/coverage_brokers.json", "POST", data, () => {});
     }
     for (let i = 0; i < needDestroyed.length; i++) {
       let id = needDestroyed[i].data.attributes.id;
-      this.run_ajax("/coverage_brokers/" + id + ".json", "DELETE");
+      this.run_ajax("/coverage_brokers/" + id + ".json", "DELETE", {}, () => {});
     }
   };
 

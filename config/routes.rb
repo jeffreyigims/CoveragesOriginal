@@ -85,8 +85,9 @@ Rails.application.routes.draw do
   get "logout", to: "sessions#destroy", as: :logout
   post "sessions", to: "sessions#create", as: :new_session
 
-  get "metrics", to: "home#metrics", as: :metrics  
+  # get "metrics", to: "home#metrics", as: :metrics  
   get "charts", to: "metrics#chart", as: :charts
+  get "metrics", to: "metrics#metrics", as: :metrics
 
   # Home route
   get "home", to: "home#index", as: :home

@@ -1,4 +1,9 @@
 class MetricsController < ApplicationController
+
+    def metrics 
+      @coverages = Coverage.all 
+      render json: MetricsCoverageSerializer.new(@coverages).serializable_hash
+    end 
   
     def chart
       @league = League.find_by(id: params[:league_id]) unless params[:league_id].nil?

@@ -7,7 +7,7 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import EditLeague from "./ShowLeague";
+import EditLeague from "./EditLeague";
 import NewClub from "../clubs/NewClub.js";
 
 import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
@@ -34,16 +34,16 @@ class LeagueDetails extends React.Component {
 
   getObjects = () => {
     this.run_ajax("/leagues/" + this.props.id + ".json", "GET", {}, (res) => {
-      this.setState({ league: res.data });
+      this.setState({ league: res.data, clubs: res.data.attributes.clubs });
     });
-    this.run_ajax(
-      "/clubs.json?for_league=" + this.props.id,
-      "GET",
-      {},
-      (res) => {
-        this.setState({ clubs: res.data });
-      }
-    );
+    // this.run_ajax(
+    //   "/clubs.json?for_league=" + this.props.id,
+    //   "GET",
+    //   {},
+    //   (res) => {
+    //     this.setState({ clubs: res.data });
+    //   }
+    // );
   };
 
   showClubs = () => {
@@ -53,17 +53,17 @@ class LeagueDetails extends React.Component {
           <td width="200" align="left">
             <Button
               variant="link"
-              href={"/clubs/" + object.id}
+              href={"/clubs/" + object.data.attributes.id}
               style={{ color: "black" }}
             >
-              {object.attributes.name}
+              {object.data.attributes.name}
             </Button>
           </td>
           <td width="200" align="left">
-            {object.attributes.abbreviation}
+            {object.data.attributes.abbreviation}
           </td>
           <td width="200" align="left">
-            {object.attributes.club_groups_count}
+            {object.data.attributes.club_groups_count}
           </td>
         </tr>
       );

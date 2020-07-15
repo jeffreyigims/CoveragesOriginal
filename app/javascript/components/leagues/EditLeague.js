@@ -60,7 +60,7 @@ class EditLeague extends React.Component {
             initialValues={{
               name: this.props.league?.attributes.name,
               sport: this.props.league?.attributes.sport.name,
-              level: this.props.league?.attributes.level,
+              level: this.props.league?.attributes.level || "",
             }}
           >
             {({

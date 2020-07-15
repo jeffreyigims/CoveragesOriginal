@@ -1,6 +1,6 @@
 module Populator
   module All
-    def create_sports
+    def create_all
       @user = FactoryBot.create(:user, password: "secret", password_confirmation: "secret")
 
       @football = FactoryBot.create(:sport, name: "football")

@@ -14,7 +14,7 @@ namespace :db do
       # Rake::Task['db:test:prepare'].invoke
       puts 'Reset the dev and test databases'
 
-      create_sports
+      create_all
   
     end
   end

@@ -9,6 +9,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "bootstrap": "^4.5.0",
     "formik": "^2.1.4",
+    "plotly.js": "^1.54.6",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
@@ -16,6 +17,8 @@
     "react-bootstrap-icons": "^1.0.3-alpha5",
     "react-datepicker": "^3.0.0",
     "react-dom": "^16.13.1",
+    "react-pivottable": "^0.10.0",
+    "react-plotly.js": "^2.4.0",
     "react_ujs": "^2.6.1",
     "recharts": "^1.8.5",
     "yup": "^0.29.1"

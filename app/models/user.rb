@@ -1,8 +1,11 @@
 class User < ApplicationRecord
   has_secure_password
 
+  # Scopes 
+  scope :alphabetical,    -> { order('last_name, first_name') }
+
   # For authentication
-  ROLES_LIST = [["Administrator", "admin"]].freeze
+  ROLES_LIST = [["Administrator", "admin"], ["Employee", "employee"], ["Contact", "contact"]].freeze
 
   def role?(authorized_role)
     return false if role.nil?

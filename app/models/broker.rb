@@ -1,6 +1,6 @@
 class Broker < ApplicationRecord
-  # belongs_to :contact
+
+  # Relationships
   belongs_to :company
   has_many :coverage_brokers
 end
- 

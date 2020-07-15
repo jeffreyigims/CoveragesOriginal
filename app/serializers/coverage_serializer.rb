@@ -24,13 +24,13 @@ class CoverageSerializer
 
     attribute :coverage_brokers do |object|
         object.coverage_brokers.map do |coverage_broker|
-          CoverageBrokerSerializer.new(coverage_broker).serializable_hash
+          CoverageCoverageBrokerSerializer.new(coverage_broker).serializable_hash
         end
     end
 
     attribute :coverage_carriers do |object|
         object.coverage_carriers.map do |coverage_carrier|
-          CoverageCarrierSerializer.new(coverage_carrier).serializable_hash
+          CoverageCoverageCarrierSerializer.new(coverage_carrier).serializable_hash
         end
     end
 
@@ -40,11 +40,21 @@ class CoverageSerializer
         end
     end
 
-    attribute :brokers do |object|
-        object.brokers.map do |broker|
-          CoverageBrokersSerializer.new(broker).serializable_hash
-        end
-    end
+    # attribute :brokers do |object|
+    #     object.brokers.map do |broker|
+    #       CoverageBrokersSerializer.new(broker).serializable_hash
+    #     end
+    # end
   
+  end
+  
+  class CoverageCoverageBrokerSerializer
+    include FastJsonapi::ObjectSerializer
+    attributes :id, :broker_id
+  end
+
+  class CoverageCoverageCarrierSerializer
+    include FastJsonapi::ObjectSerializer
+    attributes :id, :carrier_id
   end
   

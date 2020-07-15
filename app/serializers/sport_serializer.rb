@@ -1,9 +1,15 @@
 class SportSerializer
-    include FastJsonapi::ObjectSerializer
-    attributes :id, :name
+  include FastJsonapi::ObjectSerializer
+  attributes :id, :name
 
-    attribute :associated_leagues do |object|  
-        object.leagues.length 
-    end 
+  attribute :leagues do |object|
+    object.leagues.map do |league|
+      SportLeagueSerializer.new(league).serializable_hash
+    end
+  end
 end
-  
+
+class SportLeagueSerializer
+  include FastJsonapi::ObjectSerializer
+  attributes :id, :name, :level
+end

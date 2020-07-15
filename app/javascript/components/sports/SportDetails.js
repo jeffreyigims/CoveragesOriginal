@@ -32,16 +32,8 @@ class SportDetails extends React.Component {
 
   getObjects = () => {
     this.run_ajax("/sports/" + this.props.id + ".json", "GET", {}, (res) => {
-      this.setState({ sport: res.data });
+      this.setState({ sport: res.data, leagues: res.data.attributes.leagues });
     });
-    this.run_ajax(
-      "/leagues.json?for_sport=" + this.props.id,
-      "GET",
-      {},
-      (res) => {
-        this.setState({ leagues: res.data });
-      }
-    );
   };
 
   showLeagues = () => {
@@ -51,14 +43,14 @@ class SportDetails extends React.Component {
           <td width="200" align="left">
             <Button
               variant="link"
-              href={"/leagues/" + object.id}
+              href={"/leagues/" + object.data.attributes.id}
               style={{ color: "black" }}
             >
-              {object.attributes.name}
+              {object.data.attributes.name}
             </Button>
           </td>
           <td width="200" align="left">
-            {object.attributes.level}
+            {object.data.attributes.level}
           </td>
         </tr>
       );

@@ -8,9 +8,20 @@ class CategorySerializer
 
     attribute :sub_categories do |object|
       object.sub_categories.map do |sub_category|
-        SubCategorySerializer.new(sub_category).serializable_hash
+        CategorySubCategorySerializer.new(sub_category).serializable_hash
       end
     end
   
   end
+
+  class CategorySubCategorySerializer
+    include FastJsonapi::ObjectSerializer
+    attributes :id, :name, :category_id
+
+    attribute :associated_coverages do |object|
+      object.coverages.length
+    end
+
+  end
+  
   

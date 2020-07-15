@@ -1,30 +1,25 @@
 /* Helper methods for creating an individual object */
-export function handleCreate(event) {
-  event.preventDefault();
-  let name = this.props.objectName
-    .substring(0, this.props.objectName.length - 1)
-    .toString();
-  const data = {};
-  data[name] = {};
-  var attribute = "";
-  for (attribute of this.props.attributes) {
-    data[name][attribute] = this.state[attribute]
-  }
-  this.props.run_ajax('/' + this.props.objectName + '.json', "POST", data);
-  this.handleClose();
-}
+// export function handleCreate(event) {
+//   event.preventDefault();
+//   let name = this.props.objectName
+//     .substring(0, this.props.objectName.length - 1)
+//     .toString();
+//   const data = {};
+//   data[name] = {};
+//   var attribute = "";
+//   for (attribute of this.props.attributes) {
+//     data[name][attribute] = this.state[attribute]
+//   }
+//   this.props.run_ajax('/' + this.props.objectName + '.json', "POST", data);
+//   this.handleClose();
+// }
 
 /* Helper methods for showing an individual selection */
 export function handleInputChange(event) {
   this.setState({ [event.target.name]: event.target.value });
 }
 
-export function handleClose() {
-  const data = {};
-  this.props.attributes.map((attribute) => (data[attribute] = null));
-  this.setState(data);
-  this.props.switchModal(this.props.name);
-}
+
 
 export function handleUpdate(event) {
   let name = this.props.objectName
@@ -128,12 +123,30 @@ export function showSelected(id) {
 }
 
 export function capitalize(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  var newString = new String (string);
+  return newString.charAt(0).toUpperCase() + newString.slice(1);
 }
 
 export function pluralize(string, suffix = 's') {
+  var newString = Object.assign("", string);
   if (suffix == "ies") {
-    string = string.slice(-1)
+    newString = newString.slice(-1)
   }
-  return string + suffix
+  return newString + suffix
 }
+
+export function handleCreate(values) {
+  let name = this.state.objectName;
+  const data = {};
+  data[name] = {};
+  for (var attribute of this.state.attributes) {
+    data[name][attribute] = values[attribute];
+  }
+  this.run_ajax("/" + this.state.plural + ".json", "POST", data);
+  this.handleClose();
+};
+
+export function handleClose() {
+  this.switchModal("modal_new");
+};
+
