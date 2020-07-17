@@ -7,10 +7,10 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import EditSport from "./ShowSport";
+import EditSport from "./EditSport";
 import NewLeague from "../leagues/NewLeague.js";
 
-import { run_ajax, getObjects, switchModal } from "Utils.js";
+import { run_ajax, getObjects, switchModal } from "../Utils.js";
 
 class SportDetails extends React.Component {
   constructor() {
@@ -20,7 +20,7 @@ class SportDetails extends React.Component {
   }
 
   state = {
-    sport: null,
+    object: null,
     leagues: [],
     modal_edit: false,
     modal_add: false,
@@ -32,7 +32,7 @@ class SportDetails extends React.Component {
 
   getObjects = () => {
     this.run_ajax("/sports/" + this.props.id + ".json", "GET", {}, (res) => {
-      this.setState({ sport: res.data, leagues: res.data.attributes.leagues });
+      this.setState({ object: res.data, leagues: res.data.attributes.leagues });
     });
   };
 
@@ -61,7 +61,7 @@ class SportDetails extends React.Component {
     return (
       <>
         <Card>
-          <Card.Title>{this.state.sport?.attributes.name}</Card.Title>
+          <Card.Title>{this.state.object?.attributes.name}</Card.Title>
           <Card.Body>
             <Table striped bordered hover>
               <thead>
@@ -92,7 +92,7 @@ class SportDetails extends React.Component {
           </Card.Footer>
         </Card>
         <EditSport
-          selected={this.state.sport}
+          selected={this.state.object}
           leagues={this.state.leagues}
           name={"modal_edit"}
           show={this.state.modal_edit}
@@ -100,7 +100,7 @@ class SportDetails extends React.Component {
           switchModal={this.switchModal}
         />
         <NewLeague
-          selected={this.state.sport}
+          selected={this.state.object}
           name={"modal_add"}
           show={this.state.modal_add}
           run_ajax={this.run_ajax}

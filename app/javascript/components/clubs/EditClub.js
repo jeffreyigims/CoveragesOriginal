@@ -8,9 +8,9 @@ import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {handleInputChange, handleClose, handleUpdate, updateHelper, handleDelete} from 'Utils.js';
+import {handleInputChange, handleClose, handleUpdate, updateHelper, handleDelete} from '../Utils.js';
 
-class ShowClub extends React.Component {
+class EditClub extends React.Component {
   constructor(){
     super();
     this.handleInputChange = handleInputChange.bind(this);
@@ -87,4 +87,4 @@ class ShowClub extends React.Component {
   }
 }
 
-export default ShowClub;
+export default EditClub;

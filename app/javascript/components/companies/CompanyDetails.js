@@ -9,21 +9,24 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import EditCompany from "./EditCompany";
 import NewBroker from "../brokers/NewBroker.js";
+import GeneralTable from "../GeneralTable.js";
 
-import { run_ajax, getObjects, switchModal } from "Utils.js";
+import { run_ajax, switchModal, handleDelete } from "../Utils.js";
 
 class CompanyDetails extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
+    this.handleDelete = handleDelete.bind(this);
     this.switchModal = switchModal.bind(this);
   }
 
   state = {
     object: null,
-    associated: [],
+    objects: [],
     modal_edit: false,
     modal_add: false,
+    tableHeaders: ["Name", "Associated"],
   };
 
   componentDidMount() {
@@ -32,12 +35,15 @@ class CompanyDetails extends React.Component {
 
   getObjects = () => {
     this.run_ajax("/companies/" + this.props.id + ".json", "GET", {}, (res) => {
-      this.setState({ object: res.data, associated: res.data.attributes.brokers });
+      this.setState({
+        object: res.data,
+        objects: res.data.attributes.brokers,
+      });
     });
   };
 
-  showAssociated = () => {
-    return this.state.associated.map((object, index) => {
+  showObjects = (objects) => {
+    return objects.map((object, index) => {
       return (
         <tr key={index}>
           <td width="200" align="left">
@@ -61,17 +67,16 @@ class CompanyDetails extends React.Component {
     return (
       <>
         <Card>
-          <Card.Title>{this.state.object?.attributes.name}</Card.Title>
+          <Card.Header></Card.Header>
+          <Card.Title style={{ marginTop: "10px" }}>
+            {this.state.object?.attributes.name}
+          </Card.Title>
           <Card.Body>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Coverages</th>
-                </tr>
-              </thead>
-              <tbody>{this.showAssociated()}</tbody>
-            </Table>
+            <GeneralTable
+              tableHeaders={this.state.tableHeaders}
+              showObjects={this.showObjects}
+              objects={this.state.objects}
+            />
           </Card.Body>
           <Card.Footer>
             <Button
@@ -89,17 +94,32 @@ class CompanyDetails extends React.Component {
             >
               Edit Company
             </Button>
+            {this.state.objects.length == 0 && (
+              <Button
+                className="btn btn-theme float-right"
+                variant="danger"
+                onClick={() =>
+                  this.handleDelete(
+                    "companies",
+                    this.state.object.attributes.id
+                  )
+                }
+                style={{ marginRight: "10px" }}
+              >
+                Delete Company
+              </Button>
+            )}
           </Card.Footer>
         </Card>
         <EditCompany
-          selected={this.state.object}
+          object={this.state.object}
           name={"modal_edit"}
           show={this.state.modal_edit}
           run_ajax={this.run_ajax}
           switchModal={this.switchModal}
         />
         <NewBroker
-          selected={this.state.object}
+          object={this.state.object}
           name={"modal_add"}
           show={this.state.modal_add}
           run_ajax={this.run_ajax}

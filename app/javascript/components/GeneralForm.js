@@ -2,10 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import Modal from "react-bootstrap/Modal";
 
-class NewForm extends React.Component {
+class GeneralForm extends React.Component {
   render() {
     return (
-      <Modal show={this.props.show} onHide={() => this.props.switchModal("modal_new")}>
+      <Modal
+        show={this.props.show}
+        onHide={() => this.props.switchModal("modal_new")}
+      >
         <Modal.Header closeButton>
           <Modal.Title>
             New{" "}
@@ -20,4 +23,4 @@ class NewForm extends React.Component {
   }
 }
 
-export default NewForm;
+export default GeneralForm;

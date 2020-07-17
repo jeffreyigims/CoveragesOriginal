@@ -14,7 +14,7 @@ class CarriersController < ApplicationController
     @carriers = order(@carriers, ORDERING_PARAMS)
     respond_to do |format|
       format.html { @carriers }
-      format.json { render json: CarrierSerializer.new(@carriers).serializable_hash }
+      format.json { render json: CarrierTableSerializer.new(@carriers).serializable_hash }
     end
 end
 

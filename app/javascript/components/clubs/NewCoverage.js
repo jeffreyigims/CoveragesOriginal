@@ -15,7 +15,7 @@ import {
   handleClose,
   run_ajax,
   handleCreate,
-} from "Utils.js";
+} from "../Utils.js";
 
 const schema = yup.object({
   club: yup.string().required(),
@@ -29,7 +29,7 @@ const schema = yup.object({
   verified: yup.string().required(),
 });
 
-class ShowCoverage extends React.Component {
+class NewCoverage extends React.Component {
   state = {};
 
   handleInputChange = (event) => {
@@ -208,4 +208,4 @@ class ShowCoverage extends React.Component {
   }
 }
 
-export default ShowCoverage;
+export default NewCoverage;

@@ -5,7 +5,8 @@ import Container from "react-bootstrap/Tabs";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import NewCategory from "./NewCategory";
-import { run_ajax, switchModal } from "Utils.js";
+import GeneralTable from "../GeneralTable.js";
+import { run_ajax, switchModal } from "../Utils.js";
 
 class Categories extends React.Component {
   constructor() {
@@ -19,6 +20,7 @@ class Categories extends React.Component {
     modal_new: false,
     objectName: "categories",
     attributes: ["name"],
+    tableHeaders: ["Name", "Associated Subs"],
   };
 
   componentDidMount() {
@@ -31,8 +33,8 @@ class Categories extends React.Component {
     });
   };
 
-  showObjects = () => {
-    return this.state.objects.map((object, index) => {
+  showObjects = (objects) => {
+    return objects.map((object, index) => {
       return (
         <tr key={index}>
           <td width="200" align="left">
@@ -56,17 +58,14 @@ class Categories extends React.Component {
     return (
       <>
         <Card>
-          <Card.Title>All Categories</Card.Title>
+          <Card.Header></Card.Header>
+          <Card.Title style={{ marginTop: "10px" }}>All Categories</Card.Title>
           <Card.Body>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Associated Subs</th>
-                </tr>
-              </thead>
-              <tbody>{this.showObjects()}</tbody>
-            </Table>
+            <GeneralTable
+              tableHeaders={this.state.tableHeaders}
+              showObjects={this.showObjects}
+              objects={this.state.objects}
+            />
           </Card.Body>
           <Card.Footer>
             <Button

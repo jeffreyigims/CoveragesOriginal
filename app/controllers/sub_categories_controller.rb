@@ -14,7 +14,7 @@ class SubCategoriesController < ApplicationController
     @sub_categories = order(@sub_categories, ORDERING_PARAMS)
     respond_to do |format|
       format.html { @sub_categories }
-      format.json { render json: SubCategorySerializer.new(@sub_categories).serializable_hash }
+      format.json { render json: SubCategoryTableSerializer.new(@sub_categories).serializable_hash }
     end
   end
 

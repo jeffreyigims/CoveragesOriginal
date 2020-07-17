@@ -8,7 +8,7 @@ import Col from "react-bootstrap/Col";
 import { Formik } from "formik";
 import * as yup from "yup";
 
-import { handleInputChange, handleClose, run_ajax } from "Utils.js";
+import { handleClose, run_ajax } from "../Utils.js";
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -17,12 +17,8 @@ const schema = yup.object({
 class NewCompany extends React.Component {
   constructor() {
     super();
-    this.handleInputChange = handleInputChange.bind(this);
     this.run_ajax = run_ajax.bind(this);
-  }
-
-  handleClose = () => {
-    this.props.switchModal(this.props.name);
+    this.handleClose = handleClose.bind(this);
   }
 
   handleCreate = (values) => {
@@ -30,7 +26,7 @@ class NewCompany extends React.Component {
       name: values.name
     }
     this.props.run_ajax("/companies.json", "POST", data);
-    this.handleClose();
+    this.handleClose(this.props.name);
   };
 
   render() {

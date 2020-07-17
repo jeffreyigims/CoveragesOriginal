@@ -4,9 +4,9 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Test from "./Test";
-import NewForm from "./NewForm";
-import { run_ajax, switchModal, handleCreate, handleClose } from "Utils.js";
+import GenTable from "../GenTable";
+import GeneralForm from "../GeneralForm";
+import { run_ajax, switchModal, handleCreate } from "../Utils.js";
 import { Formik } from "formik";
 import * as yup from "yup";
 
@@ -20,7 +20,6 @@ class Sports extends React.Component {
     this.run_ajax = run_ajax.bind(this);
     this.switchModal = switchModal.bind(this);
     this.handleCreate = handleCreate.bind(this);
-    this.handleClose = handleClose.bind(this);
   }
 
   state = {
@@ -67,7 +66,7 @@ class Sports extends React.Component {
     return (
       <Formik
         validationSchema={schema}
-        onSubmit={(values) => this.handleCreate(values)}
+        onSubmit={(values) => this.handleCreate(values, this.state.attributes)}
         initialValues={{
           name: "",
         }}
@@ -113,7 +112,7 @@ class Sports extends React.Component {
   render() {
     return (
       <>
-        <Test
+        <GenTable
           objects={this.state.objects}
           switchModal={this.switchModal}
           objectName={this.state.objectName}
@@ -121,7 +120,7 @@ class Sports extends React.Component {
           showObjects={this.showObjects}
           plural={this.state.plural}
         />
-        <NewForm
+        <GeneralForm
           show={this.state.modal_new}
           objectName={this.state.objectName}
           formStructure={this.formStructure}

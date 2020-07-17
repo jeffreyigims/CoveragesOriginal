@@ -9,23 +9,24 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import EditLeague from "./EditLeague";
 import NewClub from "../clubs/NewClub.js";
-
-import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
+import GeneralTable from "../GeneralTable.js";
+import { run_ajax, switchModal, handleDelete } from "../Utils.js";
 
 class LeagueDetails extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
     this.switchModal = switchModal.bind(this);
-    this.showSelected = showSelected.bind(this);
+    this.handleDelete = handleDelete.bind(this);
   }
 
   state = {
-    league: null,
-    clubs: [],
+    object: null,
+    objects: [],
     selectedCoverages: [],
-    modal_edit_league: false,
-    modal_new_club: false,
+    modal_edit: false,
+    modal_new: false,
+    tableHeaders: ["Name", "Code", "Groups"],
   };
 
   componentDidMount() {
@@ -34,20 +35,12 @@ class LeagueDetails extends React.Component {
 
   getObjects = () => {
     this.run_ajax("/leagues/" + this.props.id + ".json", "GET", {}, (res) => {
-      this.setState({ league: res.data, clubs: res.data.attributes.clubs });
+      this.setState({ object: res.data, objects: res.data.attributes.clubs });
     });
-    // this.run_ajax(
-    //   "/clubs.json?for_league=" + this.props.id,
-    //   "GET",
-    //   {},
-    //   (res) => {
-    //     this.setState({ clubs: res.data });
-    //   }
-    // );
   };
 
-  showClubs = () => {
-    return this.state.clubs.map((object, index) => {
+  showObjects = (objects) => {
+    return objects.map((object, index) => {
       return (
         <tr key={index}>
           <td width="200" align="left">
@@ -74,48 +67,55 @@ class LeagueDetails extends React.Component {
     return (
       <>
         <Card>
-          <Card.Title>{this.state.league?.attributes.name}</Card.Title>
+          <Card.Title>{this.state.object?.attributes.name}</Card.Title>
           <Card.Body>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Code</th>
-                  <th>Groups</th>
-                </tr>
-              </thead>
-              <tbody>{this.showClubs()}</tbody>
-            </Table>
+            <GeneralTable
+              tableHeaders={this.state.tableHeaders}
+              showObjects={this.showObjects}
+              objects={this.state.objects}
+            />
           </Card.Body>
           <Card.Footer>
             <Button
               className="btn btn-theme float-right"
               variant="primary"
-              onClick={(slot) => this.switchModal("modal_new_club")}
+              onClick={(slot) => this.switchModal("modal_new")}
             >
               Add Club
             </Button>
             <Button
               className="btn btn-theme float-right"
               variant="primary"
-              onClick={(slot) => this.switchModal("modal_edit_league")}
+              onClick={(slot) => this.switchModal("modal_edit")}
               style={{ marginRight: "10px" }}
             >
               Edit League
             </Button>
+            {this.state.objects.length == 0 && (
+              <Button
+                className="btn btn-theme float-right"
+                variant="danger"
+                onClick={() =>
+                  this.handleDelete("leagues", this.state.object.attributes.id)
+                }
+                style={{ marginRight: "10px" }}
+              >
+                Delete League
+              </Button>
+            )}
           </Card.Footer>
         </Card>
         <EditLeague
-          league={this.state.league}
-          name={"modal_edit_league"}
-          show={this.state.modal_edit_league}
+          league={this.state.object}
+          name={"modal_edit"}
+          show={this.state.modal_edit}
           run_ajax={this.run_ajax}
           switchModal={this.switchModal}
         />
         <NewClub
-          league={this.state.league}
-          name={"modal_new_club"}
-          show={this.state.modal_new_club}
+          league={this.state.object}
+          name={"modal_new"}
+          show={this.state.modal_new}
           run_ajax={this.run_ajax}
           switchModal={this.switchModal}
         />

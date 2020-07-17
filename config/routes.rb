@@ -29,11 +29,13 @@ Rails.application.routes.draw do
   patch "clubs/:id", to: "clubs#update"
   delete "clubs/:id", to: "clubs#destroy"
 
-  get "groups", to: "groups#index"
-  get "groups/:id", to: "groups#show"
-  post "groups", to: "groups#create"
-  patch "groups/:id", to: "groups#update"
-  delete "groups/:id", to: "groups#destroy"
+  # get "groups", to: "groups#index"
+  # get "groups/:id", to: "groups#show"
+  # post "groups", to: "groups#create"
+  # patch "groups/:id", to: "groups#update"
+  # delete "groups/:id", to: "groups#destroy"
+
+  resources :groups
 
   get "categories", to: "categories#index"
   get "categories/:id", to: "categories#show"

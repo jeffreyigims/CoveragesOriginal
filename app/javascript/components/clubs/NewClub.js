@@ -7,13 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Formik } from "formik";
 import * as yup from "yup";
-import {
-  handleInputChange,
-  handleClose,
-  run_ajax,
-  updateHelper,
-  handleDelete,
-} from "Utils.js";
+import { handleClose, run_ajax } from "../Utils.js";
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -23,12 +17,13 @@ const schema = yup.object({
 class NewClub extends React.Component {
   constructor() {
     super();
-    this.handleInputChange = handleInputChange.bind(this);
     this.run_ajax = run_ajax.bind(this);
+    this.handleClose = handleClose.bind(this);
   }
 
   state = {
-    leagues: [],
+    objects: [],
+    league_id: null,
   };
 
   componentDidMount() {
@@ -37,12 +32,12 @@ class NewClub extends React.Component {
 
   getObjects() {
     this.run_ajax("/leagues.json", "GET", {}, (res) => {
-      this.setState({ leagues: res.data, league_id: res.data[0]?.id });
+      this.setState({ objects: res.data, league_id: res.data[0]?.id });
     });
   }
 
   leagueOptions = () => {
-    return this.state.leagues.map((object, index) => {
+    return this.state.objects.map((object, index) => {
       return (
         <option key={index} value={object.attributes.id}>
           {" "}
@@ -52,13 +47,9 @@ class NewClub extends React.Component {
     });
   };
 
-  handleClose = () => {
-    this.props.switchModal(this.props.name);
-  };
-
   handleCreate = (values) => {
     var id;
-    if (values.league_id == null) { id = this.state.leagues[0].attributes.id }
+    if (values.league_id == null) { id = this.state.objects[0].attributes.id }
     else { id = values.league_id }
     let data = {
       name: values.name,
@@ -66,7 +57,7 @@ class NewClub extends React.Component {
       league_id: id
     }
     this.props.run_ajax("/clubs.json", "POST", data);
-    this.handleClose();
+    this.handleClose(this.props.name);
   };
 
   render() {

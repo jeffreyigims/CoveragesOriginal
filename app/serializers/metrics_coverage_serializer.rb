@@ -2,16 +2,16 @@ class MetricsCoverageSerializer
   include FastJsonapi::ObjectSerializer
   attributes :id, :has_coverage_line, :verified
 
-  attribute :league do |object|
-    object.club_group.club.league.name
+  attribute :leagues do |object|
+    object.league.name
   end
 
   attribute :club do |object|
-    object.club_group.club.name
+    object.club.name
   end
 
   attribute :group do |object|
-    object.club_group.group.name
+    object.group.name
   end
 
   attribute :category do |object|
@@ -23,10 +23,12 @@ class MetricsCoverageSerializer
   end
 
   attribute :carrier do |object|
-    object.coverage_carriers.empty? ? "" : object.coverage_carriers.first.carrier.name
+    target = object.coverage_carriers
+    target.empty? ? "" : target.first.carrier.name
   end
 
   attribute :broker do |object|
-    object.coverage_brokers.empty? ? "" : object.coverage_brokers.first.broker.company.name
+    target = object.coverage_brokers
+    target.empty? ? "" : target.first.broker.company.name
   end
 end

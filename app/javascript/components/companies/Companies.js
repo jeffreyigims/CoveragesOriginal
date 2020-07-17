@@ -2,9 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 import Table from "react-bootstrap/Table";
 import NewCompany from "./NewCompany";
-import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
+import GeneralTable from "../GeneralTable.js";
+import { run_ajax , switchModal } from "../Utils.js";
 
 class Companies extends React.Component {
   constructor() {
@@ -15,11 +17,10 @@ class Companies extends React.Component {
 
   state = {
     objects: [],
-    modal_show: false,
     modal_new: false,
-    selected: null,
     objectName: "companies",
     attributes: ["name"],
+    tableHeaders: ["Name", "Brokers"],
   };
 
   componentDidMount() {
@@ -32,8 +33,8 @@ class Companies extends React.Component {
     });
   };
 
-  showObjects = () => {
-    return this.state.objects.map((object, index) => {
+  showObjects = (objects) => {
+    return objects.map((object, index) => {
       return (
         <tr key={index}>
           <td width="200" align="left">
@@ -57,17 +58,14 @@ class Companies extends React.Component {
     return (
       <>
         <Card>
-          <Card.Title>All Companies</Card.Title>
+          <Card.Header></Card.Header>
+          <Card.Title style={{ marginTop: "10px" }}>All Companies</Card.Title>
           <Card.Body>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Brokers</th>
-                </tr>
-              </thead>
-              <tbody>{this.showObjects()}</tbody>
-            </Table>
+            <GeneralTable
+              tableHeaders={this.state.tableHeaders}
+              showObjects={this.showObjects}
+              objects={this.state.objects}
+            />
           </Card.Body>
           <Card.Footer>
             <Button

@@ -4,7 +4,8 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import NewCarrier from "./NewCarrier";
-import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
+import GeneralTable from "../GeneralTable.js";
+import { run_ajax, switchModal } from "../Utils.js";
 
 class Carriers extends React.Component {
   constructor() {
@@ -17,8 +18,9 @@ class Carriers extends React.Component {
     objects: [],
     modal_new: false,
     objectName: "Carrier",
-    objectPlural: "carriers",
+    plural: "carriers",
     attributes: ["name"],
+    tableHeaders: ["Name", "Coverages"],
   };
 
   componentDidMount() {
@@ -26,19 +28,19 @@ class Carriers extends React.Component {
   }
 
   getObjects = () => {
-    this.run_ajax("/" + this.state.objectPlural + ".json", "GET", {}, (res) => {
+    this.run_ajax("/" + this.state.plural + ".json", "GET", {}, (res) => {
       this.setState({ objects: res.data });
     });
   };
 
-  showObjects = () => {
-    return this.state.objects.map((object, index) => {
+  showObjects = (objects) => {
+    return objects.map((object, index) => {
       return (
         <tr key={index}>
           <td width="200" align="left">
             <Button
               variant="link"
-              href={"/" + this.state.objectPlural + "/" + object.attributes.id}
+              href={"/" + this.state.plural + "/" + object.attributes.id}
               style={{ color: "black" }}
             >
               {object.attributes.name}
@@ -56,17 +58,14 @@ class Carriers extends React.Component {
     return (
       <>
         <Card>
-          <Card.Title>All Carriers</Card.Title>
+          <Card.Header></Card.Header>
+          <Card.Title style={{ marginTop: "10px" }}>All Carriers</Card.Title>
           <Card.Body>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Coverages</th>
-                </tr>
-              </thead>
-              <tbody>{this.showObjects()}</tbody>
-            </Table>
+            <GeneralTable
+              tableHeaders={this.state.tableHeaders}
+              showObjects={this.showObjects}
+              objects={this.state.objects}
+            />
           </Card.Body>
           <Card.Footer>
             <Button

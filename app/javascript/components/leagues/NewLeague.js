@@ -7,8 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Formik } from "formik";
 import * as yup from "yup";
-
-import { handleInputChange, handleClose, run_ajax } from "Utils.js";
+import { handleClose, run_ajax } from "../Utils.js";
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -18,7 +17,7 @@ class NewLeague extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
-  }
+    this.handleClose = handleClose.bind(this);  }
 
   state = {
     sports: [],
@@ -45,10 +44,6 @@ class NewLeague extends React.Component {
     });
   };
 
-  handleClose = () => {
-    this.props.switchModal(this.props.name);
-  }
-
   handleCreate = (values) => {
     let data = {
       sport_id: values.sport_id,
@@ -56,7 +51,7 @@ class NewLeague extends React.Component {
       level: values.level,
     };
     this.props.run_ajax("/leagues.json", "POST", data);
-    this.handleClose();
+    this.handleClose(this.props.name);
   };
 
   render() {

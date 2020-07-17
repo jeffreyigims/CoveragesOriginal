@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Table from "react-bootstrap/Table";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import NewGroup from "./NewGroup";
-import { run_ajax, switchModal, capitalize, pluralize} from "Utils.js";
+import GeneralTable from "../GeneralTable.js";
+import { run_ajax, switchModal, capitalize, pluralize } from "../Utils.js";
 
 class Groups extends React.Component {
   constructor() {
@@ -12,14 +12,15 @@ class Groups extends React.Component {
     this.run_ajax = run_ajax.bind(this);
     this.switchModal = switchModal.bind(this);
     this.capitalize = capitalize.bind(this);
-    this.pluralize = pluralize.bind(this);
   }
 
   state = {
     objects: [],
     modal_new: false,
     objectName: "group",
+    plural: "groups",
     attributes: ["name"],
+    tableHeaders: ["Name", "Associated Clubs"],
   };
 
   componentDidMount() {
@@ -27,19 +28,19 @@ class Groups extends React.Component {
   }
 
   getObjects = () => {
-    this.run_ajax("/" + this.pluralize(this.state.objectName) + ".json", "GET", {}, (res) => {
+    this.run_ajax("/" + this.state.plural + ".json", "GET", {}, (res) => {
       this.setState({ objects: res.data });
     });
   };
 
-  showObjects = () => {
-    return this.state.objects.map((object, index) => {
+  showObjects = (objects) => {
+    return objects.map((object, index) => {
       return (
         <tr key={index}>
           <td width="200" align="left">
             <Button
               variant="link"
-              href={"/" + this.pluralize(this.state.objectName) + "/" + object.attributes.id}
+              href={"/" + this.state.plural + "/" + object.attributes.id}
               style={{ color: "black" }}
             >
               {object.attributes.name}
@@ -58,17 +59,15 @@ class Groups extends React.Component {
       <>
         <Card>
           <Card.Header></Card.Header>
-          <Card.Title style={{marginTop: "10px"}}>All {this.capitalize(this.pluralize(this.state.objectName))}</Card.Title>
+          <Card.Title style={{ marginTop: "10px" }}>
+            All {this.capitalize(this.state.plural)}
+          </Card.Title>
           <Card.Body>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Associated Clubs</th>
-                </tr>
-              </thead>
-              <tbody>{this.showObjects()}</tbody>
-            </Table>
+            <GeneralTable
+              tableHeaders={this.state.tableHeaders}
+              showObjects={this.showObjects}
+              objects={this.state.objects}
+            />
           </Card.Body>
           <Card.Footer>
             <Button
@@ -86,6 +85,7 @@ class Groups extends React.Component {
           run_ajax={this.run_ajax}
           switchModal={this.switchModal}
           objectName={this.state.objectName}
+          plural={this.state.plural}
           attributes={this.state.attributes}
         />
       </>

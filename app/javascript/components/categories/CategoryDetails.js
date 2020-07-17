@@ -2,30 +2,28 @@ import React from "react";
 import PropTypes, { object } from "prop-types";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Tabs";
 import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import EditCategory from "./EditCategory";
+import GeneralTable from "../GeneralTable.js";
 import NewSubCategory from "../sub_categories/NewSubCategory.js";
 
-import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
+import { run_ajax, switchModal, handleDelete } from "../Utils.js";
 
 class LeagueDetails extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
     this.switchModal = switchModal.bind(this);
-    this.showSelected = showSelected.bind(this);
+    this.handleDelete = handleDelete.bind(this);
   }
 
   state = {
     object: null,
-    subs: [],
+    objects: [],
     selectedCoverages: [],
-    modal_edit_league: false,
-    modal_new_club: false,
+    modal_edit: false,
+    modal_new: false,
+    tableHeaders: ["Name", "Coverages"],
   };
 
   componentDidMount() {
@@ -33,13 +31,21 @@ class LeagueDetails extends React.Component {
   }
 
   getObjects = () => {
-    this.run_ajax("/categories/" + this.props.id + ".json", "GET", {}, (res) => {
-      this.setState({ object: res.data, subs: res.data.attributes.sub_categories});
-    });
+    this.run_ajax(
+      "/categories/" + this.props.id + ".json",
+      "GET",
+      {},
+      (res) => {
+        this.setState({
+          object: res.data,
+          objects: res.data.attributes.sub_categories,
+        });
+      }
+    );
   };
 
-  showSubs = () => {
-    return this.state.subs.map((object, index) => {
+  showObjects = (objects) => {
+    return objects.map((object, index) => {
       return (
         <tr key={index}>
           <td width="200" align="left">
@@ -63,17 +69,16 @@ class LeagueDetails extends React.Component {
     return (
       <>
         <Card>
-          <Card.Title>{this.state.object?.attributes.name}</Card.Title>
+          <Card.Header></Card.Header>
+          <Card.Title style={{ marginTop: "10px" }}>
+            {this.state.object?.attributes.name}
+          </Card.Title>
           <Card.Body>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Coverages</th>
-                </tr>
-              </thead>
-              <tbody>{this.showSubs()}</tbody>
-            </Table>
+            <GeneralTable
+              tableHeaders={this.state.tableHeaders}
+              showObjects={this.showObjects}
+              objects={this.state.objects}
+            />
           </Card.Body>
           <Card.Footer>
             <Button
@@ -91,6 +96,21 @@ class LeagueDetails extends React.Component {
             >
               Edit Category
             </Button>
+            {this.state.objects.length == 0 && (
+              <Button
+                className="btn btn-theme float-right"
+                variant="danger"
+                onClick={() =>
+                  this.handleDelete(
+                    "categories",
+                    this.state.object.attributes.id
+                  )
+                }
+                style={{ marginRight: "10px" }}
+              >
+                Delete Category
+              </Button>
+            )}
           </Card.Footer>
         </Card>
         <EditCategory

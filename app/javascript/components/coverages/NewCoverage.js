@@ -11,7 +11,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Alert from 'react-bootstrap/Alert';
 
-import { run_ajax } from "Utils.js";
+import { run_ajax } from "../Utils.js";
 
 const schema = yup.object({});
 
@@ -107,7 +107,6 @@ class NewCoverage extends React.Component {
       this.run_ajax("/coverage_brokers.json", "POST", data, () => {});
     }
   }
-
 
   handleCreate = (values) => {
     let data = {

@@ -8,16 +8,16 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import EditGroup from "./EditGroup";
+import GeneralTable from "../GeneralTable.js";
 // import NewClubGroup from "../clubs/NewClubGroup.js";
 
-import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
+import { run_ajax, getObjects, switchModal } from "../Utils.js";
 
 class GroupDetails extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
     this.switchModal = switchModal.bind(this);
-    this.showSelected = showSelected.bind(this);
   }
 
   state = {
@@ -40,7 +40,12 @@ class GroupDetails extends React.Component {
     });
   };
 
-  showAssociated = () => {
+  handleDelete = () => {
+    this.run_ajax("/groups/".concat(this.props.id), "DELETE", {}, () => {});
+    window.location.replace("/groups");
+  };
+
+  showObjects = () => {
     return this.state.associated.map((object, index) => {
       return (
         <tr key={index}>
@@ -76,33 +81,30 @@ class GroupDetails extends React.Component {
         <Card>
           <Card.Title>{this.state.object?.attributes.name}</Card.Title>
           <Card.Body>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>League</th>
-                  <th>Name</th>
-                  <th>Code</th>
-                </tr>
-              </thead>
-              <tbody>{this.showAssociated()}</tbody>
-            </Table>
+            <GeneralTable
+              tableHeaders={["League", "Name", "Code"]}
+              showObjects={this.showObjects}
+              objects={this.state.associated}
+            />
           </Card.Body>
           <Card.Footer>
-            {/* <Button
-              className="btn btn-theme float-right"
-              variant="primary"
-              onClick={(slot) => this.switchModal("modal_new")}
-            >
-              Add Club
-            </Button> */}
             <Button
               className="btn btn-theme float-right"
               variant="primary"
-              onClick={(slot) => this.switchModal("modal_edit")}
-              style={{ marginRight: "10px" }}
+              onClick={() => this.switchModal("modal_edit")}
             >
               Edit Group
             </Button>
+            {this.state.associated.length == 0 && (
+              <Button
+                className="btn btn-theme float-right"
+                variant="danger"
+                onClick={this.handleDelete}
+                style={{ marginRight: "10px" }}
+              >
+                Delete Group
+              </Button>
+            )}
           </Card.Footer>
         </Card>
         <EditGroup
@@ -112,13 +114,6 @@ class GroupDetails extends React.Component {
           run_ajax={this.run_ajax}
           switchModal={this.switchModal}
         />
-        {/* <NewClubGroup
-          object={this.state.object}
-          name={"modal_new"}
-          show={this.state.modal_new}
-          run_ajax={this.run_ajax}
-          switchModal={this.switchModal}
-        /> */}
       </>
     );
   }

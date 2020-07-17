@@ -7,8 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Formik } from "formik";
 import * as yup from "yup";
-
-import { handleInputChange, handleClose, run_ajax } from "Utils.js";
+import { handleClose, run_ajax } from "../Utils.js";
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -17,20 +16,16 @@ const schema = yup.object({
 class NewCarrier extends React.Component {
   constructor() {
     super();
-    this.handleInputChange = handleInputChange.bind(this);
     this.run_ajax = run_ajax.bind(this);
-  }
-
-  handleClose = () => {
-    this.props.switchModal(this.props.name);
+    this.handleClose = handleClose.bind(this);
   }
 
   handleCreate = (values) => {
     let data = {
       name: values.name
     }
-    this.props.run_ajax("/" + this.props.objectName + ".json", "POST", data);
-    this.handleClose();
+    this.props.run_ajax("/carriers.json", "POST", data);
+    this.handleClose(this.props.name);
   };
 
   render() {

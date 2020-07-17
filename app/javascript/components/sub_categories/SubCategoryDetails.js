@@ -8,21 +8,23 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import EditSubCategory from "./EditSubCategory";
+import GeneralTable from "../GeneralTable.js";
+import { EyeFill } from "react-bootstrap-icons";
 
-import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
+import { run_ajax, switchModal } from "../Utils.js";
 
 class SubCategoryDetails extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
     this.switchModal = switchModal.bind(this);
-    this.showSelected = showSelected.bind(this);
   }
 
   state = {
     object: null,
-    coverages: [],
+    objects: [],
     modal_edit: false,
+    tableHeaders: ["Club", "Group", "Start", "Verified", "View"],
   };
 
   componentDidMount() {
@@ -37,14 +39,14 @@ class SubCategoryDetails extends React.Component {
       (res) => {
         this.setState({
           object: res.data,
-          coverages: res.data.attributes.coverages,
+          objects: res.data.attributes.coverages,
         });
       }
     );
   };
 
-  showCoverages = () => {
-    return this.state.coverages.map((object, index) => {
+  showObjects = (objects) => {
+    return objects.map((object, index) => {
       return (
         <tr key={index}>
           <td width="200" align="left">
@@ -63,34 +65,48 @@ class SubCategoryDetails extends React.Component {
             {object.data.attributes.start_date}
           </td>
           <td width="200" align="left">
-            {object.data.attributes.end_date}
-          </td>
-          <td width="200" align="left">
             {object.data.attributes.verified ? "true" : "false"}
+          </td>
+          <td width="100" align="center">
+            <Button
+              variant="link"
+              href={"/coverages/" + object.data.attributes.id}
+              style={{ color: "black" }}
+            >
+              <EyeFill />
+            </Button>
           </td>
         </tr>
       );
     });
   };
 
+  handleDelete = () => {
+    this.run_ajax(
+      "/sub_categories/".concat(this.state.object.attributes.id),
+      "DELETE",
+      {},
+      () => {}
+    );
+    window.location.replace(
+      "/categories/".concat(this.state.object.attributes.category_id)
+    );
+  };
+
   render() {
     return (
       <>
         <Card>
-          <Card.Title>{this.state.object?.attributes.name}</Card.Title>
+          <Card.Header></Card.Header>
+          <Card.Title style={{ marginTop: "10px" }}>
+            {this.state.object?.attributes.name}
+          </Card.Title>
           <Card.Body>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Club</th>
-                  <th>Group</th>
-                  <th>Start</th>
-                  <th>End</th>
-                  <th>Verified</th>
-                </tr>
-              </thead>
-              <tbody>{this.showCoverages()}</tbody>
-            </Table>
+            <GeneralTable
+              tableHeaders={this.state.tableHeaders}
+              showObjects={this.showObjects}
+              objects={this.state.objects}
+            />
           </Card.Body>
           <Card.Footer>
             <Button
@@ -101,6 +117,16 @@ class SubCategoryDetails extends React.Component {
             >
               Edit Sub
             </Button>
+            {this.state.objects.length == 0 && (
+              <Button
+                className="btn btn-theme float-right"
+                variant="danger"
+                onClick={() => this.handleDelete()}
+                style={{ marginRight: "10px" }}
+              >
+                Delete Sub
+              </Button>
+            )}
           </Card.Footer>
         </Card>
         <EditSubCategory

@@ -7,8 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Formik } from "formik";
 import * as yup from "yup";
-
-import { handleInputChange, handleClose, run_ajax } from "Utils.js";
+import { handleClose, run_ajax, handleCreate } from "../Utils.js";
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -17,30 +16,28 @@ const schema = yup.object({
 class NewGroup extends React.Component {
   constructor() {
     super();
-    this.handleInputChange = handleInputChange.bind(this);
     this.handleClose = handleClose.bind(this);
     this.run_ajax = run_ajax.bind(this);
+    this.handleCreate = handleCreate.bind(this);
   }
-
-  handleCreate = (values) => {
-      let data = {
-          name: values.name
-      }
-    this.props.run_ajax("/groups.json", "POST", data);
-    this.handleClose();
-  };
 
   render() {
     return (
       <Modal show={this.props.show} onHide={this.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>New Group</Modal.Title>
+          <Modal.Title>
+            New{" "}
+            {this.props.objectName.charAt(0).toUpperCase() +
+              this.props.objectName.slice(1)}
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <Formik
             validationSchema={schema}
-            onSubmit={(values) => this.handleCreate(values)}
+            onSubmit={(values) =>
+              this.handleCreate(values, this.props.attributes)
+            }
             initialValues={{
               name: "",
             }}
@@ -75,7 +72,9 @@ class NewGroup extends React.Component {
                   type="submit"
                   variant="primary"
                 >
-                  Create Group
+                  Create{" "}
+                  {this.props.objectName.charAt(0).toUpperCase() +
+                    this.props.objectName.slice(1)}
                 </Button>
               </Form>
             )}

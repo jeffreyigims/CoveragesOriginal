@@ -2,27 +2,25 @@ import React from "react";
 import PropTypes, { object } from "prop-types";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Tabs";
 import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import EditBroker from "./EditBroker";
+import GeneralTable from "../GeneralTable.js";
+import { EyeFill } from "react-bootstrap-icons";
 
-import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
+import { run_ajax, switchModal } from "../Utils.js";
 
 class BrokerDetails extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
     this.switchModal = switchModal.bind(this);
-    this.showSelected = showSelected.bind(this);
   }
 
   state = {
     object: null,
-    coverages: [],
+    objects: [],
     modal_edit: false,
+    tableHeaders: ["Club", "Group", "Start", "Verified", "View"],
   };
 
   componentDidMount() {
@@ -31,12 +29,25 @@ class BrokerDetails extends React.Component {
 
   getObjects = () => {
     this.run_ajax("/brokers/" + this.props.id + ".json", "GET", {}, (res) => {
-      this.setState({ object: res.data, coverages: res.data.attributes.coverages});
+      this.setState({
+        object: res.data,
+        objects: res.data.attributes.coverages,
+      });
     });
   };
 
-  showCoverages = () => {
-    return this.state.coverages.map((object, index) => {
+  handleDelete = () => {
+    this.run_ajax(
+      "/brokers/".concat(this.state.object.attributes.id),
+      "DELETE",
+      {},
+      () => {}
+    );
+    window.location.replace("/companies/".concat(this.state.object.attributes.company.id));
+  };
+
+  showObjects = (objects) => {
+    return objects.map((object, index) => {
       return (
         <tr key={index}>
           <td width="200" align="left">
@@ -55,10 +66,16 @@ class BrokerDetails extends React.Component {
             {object.data.attributes.start_date}
           </td>
           <td width="200" align="left">
-            {object.data.attributes.end_date}
-          </td>
-          <td width="200" align="left">
             {object.data.attributes.verified ? "true" : "false"}
+          </td>
+          <td width="100" align="center">
+            <Button
+              variant="link"
+              href={"/coverages/" + object.data.attributes.id}
+              style={{ color: "black" }}
+            >
+              <EyeFill />
+            </Button>
           </td>
         </tr>
       );
@@ -69,19 +86,17 @@ class BrokerDetails extends React.Component {
     return (
       <>
         <Card>
-          <Card.Title>{this.state.object?.attributes.name}</Card.Title>
+          <Card.Header></Card.Header>
+          <Card.Title style={{ marginTop: "10px" }}>
+            {this.state.object?.attributes.name}
+          </Card.Title>
           <Card.Body>
-          <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Club</th>
-                  <th>Group</th>
-                  <th>Start</th>
-                  <th>End</th>
-                  <th>Verified</th>
-                </tr>
-              </thead>
-              <tbody>{this.showCoverages()}</tbody>
+            <Table striped bordered hover>
+              <GeneralTable
+                tableHeaders={this.state.tableHeaders}
+                showObjects={this.showObjects}
+                objects={this.state.objects}
+              />
             </Table>
           </Card.Body>
           <Card.Footer>
@@ -93,10 +108,20 @@ class BrokerDetails extends React.Component {
             >
               Edit Broker
             </Button>
+            {this.state.objects.length == 0 && (
+              <Button
+                className="btn btn-theme float-right"
+                variant="danger"
+                onClick={() => this.handleDelete()}
+                style={{ marginRight: "10px" }}
+              >
+                Delete Broker
+              </Button>
+            )}
           </Card.Footer>
         </Card>
         <EditBroker
-          selected={this.state.object}
+          object={this.state.object}
           name={"modal_edit"}
           show={this.state.modal_edit}
           run_ajax={this.run_ajax}

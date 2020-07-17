@@ -9,12 +9,11 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { Formik } from "formik";
 import * as yup from "yup";
 import {
-  handleInputChange,
   handleClose,
   handleUpdate,
   updateHelper,
   handleDelete,
-} from "Utils.js";
+} from "../Utils.js";
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -23,7 +22,6 @@ const schema = yup.object({
 class EditGroup extends React.Component {
   constructor() {
     super();
-    this.handleInputChange = handleInputChange.bind(this);
     this.handleDelete = handleDelete.bind(this);
   }
 

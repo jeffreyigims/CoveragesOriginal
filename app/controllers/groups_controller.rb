@@ -20,7 +20,7 @@ class GroupsController < ApplicationController
 
   def show
     respond_to do |format|
-      format.html { @groups }
+      format.html { @group }
       format.json { render json: GroupSerializer.new(@group).serializable_hash }
     end
   end

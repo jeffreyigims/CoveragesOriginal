@@ -1,7 +1,7 @@
 import React from "react";
 import Metrics from "./Metrics";
 import Card from "react-bootstrap/Card";
-import { run_ajax } from "Utils.js";
+import { run_ajax } from "./Utils.js";
 
 class Home extends React.Component {
   constructor(props) {

@@ -2,24 +2,24 @@ import React from "react";
 import PropTypes, { object } from "prop-types";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Tabs";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import ShowClub from "./ShowClub";
+import EditClub from "./EditClub";
 import NewClub from "./NewClub";
-import NewClubGroup from "./NewClubGroup";
+import NewClubGroup from "../club_groups/NewClubGroup";
 import NewCoverage from "../coverages/NewCoverage";
-import ShowCoverage from "./ShowCoverage";
-import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
+import GeneralTable from "../GeneralTable.js";
+import { EyeFill } from "react-bootstrap-icons";
+import { run_ajax, switchModal, handleDelete } from "../Utils.js";
 
 class ClubDetails extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
     this.switchModal = switchModal.bind(this);
-    this.showSelected = showSelected.bind(this);
+    this.handleDelete = handleDelete.bind(this);
   }
 
   state = {
@@ -34,6 +34,7 @@ class ClubDetails extends React.Component {
     objectName: "clubs",
     attributes: ["group_id"],
     modal_new_coverage: false,
+    tableHeaders: ["Category", "Sub", "Notes", "Verified", "View"],
   };
 
   componentDidMount() {
@@ -73,24 +74,36 @@ class ClubDetails extends React.Component {
     });
   };
 
-  showCoverages = () => {
-    return this.state.selectedCoverages.map((coverage, index) => {
+  showCoverages = (objects) => {
+    return objects.map((coverage, index) => {
       return (
-        <tr key={index} onClick={(slot) => this.showCoverage(coverage)}>
+        <tr key={index}>
           <td width="200" align="left">
-            {coverage.attributes.category.name}
+            <Button
+              variant="link"
+              href={"/categories/" + coverage.attributes.category.id}
+              style={{ color: "black" }}
+            >
+              {coverage.attributes.category.name}
+            </Button>{" "}
           </td>
           <td width="300" align="left">
             {coverage.attributes.sub_category.name}
-          </td>
-          <td width="200" align="left">
-            {coverage.attributes.start_date}
           </td>
           <td width="200" align="left">
             {coverage.attributes.notes}
           </td>
           <td width="100" align="left">
             {coverage.attributes.verified ? "true" : "false"}
+          </td>
+          <td width="100" align="center">
+            <Button
+              variant="link"
+              href={"/coverages/" + coverage.attributes.id}
+              style={{ color: "black" }}
+            >
+              <EyeFill />
+            </Button>
           </td>
         </tr>
       );
@@ -115,7 +128,10 @@ class ClubDetails extends React.Component {
     return (
       <>
         <Card>
-          <Card.Title>{this.state.club?.attributes.name}</Card.Title>
+          <Card.Header></Card.Header>
+          <Card.Title style={{ marginTop: "10px" }}>
+            {this.state.club?.attributes.name}
+          </Card.Title>
           <Card.Body>
             <Form>
               <Row>
@@ -132,18 +148,11 @@ class ClubDetails extends React.Component {
                 </Form.Group>
               </Row>
             </Form>
-            <Table striped bordered hover responsive className="header-fixed">
-              <thead>
-                <tr>
-                  <th>Category</th>
-                  <th>Sub</th>
-                  <th>Start</th>
-                  <th>Notes</th>
-                  <th>Verified</th>
-                </tr>
-              </thead>
-              <tbody>{this.showCoverages()}</tbody>
-            </Table>
+            <GeneralTable
+              tableHeaders={this.state.tableHeaders}
+              showObjects={this.showCoverages}
+              objects={this.state.coverages}
+            />
           </Card.Body>
           <Card.Footer>
             {"      "}
@@ -164,6 +173,18 @@ class ClubDetails extends React.Component {
                 New Coverage
               </Button>
             )}
+            {this.state.coverages.length == 0 && (
+              <Button
+                className="btn btn-theme float-right"
+                variant="danger"
+                onClick={() =>
+                  this.handleDelete("clubs", this.state.club.attributes.id)
+                }
+                style={{ marginRight: "10px" }}
+              >
+                Delete Club
+              </Button>
+            )}
           </Card.Footer>
         </Card>
         <NewClubGroup
@@ -175,14 +196,16 @@ class ClubDetails extends React.Component {
           attributes={this.state.attributes}
           club={this.state.club}
         />
-        <NewCoverage
-          name={"modal_new_coverage"}
-          show={this.state.modal_new_coverage}
-          run_ajax={this.run_ajax}
-          switchModal={this.switchModal}
-          group={this.state.group?.attributes}
-          club={this.state.club?.attributes}
-        />
+        {this.state.modal_new_coverage && (
+          <NewCoverage
+            name={"modal_new_coverage"}
+            show={this.state.modal_new_coverage}
+            run_ajax={this.run_ajax}
+            switchModal={this.switchModal}
+            group={this.state.group?.attributes}
+            club={this.state.club?.attributes}
+          />
+        )}
       </>
     );
   }

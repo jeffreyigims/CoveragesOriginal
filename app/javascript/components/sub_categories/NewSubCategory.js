@@ -8,7 +8,7 @@ import Col from "react-bootstrap/Col";
 import { Formik } from "formik";
 import * as yup from "yup";
 
-import { handleInputChange, handleClose, run_ajax } from "Utils.js";
+import { handleClose, run_ajax } from "../Utils.js";
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -17,14 +17,11 @@ const schema = yup.object({
 class NewSubCategory extends React.Component {
   constructor() {
     super();
+    this.handleClose = handleClose.bind(this);
     this.run_ajax = run_ajax.bind(this);
   }
 
   componentDidMount() {}
-
-  handleClose = () => {
-    this.props.switchModal(this.props.name);
-  };
 
   handleCreate = (values) => {
     let data = {
@@ -32,7 +29,7 @@ class NewSubCategory extends React.Component {
       name: values.name,
     };
     this.props.run_ajax("/sub_categories.json", "POST", data);
-    this.handleClose();
+    this.handleClose(this.props.name);
   };
 
   render() {

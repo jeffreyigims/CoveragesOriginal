@@ -6,7 +6,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import CoveragesTable from "./CoveragesTable";
 import NewCoverage from "./NewCoverage";
-import { switchModal } from "Utils.js";
+import { switchModal } from "../Utils.js";
 
 class Coverages extends React.Component {
   constructor() {

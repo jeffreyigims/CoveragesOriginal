@@ -8,13 +8,7 @@ import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Formik } from "formik";
 import * as yup from "yup";
-import {
-  handleInputChange,
-  handleClose,
-  handleUpdate,
-  updateHelper,
-  handleDelete,
-} from "Utils.js";
+import { handleClose, run_ajax } from "../Utils.js";
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -23,15 +17,9 @@ const schema = yup.object({
 class ShowSport extends React.Component {
   constructor() {
     super();
-    this.handleInputChange = handleInputChange.bind(this);
-    this.handleDelete = handleDelete.bind(this);
+    this.handleClose = handleClose.bind(this);
+    this.run_ajax = run_ajax.bind(this);
   }
-
-  state = {};
-
-  handleClose = () => {
-    this.props.switchModal(this.props.name);
-  };
 
   handleUpdate = (values) => {
     let data = {
@@ -42,13 +30,10 @@ class ShowSport extends React.Component {
       "PATCH",
       data
     );
-    this.handleClose();
+    this.handleClose(this.props.name);
   };
 
   render() {
-    if (this.props.selected == null) {
-      return null;
-    }
     return (
       <>
         <Modal show={this.props.show} onHide={this.handleClose}>

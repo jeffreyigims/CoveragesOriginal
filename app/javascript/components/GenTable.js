@@ -4,13 +4,13 @@ import Table from "react-bootstrap/Table";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
-class Test extends React.Component {
+class GeneralTable extends React.Component {
   render() {
     return (
       <>
         <Card>
           <Card.Header></Card.Header>
-          <Card.Title style={{marginTop: "10px"}}>
+          <Card.Title style={{ marginTop: "10px" }}>
             All{" "}
             {this.props.plural.charAt(0).toUpperCase() +
               this.props.plural.slice(1)}
@@ -44,4 +44,4 @@ class Test extends React.Component {
   }
 }
 
-export default Test;
+export default GeneralTable;

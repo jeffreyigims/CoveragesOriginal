@@ -7,7 +7,8 @@ import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import NewLeague from "./NewLeague";
-import { run_ajax, switchModal } from "Utils.js";
+import GeneralTable from "../GeneralTable.js";
+import { run_ajax, switchModal } from "../Utils.js";
 
 class Leagues extends React.Component {
   constructor() {
@@ -18,9 +19,10 @@ class Leagues extends React.Component {
 
   state = {
     leagues: [],
-    selectedLeagues: [],
+    objects: [],
     sports: [],
     modal_new: false,
+    tableHeaders: ["Name", "Level"]
   };
 
   componentDidMount() {
@@ -29,7 +31,7 @@ class Leagues extends React.Component {
 
   getObjects = () => {
     this.run_ajax("/leagues.json", "GET", {}, (res) => {
-      this.setState({ leagues: res.data, selectedLeagues: res.data });
+      this.setState({ leagues: res.data, objects: res.data });
     });
     this.run_ajax("/sports.json", "GET", {}, (res) => {
       this.setState({ sports: res.data });
@@ -47,8 +49,8 @@ class Leagues extends React.Component {
     });
   };
 
-  showObjects = () => {
-    return this.state.selectedLeagues.map((object, index) => {
+  showObjects = (objects) => {
+    return objects.map((object, index) => {
       return (
         <tr key={index}>
           <td width="200" align="left">
@@ -101,15 +103,11 @@ class Leagues extends React.Component {
                 </Form.Group>
               </Row>
             </Form>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Level</th>
-                </tr>
-              </thead>
-              <tbody>{this.showObjects()}</tbody>
-            </Table>
+            <GeneralTable
+              tableHeaders={this.state.tableHeaders}
+              showObjects={this.showObjects}
+              objects={this.state.objects}
+            />
           </Card.Body>
           <Card.Footer>
             <Button

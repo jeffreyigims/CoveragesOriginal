@@ -12,7 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Formik } from "formik";
 import * as yup from "yup";
 
-import { run_ajax, getObjects, switchModal, showSelected } from "Utils.js";
+import { run_ajax, getObjects, switchModal, showSelected } from "../Utils.js";
 
 const schema = yup.object({});
 

@@ -14,7 +14,7 @@ class BrokersController < ApplicationController
     @brokers = order(@brokers, ORDERING_PARAMS)
     respond_to do |format|
       format.html { @brokers }
-      format.json { render json: BrokerSerializer.new(@brokers).serializable_hash }
+      format.json { render json: BrokerTableSerializer.new(@brokers).serializable_hash }
     end
 end
 
@@ -26,7 +26,7 @@ def show
 end 
 
   def create
-    @broker = Company.new(broker_params)
+    @broker = Broker.new(broker_params)
     if !@broker.save
       render json: @broker.errors, status: :unprocessable_entity
     end
