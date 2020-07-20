@@ -3,7 +3,10 @@ module Populator
     require "faker"
 
     def create_all
-      @user = FactoryBot.create(:user, password: "secret", password_confirmation: "secret")
+      puts("Create users")
+      @admin = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "admin", username: "user", password: "secret", password_confirmation: "secret")
+      @contact_steelers = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "contact", username: "user", password: "secret", password_confirmation: "secret")
+      @contact_pirates = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "contact", username: "user", password: "secret", password_confirmation: "secret")
 
       @football = FactoryBot.create(:sport, name: "football")
       @baseball = FactoryBot.create(:sport, name: "baseball")
@@ -49,6 +52,9 @@ module Populator
       @hounds = FactoryBot.create(:club, name: "Hounds", abbreviation: "MI", league: @lacrosse_mll)
       @rattlers = FactoryBot.create(:club, name: "Rattlers", abbreviation: "MI", league: @lacrosse_mll)
       @blaze = FactoryBot.create(:club, name: "Blaze", abbreviation: "MI", league: @lacrosse_mll)
+
+      FactoryBot.create(:user_club, user: @contact_steelers, club: @steelers)
+      FactoryBot.create(:user_club, user: @contact_pirates, club: @pirates)
 
       @players = FactoryBot.create(:group, name: "players")
       @front_office = FactoryBot.create(:group, name: "front office")
