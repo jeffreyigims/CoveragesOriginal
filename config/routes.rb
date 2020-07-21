@@ -29,13 +29,11 @@ Rails.application.routes.draw do
   patch "clubs/:id", to: "clubs#update"
   delete "clubs/:id", to: "clubs#destroy"
 
-  # get "groups", to: "groups#index"
-  # get "groups/:id", to: "groups#show"
-  # post "groups", to: "groups#create"
-  # patch "groups/:id", to: "groups#update"
-  # delete "groups/:id", to: "groups#destroy"
-
-  resources :groups
+  get "groups", to: "groups#index"
+  get "groups/:id", to: "groups#show"
+  post "groups", to: "groups#create"
+  patch "groups/:id", to: "groups#update"
+  delete "groups/:id", to: "groups#destroy"
 
   get "categories", to: "categories#index"
   get "categories/:id", to: "categories#show"
@@ -67,6 +65,18 @@ Rails.application.routes.draw do
   patch "brokers/:id", to: "brokers#update"
   delete "brokers/:id", to: "brokers#destroy"
 
+  get "users", to: "users#index"
+  get "users/:id", to: "users#show"
+  post "users", to: "users#create"
+  patch "users/:id", to: "users#update"
+  delete "users/:id", to: "users#destroy"
+
+  # get "users", to: "users#index"
+  # get "users/:id", to: "users#show"
+  post "user_clubs", to: "user_clubs#create"
+  # patch "user_clubs/:id", to: "user_clubs#update"
+  delete "user_clubs/:id", to: "user_clubs#destroy"
+
   # Routes for intermediary tables 
   # We do not need to update or get individual entries
   get "coverage_carriers", to: "coverage_carriers#index"
@@ -89,10 +99,12 @@ Rails.application.routes.draw do
 
   # get "metrics", to: "home#metrics", as: :metrics  
   get "charts", to: "metrics#chart", as: :charts
-  get "metrics", to: "metrics#metrics", as: :metrics
+  get "metrics", to: "metrics#metrics"
 
   # Home route
   get "home", to: "home#index", as: :home
+  get "tables", to: "home#metrics", as: :tables
+  get "add_coverage", to: "home#add_coverage", as: :add_coverage
 
   root "home#index"
 end

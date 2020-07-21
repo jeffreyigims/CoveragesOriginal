@@ -12,7 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Formik } from "formik";
 import * as yup from "yup";
 
-import { run_ajax, getObjects, switchModal, showSelected } from "../Utils.js";
+import { run_ajax, getObjects, switchModal } from "../Utils.js";
 
 const schema = yup.object({});
 
@@ -21,7 +21,6 @@ class CoverageDetails extends React.Component {
     super();
     this.run_ajax = run_ajax.bind(this);
     this.switchModal = switchModal.bind(this);
-    this.showSelected = showSelected.bind(this);
   }
 
   state = {

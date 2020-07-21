@@ -11,7 +11,7 @@ import Table from "react-bootstrap/Table";
 class GeneralTable extends React.Component {
   render() {
     if (this.props.objects.length == 0) {
-      return "There are no entries in the database.";
+      return this.props.message || "There are no entries in the database.";
     }
     return (
       <>

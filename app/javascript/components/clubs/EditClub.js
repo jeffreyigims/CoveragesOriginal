@@ -8,12 +8,11 @@ import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {handleInputChange, handleClose, handleUpdate, updateHelper, handleDelete} from '../Utils.js';
+import {handleClose, handleUpdate, updateHelper, handleDelete} from '../Utils.js';
 
 class EditClub extends React.Component {
   constructor(){
     super();
-    this.handleInputChange = handleInputChange.bind(this);
     this.handleClose = handleClose.bind(this);
     this.handleUpdate = handleUpdate.bind(this);
     this.updateHelper = updateHelper.bind(this);

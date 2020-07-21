@@ -4,9 +4,9 @@ module Populator
 
     def create_all
       puts("Create users")
-      @admin = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "admin", username: "user", password: "secret", password_confirmation: "secret")
-      @contact_steelers = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "contact", username: "user", password: "secret", password_confirmation: "secret")
-      @contact_pirates = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "contact", username: "user", password: "secret", password_confirmation: "secret")
+      @admin = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "admin", username: "admin", password: "secret", password_confirmation: "secret")
+      @contact_steelers = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "contact", username: "steelers", password: "secret", password_confirmation: "secret")
+      @contact_pirates = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "contact", username: "pirates", password: "secret", password_confirmation: "secret")
 
       @football = FactoryBot.create(:sport, name: "football")
       @baseball = FactoryBot.create(:sport, name: "baseball")

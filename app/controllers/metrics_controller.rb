@@ -2,6 +2,10 @@ class MetricsController < ApplicationController
 
     def metrics 
       @coverages = Coverage.all 
+      if current_user.role?(:contact)
+        @club = current_user.current_club 
+      end 
+      @coverages = @coverages.for_club(@club) unless @club.nil?
       render json: MetricsCoverageSerializer.new(@coverages).serializable_hash
     end 
   

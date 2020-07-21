@@ -1,6 +1,6 @@
 class ClubSerializer
     include FastJsonapi::ObjectSerializer
-    attributes :id, :name, :abbreviation
+    attributes :id, :name, :abbreviation, :league_id
 
     attribute :club_groups_count do |object|
         object.club_groups.length

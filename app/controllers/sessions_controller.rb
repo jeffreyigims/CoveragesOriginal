@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
     user = User.authenticate(params["user"][:username], params["user"][:password])
     if user
       session[:user_id] = user.id
-      if current_user.role?(:admin)
+      if current_user.role?(:admin) or current_user.role?(:contact)
         redirect_to home_path, notice: "Logged in!"
       end
     else
