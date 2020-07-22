@@ -23,19 +23,6 @@ ActiveRecord::Schema.define(version: 2020_07_20_142245) do
     t.index ["company_id"], name: "index_brokers_on_company_id"
   end
 
-  create_table "carrier_contacts", force: :cascade do |t|
-    t.date "start_date"
-    t.date "end_date"
-    t.string "notes"
-    t.boolean "active"
-    t.bigint "contact_id", null: false
-    t.bigint "carrier_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["carrier_id"], name: "index_carrier_contacts_on_carrier_id"
-    t.index ["contact_id"], name: "index_carrier_contacts_on_contact_id"
-  end
-
   create_table "carriers", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -46,19 +33,6 @@ ActiveRecord::Schema.define(version: 2020_07_20_142245) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "club_contacts", force: :cascade do |t|
-    t.date "start_date"
-    t.date "end_date"
-    t.string "notes"
-    t.boolean "active"
-    t.bigint "contact_id", null: false
-    t.bigint "club_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["club_id"], name: "index_club_contacts_on_club_id"
-    t.index ["contact_id"], name: "index_club_contacts_on_contact_id"
   end
 
   create_table "club_groups", force: :cascade do |t|
@@ -159,7 +133,6 @@ ActiveRecord::Schema.define(version: 2020_07_20_142245) do
   create_table "user_clubs", force: :cascade do |t|
     t.bigint "club_id"
     t.bigint "user_id"
-    t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["club_id"], name: "index_user_clubs_on_club_id"
@@ -178,10 +151,6 @@ ActiveRecord::Schema.define(version: 2020_07_20_142245) do
   end
 
   add_foreign_key "brokers", "companies"
-  add_foreign_key "carrier_contacts", "carriers"
-  add_foreign_key "carrier_contacts", "contacts"
-  add_foreign_key "club_contacts", "clubs"
-  add_foreign_key "club_contacts", "contacts"
   add_foreign_key "club_groups", "clubs"
   add_foreign_key "club_groups", "groups"
   add_foreign_key "clubs", "leagues"

@@ -29,7 +29,7 @@ class User < ApplicationRecord
     contacts.empty? ? nil : contacts.first.club
   end
 
-  def current_contact 
+  def current_contact
     contacts = self.user_clubs.active
     contacts.empty? ? nil : contacts.first
   end
