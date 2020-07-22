@@ -5,6 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import Alert from "react-bootstrap/Alert";
 import { run_ajax } from "./Utils.js";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -32,6 +33,8 @@ class CoverageWizardCoverages extends React.Component {
     carriers: [],
     coverages: [],
     tableHeaders: ["Group", "Category", "Sub", "Carrier", "Broker", "Remove"],
+    added: 0,
+    alert: false,
   };
 
   componentDidMount() {
@@ -158,7 +161,11 @@ class CoverageWizardCoverages extends React.Component {
         );
       });
     });
-    this.setState({ coverages: [] })
+    this.setState({
+      coverages: [],
+      added: this.state.coverages.length,
+      alert: true,
+    });
   };
 
   handleSubmitCarriersBrokers = (response, carriers, brokers) => {
@@ -227,6 +234,15 @@ class CoverageWizardCoverages extends React.Component {
   render() {
     return (
       <>
+        <Alert
+          variant="success"
+          show={this.state.alert}
+          dismissible
+          onClose={() => this.setState({ alert: false })}
+          style={{ margin: "10px" }}
+        >
+          Successfully added {this.state.added} coverages to the system.
+        </Alert>
         <Row>
           <Col style={{ marginRight: "0px" }}>
             <Card>
