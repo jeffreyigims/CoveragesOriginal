@@ -9,7 +9,7 @@ class ClubsController < ApplicationController
     ORDERING_PARAMS = []
 
     def index
-      @clubs = boolean_filter(Club.all, BOOLEAN_FILTERING_PARAMS)
+      @clubs = boolean_filter(Club.alphabetical, BOOLEAN_FILTERING_PARAMS)
       @clubs = param_filter(@clubs, PARAM_FILTERING_PARAMS)
       @clubs = order(@clubs, ORDERING_PARAMS)
       respond_to do |format|

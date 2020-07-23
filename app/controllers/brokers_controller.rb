@@ -9,7 +9,7 @@ class BrokersController < ApplicationController
   ORDERING_PARAMS = []
 
   def index
-    @brokers = boolean_filter(Broker.all, BOOLEAN_FILTERING_PARAMS)
+    @brokers = boolean_filter(Broker.alphabetical, BOOLEAN_FILTERING_PARAMS)
     @brokers = param_filter(@brokers, PARAM_FILTERING_PARAMS)
     @brokers = order(@brokers, ORDERING_PARAMS)
     respond_to do |format|

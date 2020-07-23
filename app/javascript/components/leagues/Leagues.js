@@ -22,7 +22,8 @@ class Leagues extends React.Component {
     objects: [],
     sports: [],
     modal_new: false,
-    tableHeaders: ["Name", "Level"]
+    tableHeaders: ["Name", "Level"],
+    selected: -1,
   };
 
   componentDidMount() {
@@ -50,24 +51,30 @@ class Leagues extends React.Component {
   };
 
   showObjects = (objects) => {
-    return objects.map((object, index) => {
-      return (
-        <tr key={index}>
-          <td width="200" align="left">
-            <Button
-              variant="link"
-              href={"/leagues/" + object.attributes.id}
-              style={{ color: "black" }}
-            >
-              {object.attributes.name}
-            </Button>
-          </td>
-          <td width="200" align="left">
-            {object.attributes.level}
-          </td>
-        </tr>
-      );
-    });
+    return objects
+      .filter(
+        (object) =>
+          object.attributes.sport_id == this.state.selected ||
+          this.state.selected == -1
+      )
+      .map((object, index) => {
+        return (
+          <tr key={index}>
+            <td width="200" align="left">
+              <Button
+                variant="link"
+                href={"/leagues/" + object.attributes.id}
+                style={{ color: "black" }}
+              >
+                {object.attributes.name}
+              </Button>
+            </td>
+            <td width="200" align="left">
+              {object.attributes.level}
+            </td>
+          </tr>
+        );
+      });
   };
 
   handleSportChange = (event) => {
@@ -79,7 +86,7 @@ class Leagues extends React.Component {
         (object) => object.attributes.sport_id == event.target.value
       );
     }
-    this.setState({ selectedLeagues: leagues });
+    this.setState({ objects: leagues, selected: event.target.value });
   };
 
   render() {
@@ -107,6 +114,7 @@ class Leagues extends React.Component {
               tableHeaders={this.state.tableHeaders}
               showObjects={this.showObjects}
               objects={this.state.objects}
+              message={"There are no leagues associated with this sport."}
             />
           </Card.Body>
           <Card.Footer>
@@ -120,6 +128,7 @@ class Leagues extends React.Component {
           </Card.Footer>
         </Card>
         <NewLeague
+          selected={this.state.selected}
           name={"modal_new"}
           show={this.state.modal_new}
           switchModal={this.switchModal}

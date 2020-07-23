@@ -103,6 +103,7 @@ Rails.application.routes.draw do
 
   # Dashboard route
   get "admin_dashboard", to: "dashboards#admin_dashboard", as: :admin_dashboard
+  get "admin_dashboard_data", to: "dashboards#admin_dashboard_data", as: :admin_dashboard_data
   get "contact_dashboard", to: "dashboards#contact_dashboard", as: :contact_dashboard
 
   # Home route

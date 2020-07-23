@@ -9,6 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import EditSport from "./EditSport";
 import NewLeague from "../leagues/NewLeague.js";
+import GeneralTable from "../GeneralTable.js";
 
 import { run_ajax, getObjects, switchModal } from "../Utils.js";
 
@@ -21,9 +22,10 @@ class SportDetails extends React.Component {
 
   state = {
     object: null,
-    leagues: [],
+    objects: [],
     modal_edit: false,
     modal_add: false,
+    tableHeaders: ["League", "Level"],
   };
 
   componentDidMount() {
@@ -32,12 +34,17 @@ class SportDetails extends React.Component {
 
   getObjects = () => {
     this.run_ajax("/sports/" + this.props.id + ".json", "GET", {}, (res) => {
-      this.setState({ object: res.data, leagues: res.data.attributes.leagues });
+      this.setState({ object: res.data, objects: res.data.attributes.leagues });
     });
   };
 
-  showLeagues = () => {
-    return this.state.leagues.map((object, index) => {
+  handleDelete = () => {
+    this.run_ajax("/sports/".concat(this.props.id), "DELETE", {}, () => {});
+    window.location.replace("/sports");
+  };
+
+  showObjects = (objects) => {
+    return objects.map((object, index) => {
       return (
         <tr key={index}>
           <td width="200" align="left">
@@ -63,15 +70,12 @@ class SportDetails extends React.Component {
         <Card>
           <Card.Title>{this.state.object?.attributes.name}</Card.Title>
           <Card.Body>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Level</th>
-                </tr>
-              </thead>
-              <tbody>{this.showLeagues()}</tbody>
-            </Table>
+            <GeneralTable
+              tableHeaders={this.state.tableHeaders}
+              showObjects={this.showObjects}
+              objects={this.state.objects}
+              message={"There are no leagues associated with this sport."}
+            />
           </Card.Body>
           <Card.Footer>
             <Button
@@ -89,6 +93,16 @@ class SportDetails extends React.Component {
             >
               Edit Sport
             </Button>
+            {this.state.objects.length == 0 && (
+              <Button
+                className="btn btn-theme float-right"
+                variant="danger"
+                onClick={this.handleDelete}
+                style={{ marginRight: "10px" }}
+              >
+                Delete Sport
+              </Button>
+            )}
           </Card.Footer>
         </Card>
         <EditSport

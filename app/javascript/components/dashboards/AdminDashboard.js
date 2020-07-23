@@ -7,6 +7,8 @@ import Col from "react-bootstrap/Col";
 import Alert from "react-bootstrap/Alert";
 import Table from "react-bootstrap/Table";
 import GeneralTable from "../GeneralTable.js";
+import PaginatedTable from "../PaginatedTable.js";
+// import Pagination from "react-bootstrap-4-pagination";
 import { Pagination } from "semantic-ui-react";
 import { run_ajax, switchModal } from "../Utils.js";
 import { EyeFill } from "react-bootstrap-icons";
@@ -20,32 +22,32 @@ class AdminDashboard extends React.Component {
   }
 
   state = {
-    recent: [],
-    pagesRecent: 0,
-    pageRecent: 0,
-    recentTableHeaders: ["Club", "Group", "Entered By", "Verified", "View"],
-    unverified: [],
-    pagesUnverified: 0,
-    pageUnverified: 0,
-    unverifiedTableHeaders: ["Club", "Group", "Entered By", "Verfiy", "View"],
+    // recent: [],
+    // pagesRecent: 0,
+    // pageRecent: 0,
+    // recentTableHeaders: ["Club", "Group", "Entered By", "Verified", "View"],
+    // unverified: [],
+    // pagesUnverified: 0,
+    // pageUnverified: 0,
+    // unverifiedTableHeaders: ["Club", "Group", "Entered By", "Verfiy", "View"],
   };
 
-  componentDidMount() {
-    this.getObjects();
-  }
+  // componentDidMount() {
+  //   this.getObjects();
+  // }
 
-  getObjects = () => {
-    this.run_ajax("/admin_dashboard.json", "GET", {}, (res) => {
-      this.setState({
-        recent: res.coveragesRecent.data,
-        pagesRecent: res.pagesRecent,
-        pageRecent: res.pageRecent,
-        unverified: res.coveragesUnverified.data,
-        pagesUnverified: res.pagesUnverified,
-        pageUnverified: res.pageUnverified,
-      });
-    });
-  };
+  // getObjects = () => {
+  //   this.run_ajax("/admin_dashboard.json", "GET", {}, (res) => {
+  //     this.setState({
+  //       recent: res.coveragesRecent.data,
+  //       pagesRecent: res.pagesRecent,
+  //       pageRecent: res.pageRecent,
+  //       unverified: res.coveragesUnverified.data,
+  //       pagesUnverified: res.pagesUnverified,
+  //       pageUnverified: res.pageUnverified,
+  //     });
+  //   });
+  // };
 
   showRecentObjects = (objects) => {
     return objects.map((object, index) => {
@@ -125,48 +127,24 @@ class AdminDashboard extends React.Component {
     });
   };
 
-  handlePageChangeRecent = (e, { activePage }) => {
-    this.run_ajax(
-      "/admin_dashboard.json?pageRecent=" +
-        activePage +
-        "?pageUnverified=" +
-        this.state.pageUnverified,
-      "GET",
-      {},
-      (res) => {
-        this.setState({
-          recent: res.coveragesRecent.data,
-          pagesRecent: res.pagesRecent,
-          pageRecent: res.pageRecent,
-          unverified: res.coveragesUnverified.data,
-          pagesUnverified: res.pagesUnverified,
-          pageUnverified: res.pageUnverified,
-        });
-      }
-    );
-  };
-
-  handlePageChangeUnverified = (e, { activePage }) => {
-    this.run_ajax(
-      "/admin_dashboard.json?pageUnverified=" +
-        activePage +
-        "?pageRecent=" +
-        this.state.pageRecent,
-      "GET",
-      {},
-      (res) => {
-        this.setState({
-          recent: res.coveragesRecent.data,
-          pagesRecent: res.pagesRecent,
-          pageRecent: res.pageRecent,
-          unverified: res.coveragesUnverified.data,
-          pagesUnverified: res.pagesUnverified,
-          pageUnverified: res.pageUnverified,
-        });
-      }
-    );
-  };
-
+  // handlePageChangeRecent = (e, { activePage }) => {
+  //   console.log(activePage);
+  //   this.run_ajax(
+  //     "/admin_dashboard.json?pageRecent=" + activePage,
+  //     "GET",
+  //     {},
+  //     (res) => {
+  //       this.setState({
+  //         recent: res.coveragesRecent.data,
+  //         pagesRecent: res.pagesRecent,
+  //         pageRecent: res.pageRecent,
+  //         unverified: res.coveragesUnverified.data,
+  //         pagesUnverified: res.pagesUnverified,
+  //         pageUnverified: res.pageUnverified,
+  //       });
+  //     }
+  //   );
+  // };
 
   render() {
     return (
@@ -179,15 +157,13 @@ class AdminDashboard extends React.Component {
                 Recently Added
               </Card.Title>
               <Card.Body>
-                <GeneralTable
-                  tableHeaders={this.state.recentTableHeaders}
+                <PaginatedTable
+                  tableHeaders={["Club", "Group", "Entered By", "Verified", "View"]}
                   showObjects={this.showRecentObjects}
-                  objects={this.state.recent}
-                />
-                <Pagination
-                  onPageChange={this.handlePageChangeRecent}
-                  defaultActivePage={this.state.pageRecent}
-                  totalPages={this.state.pagesRecent}
+                  totalPages={"pagesRecent"}
+                  currentPage={"pageRecent"}
+                  objects={"coveragesRecent"}
+                  link={"/admin_dashboard.json?pageRecent="}
                 />
               </Card.Body>
               <Card.Footer></Card.Footer>
@@ -197,16 +173,14 @@ class AdminDashboard extends React.Component {
             <Card>
               <Card.Header></Card.Header>
               <Card.Title style={{ marginTop: "10px" }}>Unverified</Card.Title>
-              <Card.Body>
-                <GeneralTable
-                  tableHeaders={this.state.unverifiedTableHeaders}
+              <Card.Body className="text-center">
+              <PaginatedTable
+                  tableHeaders={["Club", "Group", "Entered By", "Verified", "View"]}
                   showObjects={this.showUnverifiedObjects}
-                  objects={this.state.unverified}
-                />
-                <Pagination
-                  onPageChange={this.handlePageChangeUnverified}
-                  defaultActivePage={this.state.pageUnverified}
-                  totalPages={this.state.pagesUnverified}
+                  totalPages={"pagesUnverified"}
+                  currentPage={"pageUnverified"}
+                  objects={"coveragesUnverified"}
+                  link={"/admin_dashboard.json?pageUnverified="}
                 />
               </Card.Body>
               <Card.Footer></Card.Footer>

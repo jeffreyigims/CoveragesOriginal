@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   ORDERING_PARAMS = []
 
   def index
-    @users = boolean_filter(User.all, BOOLEAN_FILTERING_PARAMS)
+    @users = boolean_filter(User.alphabetical, BOOLEAN_FILTERING_PARAMS)
     @users = param_filter(@users, PARAM_FILTERING_PARAMS)
     @users = order(@users, ORDERING_PARAMS)
     respond_to do |format|

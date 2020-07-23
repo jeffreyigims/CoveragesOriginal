@@ -9,7 +9,7 @@ class CarriersController < ApplicationController
   ORDERING_PARAMS = []
 
   def index
-    @carriers = boolean_filter(Carrier.all, BOOLEAN_FILTERING_PARAMS)
+    @carriers = boolean_filter(Carrier.alphabetical, BOOLEAN_FILTERING_PARAMS)
     @carriers = param_filter(@carriers, PARAM_FILTERING_PARAMS)
     @carriers = order(@carriers, ORDERING_PARAMS)
     respond_to do |format|

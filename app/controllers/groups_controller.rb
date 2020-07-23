@@ -9,7 +9,7 @@ class GroupsController < ApplicationController
   ORDERING_PARAMS = []
 
   def index
-    @groups = boolean_filter(Group.all, BOOLEAN_FILTERING_PARAMS)
+    @groups = boolean_filter(Group.alphabetical, BOOLEAN_FILTERING_PARAMS)
     @groups = param_filter(@groups, PARAM_FILTERING_PARAMS)
     @groups = order(@groups, ORDERING_PARAMS)
     respond_to do |format|

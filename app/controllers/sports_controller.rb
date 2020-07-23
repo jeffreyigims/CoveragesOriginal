@@ -9,7 +9,7 @@ class SportsController < ApplicationController
   ORDERING_PARAMS = []
 
   def index
-    @sports = boolean_filter(Sport.all, BOOLEAN_FILTERING_PARAMS)
+    @sports = boolean_filter(Sport.alphabetical, BOOLEAN_FILTERING_PARAMS)
     @sports = param_filter(@sports, PARAM_FILTERING_PARAMS)
     @sports = order(@sports, ORDERING_PARAMS)
     respond_to do |format|

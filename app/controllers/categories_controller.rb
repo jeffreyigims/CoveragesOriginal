@@ -9,7 +9,7 @@ class CategoriesController < ApplicationController
   ORDERING_PARAMS = []
 
   def index
-    @categories = boolean_filter(Category.all, BOOLEAN_FILTERING_PARAMS)
+    @categories = boolean_filter(Category.alphabetical, BOOLEAN_FILTERING_PARAMS)
     @categories = param_filter(@categories, PARAM_FILTERING_PARAMS)
     @categories = order(@categories, ORDERING_PARAMS)
     respond_to do |format|

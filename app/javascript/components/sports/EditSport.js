@@ -14,7 +14,7 @@ const schema = yup.object({
   name: yup.string().required(),
 });
 
-class ShowSport extends React.Component {
+class EditSport extends React.Component {
   constructor() {
     super();
     this.handleClose = handleClose.bind(this);
@@ -36,7 +36,7 @@ class ShowSport extends React.Component {
   render() {
     return (
       <>
-        <Modal show={this.props.show} onHide={this.handleClose}>
+        <Modal show={this.props.show} onHide={() => this.handleClose(this.props.name)}>
           <Modal.Header closeButton>
             <Modal.Title>Edit Sport</Modal.Title>
           </Modal.Header>
@@ -74,13 +74,6 @@ class ShowSport extends React.Component {
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Row>
-                  {this.props.leagues.length === 0 ? (
-                    <Button variant="danger" onClick={this.handleDelete}>
-                      Delete Sport
-                    </Button>
-                  ) : (
-                    ""
-                  )}
                   <Button
                     type="submit"
                     variant="primary"
@@ -98,4 +91,4 @@ class ShowSport extends React.Component {
   }
 }
 
-export default ShowSport;
+export default EditSport;

@@ -9,7 +9,7 @@ class SubCategoriesController < ApplicationController
   ORDERING_PARAMS = []
 
   def index
-    @sub_categories = boolean_filter(SubCategory.all, BOOLEAN_FILTERING_PARAMS)
+    @sub_categories = boolean_filter(SubCategory.alphabetical, BOOLEAN_FILTERING_PARAMS)
     @sub_categories = param_filter(@sub_categories, PARAM_FILTERING_PARAMS)
     @sub_categories = order(@sub_categories, ORDERING_PARAMS)
     respond_to do |format|

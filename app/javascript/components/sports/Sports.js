@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import GenTable from "../GenTable";
 import GeneralForm from "../GeneralForm";
-import { run_ajax, switchModal, handleCreate } from "../Utils.js";
+import { run_ajax, switchModal, handleClose } from "../Utils.js";
 import { Formik } from "formik";
 import * as yup from "yup";
 
@@ -19,7 +19,7 @@ class Sports extends React.Component {
     super();
     this.run_ajax = run_ajax.bind(this);
     this.switchModal = switchModal.bind(this);
-    this.handleCreate = handleCreate.bind(this);
+    this.handleClose = handleClose.bind(this);
   }
 
   state = {
@@ -59,6 +59,19 @@ class Sports extends React.Component {
           </td>
         </tr>
       );
+    });
+  };
+
+  handleCreate = (values, attributes) => {
+    let name = this.state.objectName;
+    const data = {};
+    data[name] = {};
+    for (var attribute of attributes) {
+      data[name][attribute] = values[attribute];
+    }
+    this.run_ajax("/" + this.state.plural + ".json", "POST", data);
+    this.setState({
+      modal_new: false,
     });
   };
 

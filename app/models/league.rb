@@ -6,5 +6,6 @@ class League < ApplicationRecord
   has_many :club_groups, through: :clubs
 
   # Scopes
+  scope :alphabetical, -> { order("name ASC") }
   scope :for_sport, ->(sport_id) { where("sport_id = ?", sport_id) }
 end

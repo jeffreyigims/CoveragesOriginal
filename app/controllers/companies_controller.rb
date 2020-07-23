@@ -9,7 +9,7 @@ class CompaniesController < ApplicationController
     ORDERING_PARAMS = []
 
     def index
-      @companies = boolean_filter(Company.all, BOOLEAN_FILTERING_PARAMS)
+      @companies = boolean_filter(Company.alphabetical, BOOLEAN_FILTERING_PARAMS)
       @companies = param_filter(@companies, PARAM_FILTERING_PARAMS)
       @companies = order(@companies, ORDERING_PARAMS)
       respond_to do |format|

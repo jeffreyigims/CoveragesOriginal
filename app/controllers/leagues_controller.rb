@@ -9,7 +9,7 @@ class LeaguesController < ApplicationController
   ORDERING_PARAMS = []
 
   def index
-    @leagues = boolean_filter(League.all, BOOLEAN_FILTERING_PARAMS)
+    @leagues = boolean_filter(League.alphabetical, BOOLEAN_FILTERING_PARAMS)
     @leagues = param_filter(@leagues, PARAM_FILTERING_PARAMS)
     @leagues = order(@leagues, ORDERING_PARAMS)
     respond_to do |format|

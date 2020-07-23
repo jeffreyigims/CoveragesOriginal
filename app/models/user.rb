@@ -25,12 +25,12 @@ class User < ApplicationRecord
   end
 
   def current_club
-    contacts = self.user_clubs.active
+    contacts = self.user_clubs
     contacts.empty? ? nil : contacts.first.club
   end
 
   def current_contact
-    contacts = self.user_clubs.active
+    contacts = self.user_clubs
     contacts.empty? ? nil : contacts.first
   end
 

@@ -70,7 +70,7 @@ export function run_ajax(
 ) {
   let options;
   if (method == "GET") {
-    options = { method: method };
+    options = { method: method};
   } else {
     options = {
       method: method,
@@ -133,7 +133,7 @@ export function handleCreate(values, attributes) {
     data[name][attribute] = values[attribute];
   }
   this.props.run_ajax("/" + this.props.plural + ".json", "POST", data);
-  this.handleClose;
+  this.handleClose(this.props.name);
 }
 
 export function handleClose(name) {

@@ -56,7 +56,7 @@ class NewLeague extends React.Component {
 
   render() {
     return (
-      <Modal show={this.props.show} onHide={this.handleClose}>
+      <Modal show={this.props.show} onHide={() => this.handleClose(this.props.name)}>
         <Modal.Header closeButton>
           <Modal.Title>New League</Modal.Title>
         </Modal.Header>
@@ -68,7 +68,7 @@ class NewLeague extends React.Component {
             initialValues={{
               name: "",
               level: "",
-              sport_id: this.props.selected?.attributes.id || this.state.sports[0]?.id,
+              sport_id: this.props.selected || this.state.sports[0]?.id,
             }}
           >
             {({
