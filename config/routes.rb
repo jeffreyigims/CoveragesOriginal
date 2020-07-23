@@ -101,6 +101,10 @@ Rails.application.routes.draw do
   get "charts", to: "metrics#chart", as: :charts
   get "metrics", to: "metrics#metrics"
 
+  # Dashboard route
+  get "admin_dashboard", to: "dashboards#admin_dashboard", as: :admin_dashboard
+  get "contact_dashboard", to: "dashboards#contact_dashboard", as: :contact_dashboard
+
   # Home route
   get "home", to: "home#index", as: :home
   get "tables", to: "home#metrics", as: :tables

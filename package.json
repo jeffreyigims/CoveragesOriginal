@@ -21,6 +21,7 @@
     "react-plotly.js": "^2.4.0",
     "react_ujs": "^2.6.1",
     "recharts": "^1.8.5",
+    "semantic-ui-react": "^1.0.0",
     "yup": "^0.29.1"
   },
   "devDependencies": {

@@ -19,6 +19,7 @@ class Coverage < ApplicationRecord
   scope :for_league, ->(league_id) { joins(:club_group).joins(:club).where('league_id = ?', league_id) } 
   scope :for_club, ->(club_id) { joins(:club_group).where('club_id = ?', club_id) } 
   scope :for_club_group, ->(club_group_id) { where('club_group_id = ?', club_group_id) } 
+  scope :chronological, -> { order(Arel.sql('start_date DESC, end_date IS NOT NULL, end_date DESC')) }
 
   before_destroy :destroy_attachments
 

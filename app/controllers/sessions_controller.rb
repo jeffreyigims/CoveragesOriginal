@@ -3,8 +3,10 @@ class SessionsController < ApplicationController
     user = User.authenticate(params["user"][:username], params["user"][:password])
     if user
       session[:user_id] = user.id
-      if current_user.role?(:admin) or current_user.role?(:contact)
-        redirect_to home_path, notice: "Logged in!"
+      if current_user.role?(:admin) 
+        redirect_to admin_dashboard_path, notice: "Logged in!"
+      elsif current_user.role?(:contact) 
+        redirect_to contact_dashboard_path, notice: "Logged in!"
       end
     else
       flash.now.alert = "Username and/or password is invalid"

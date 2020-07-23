@@ -114,6 +114,7 @@ gem "rack-cors", "1.0.2"
 # For serializing models to json for the API
 # gem 'active_model_serializers', '0.10.7'
 gem "fast_jsonapi", "1.5"
+gem 'will_paginate'
 
 source "https://rails-assets.org" do
   gem "rails-assets-react-date-picker"
