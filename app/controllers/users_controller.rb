@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     @users = order(@users, ORDERING_PARAMS)
     respond_to do |format|
       format.html { @users }
-      format.json { render json: UserSerializer.new(@users).serializable_hash }
+      format.json { render json: UserTableSerializer.new(@users).serializable_hash }
     end
   end
 

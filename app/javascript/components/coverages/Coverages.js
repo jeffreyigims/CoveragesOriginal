@@ -4,9 +4,10 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import CoveragesTable from "./CoveragesTable";
 import NewCoverage from "./NewCoverage";
 import { switchModal } from "../Utils.js";
+import PaginatedTable from "../PaginatedTable.js";
+import { EyeFill } from "react-bootstrap-icons";
 
 class Coverages extends React.Component {
   constructor() {
@@ -15,91 +16,102 @@ class Coverages extends React.Component {
   }
 
   state = {
-    verifiedCoverages: [],
-    unverifiedCoverages: [],
     modal_new: false,
   };
 
-  run_ajax = (
-    link,
-    method = "GET",
-    data = {},
-    callback = () => {
-      this.get_coverages();
-    }
-  ) => {
-    let options;
-    if (method == "GET") {
-      options = { method: method };
-    } else {
-      options = {
-        method: method,
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "same-origin",
-      };
-    }
-
-    fetch(link, options)
-      .then((response) => {
-        if (!response.ok) {
-          throw response;
-        }
-        return response.json();
-      })
-      .then((result) => {
-        callback(result);
-      })
-      .catch((error) => {
-        if (error.statusText) {
-          this.setState({ error: error });
-        }
-        callback(error);
-      });
-  };
-
-  get_verifiedCoverages = () => {
-    this.run_ajax("/coverages.json?verified=true", "GET", {}, (res) => {
-      this.setState({ verifiedCoverages: res.data });
+  showCoverages = (objects) => {
+    return objects.map((coverage, index) => {
+      return (
+        <tr key={index}>
+          <td width="200" align="left">
+            <Button
+              variant="link"
+              href={"/clubs/" + coverage.attributes.club.id}
+              style={{ color: "black" }}
+            >
+              {coverage.attributes.club.name}
+            </Button>{" "}
+          </td>
+          <td width="200" align="left">
+            {coverage.attributes.group.name}
+          </td>
+          <td width="200" align="left">
+            <Button
+              variant="link"
+              href={"/categories/" + coverage.attributes.category.id}
+              style={{ color: "black" }}
+            >
+              {coverage.attributes.category.name}
+            </Button>{" "}
+          </td>
+          <td width="200" align="left">
+            <Button
+              variant="link"
+              href={"/sub_categories/" + coverage.attributes.sub_category.id}
+              style={{ color: "black" }}
+            >
+              {coverage.attributes.sub_category.name}
+            </Button>{" "}
+          </td>
+          <td width="200" align="left">
+            {coverage.attributes.verified ? "true" : "false"}
+          </td>
+          <td width="100" align="center">
+            <Button
+              variant="link"
+              href={"/coverages/" + coverage.attributes.id}
+              style={{ color: "black" }}
+            >
+              <EyeFill />
+            </Button>
+          </td>
+        </tr>
+      );
     });
   };
-
-  get_unverifiedCoverages = () => {
-    this.run_ajax("/coverages.json?verified=false", "GET", {}, (res) => {
-      this.setState({ unverifiedCoverages: res.data });
-    });
-  };
-
-  get_coverages = () => {
-    this.get_verifiedCoverages();
-    this.get_unverifiedCoverages();
-  };
-
-  componentDidMount() {
-    this.get_coverages();
-  }
 
   render() {
     return (
       <React.Fragment>
         <Card>
-          <Card.Title>All Coverages</Card.Title>
+          <Card.Header></Card.Header>
+          <Card.Title style={{ marginTop: "10px" }}>All Coverages</Card.Title>
           <Tabs transition={false}>
             <Tab eventKey="Verified" title="Verified">
               <Card.Body>
-                <CoveragesTable
-                  coverages={this.state.verifiedCoverages}
-                  run_ajax={this.run_ajax}
+                <PaginatedTable
+                  tableHeaders={[
+                    "Club",
+                    "Group",
+                    "Category",
+                    "Sub",
+                    "Verified",
+                    "View",
+                  ]}
+                  showObjects={this.showCoverages}
+                  totalPages={"pages"}
+                  currentPage={"page"}
+                  objects={"coverages"}
+                  link={"/coverages.json?verified=true&page="}
                 />
               </Card.Body>
             </Tab>
             <Tab eventKey="Unverified" title="Unverified">
               <Card.Body>
-                <CoveragesTable
-                  coverages={this.state.unverifiedCoverages}
-                  run_ajax={this.run_ajax}
+                <PaginatedTable
+                  tableHeaders={[
+                    "Club",
+                    "Group",
+                    "Category",
+                    "Sub",
+                    "Verified",
+                    "View",
+                  ]}
+                  showObjects={this.showCoverages}
+                  totalPages={"pages"}
+                  currentPage={"page"}
+                  objects={"coverages"}
+                  link={"/coverages.json?verified=false&page="}
                 />
               </Card.Body>
             </Tab>

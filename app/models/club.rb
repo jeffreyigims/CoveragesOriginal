@@ -10,6 +10,7 @@ class Club < ApplicationRecord
   # Scopes 
   scope :alphabetical, -> { order("name ASC") }
   scope :for_league, ->(league_id) { where('league_id = ?', league_id) } 
+  scope :search, ->(term) { where('name LIKE ?', "#{term}%") }
 
   # Validations
   validates_presence_of :name

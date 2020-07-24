@@ -4,13 +4,14 @@ class DashboardsController < ApplicationController
     @coveragesUnverified = Coverage.unverified.paginate(page: params[:pageUnverified]).per_page(5)
     respond_to do |format|
       format.html { @coveragesRecent }
-      format.json { render json: {
+      format.json {
+        render json: {
           pageRecent: @coveragesRecent.current_page,
           pagesRecent: @coveragesRecent.total_pages,
           coveragesRecent: CoverageSerializer.new(@coveragesRecent).serializable_hash,
           pageUnverified: @coveragesUnverified.current_page,
           pagesUnverified: @coveragesUnverified.total_pages,
-          coveragesUnverified: CoverageSerializer.new(@coveragesUnverified).serializable_hash
+          coveragesUnverified: CoverageSerializer.new(@coveragesUnverified).serializable_hash,
         }
       }
     end

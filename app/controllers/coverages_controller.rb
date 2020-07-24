@@ -12,18 +12,25 @@ class CoveragesController < ApplicationController
     @coverages = boolean_filter(Coverage.all, BOOLEAN_FILTERING_PARAMS)
     @coverages = param_filter(@coverages, PARAM_FILTERING_PARAMS)
     @coverages = order(@coverages, ORDERING_PARAMS)
+    @coverages = @coverages.paginate(page: params[:page]).per_page(10)
     respond_to do |format|
       format.html { @coverages }
-      format.json { render json: CoverageSerializer.new(@coverages).serializable_hash }
+      format.json {
+        render json: {
+                 page: @coverages.current_page,
+                 pages: @coverages.total_pages,
+                 coverages: CoverageSerializer.new(@coverages).serializable_hash,
+               }
+      }
     end
   end
 
-  def show 
+  def show
     respond_to do |format|
       format.html { @coverage }
       format.json { render json: CoverageSerializer.new(@coverage).serializable_hash }
     end
-  end 
+  end
 
   def create
     @coverage = Coverage.new(coverage_params)

@@ -39,8 +39,19 @@
 // });
 
 // Flash fade
-$(function() {
-  $('.alert-box').fadeIn('normal', function() {
-     $(this).delay(3700).fadeOut();
-  });
+// $(function() {
+//   $('.alert-box').fadeIn('normal', function() {
+//      $(this).delay(3700).fadeOut();
+//   });
+// });
+
+$('.dropdown-toggle').dropdown()
+
+$(document).ready(function() {
+    $('a[href="' + this.location.pathname + '"]').parent().addClass('active');
+});
+
+$('.navbar-nav .nav-link').click(function(){
+    $('.navbar-nav .nav-link').removeClass('active');
+    $(this).addClass('active');
 });

@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   delete "leagues/:id", to: "leagues#destroy"
 
   get "clubs", to: "clubs#index"
-  get "clubs/:id", to: "clubs#show"
+  get "clubs/:id", to: "clubs#show", as: :club
   post "clubs", to: "clubs#create"
   patch "clubs/:id", to: "clubs#update"
   delete "clubs/:id", to: "clubs#destroy"
@@ -108,8 +108,9 @@ Rails.application.routes.draw do
 
   # Home route
   get "home", to: "home#index", as: :home
+  get 'home/search', to: 'home#search', as: :search
   get "tables", to: "home#metrics", as: :tables
   get "add_coverage", to: "home#add_coverage", as: :add_coverage
 
-  root "home#index"
+  root "sessions#new"
 end

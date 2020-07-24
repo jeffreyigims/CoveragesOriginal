@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include AppHelpers::Deletions
   has_secure_password
 
   # Relationships
@@ -10,7 +11,7 @@ class User < ApplicationRecord
   scope :alphabetical, -> { order("last_name, first_name") }
 
   # Callbacks
-  before_destroy :destroy_contacts
+  before_destroy -> { cannot_destroy_object() }
 
   # For authentication
   ROLES_LIST = [["Administrator", "admin"], ["Employee", "employee"], ["Contact", "contact"]].freeze
@@ -41,7 +42,7 @@ class User < ApplicationRecord
 
   private
 
-  def destroy_contacts
-    self.user_clubs.each { |i| i.destroy }
-  end
+  # def destroy_contacts
+  #   self.user_clubs.each { |i| i.destroy }
+  # end
 end
