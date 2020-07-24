@@ -6,11 +6,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Alert from "react-bootstrap/Alert";
 import Table from "react-bootstrap/Table";
-import GeneralTable from "../GeneralTable.js";
 import PaginatedTable from "../PaginatedTable.js";
-// import Pagination from "react-bootstrap-4-pagination";
-import { Pagination } from "semantic-ui-react";
-import { run_ajax, switchModal } from "../Utils.js";
+import { run_ajax } from "../Utils.js";
 import { EyeFill } from "react-bootstrap-icons";
 import { Check } from "react-bootstrap-icons";
 
@@ -18,36 +15,7 @@ class AdminDashboard extends React.Component {
   constructor() {
     super();
     this.run_ajax = run_ajax.bind(this);
-    this.switchModal = switchModal.bind(this);
   }
-
-  state = {
-    // recent: [],
-    // pagesRecent: 0,
-    // pageRecent: 0,
-    // recentTableHeaders: ["Club", "Group", "Entered By", "Verified", "View"],
-    // unverified: [],
-    // pagesUnverified: 0,
-    // pageUnverified: 0,
-    // unverifiedTableHeaders: ["Club", "Group", "Entered By", "Verfiy", "View"],
-  };
-
-  // componentDidMount() {
-  //   this.getObjects();
-  // }
-
-  // getObjects = () => {
-  //   this.run_ajax("/admin_dashboard.json", "GET", {}, (res) => {
-  //     this.setState({
-  //       recent: res.coveragesRecent.data,
-  //       pagesRecent: res.pagesRecent,
-  //       pageRecent: res.pageRecent,
-  //       unverified: res.coveragesUnverified.data,
-  //       pagesUnverified: res.pagesUnverified,
-  //       pageUnverified: res.pageUnverified,
-  //     });
-  //   });
-  // };
 
   showRecentObjects = (objects) => {
     return objects.map((object, index) => {
@@ -126,26 +94,7 @@ class AdminDashboard extends React.Component {
       );
     });
   };
-
-  // handlePageChangeRecent = (e, { activePage }) => {
-  //   console.log(activePage);
-  //   this.run_ajax(
-  //     "/admin_dashboard.json?pageRecent=" + activePage,
-  //     "GET",
-  //     {},
-  //     (res) => {
-  //       this.setState({
-  //         recent: res.coveragesRecent.data,
-  //         pagesRecent: res.pagesRecent,
-  //         pageRecent: res.pageRecent,
-  //         unverified: res.coveragesUnverified.data,
-  //         pagesUnverified: res.pagesUnverified,
-  //         pageUnverified: res.pageUnverified,
-  //       });
-  //     }
-  //   );
-  // };
-
+  
   render() {
     return (
       <>

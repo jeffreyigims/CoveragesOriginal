@@ -131,6 +131,7 @@ module Populator
         end
       end
 
+      users = [@admin, @contact_steelers, @contact_pirates]
       puts("Create coverages")
       1000.times do 
         club_group = club_groups[rand(club_groups.length)]
@@ -138,7 +139,8 @@ module Populator
         broker = brokers[rand(brokers.length)]
         category = categories[rand(categories.length)]
         verified = rand(2) == 1 ? true : false
-        @coverage = FactoryBot.create(:coverage, club_group: club_group, sub_category: category, verified: verified)
+        user = users[rand(3)]
+        @coverage = FactoryBot.create(:coverage, club_group: club_group, sub_category: category, verified: verified, user: user)
         FactoryBot.create(:coverage_broker, coverage: @coverage, broker: broker)
         FactoryBot.create(:coverage_carrier, coverage: @coverage, carrier: carrier)
       end

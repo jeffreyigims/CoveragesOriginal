@@ -7,6 +7,7 @@ FactoryBot.define do
       verified { true }
       association :club_group 
       association :sub_category
+      association :user
     end
   end
   

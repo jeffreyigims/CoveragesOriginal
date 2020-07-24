@@ -3,6 +3,7 @@ class Coverage < ApplicationRecord
   # Relationships
   belongs_to :club_group
   belongs_to :sub_category
+  belongs_to :user
   has_one :group, through: :club_group
   has_one :club, through: :club_group
   has_one :category, through: :sub_category

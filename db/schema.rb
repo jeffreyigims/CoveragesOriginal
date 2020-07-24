@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_20_142245) do
+ActiveRecord::Schema.define(version: 2020_07_24_134532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,8 +97,10 @@ ActiveRecord::Schema.define(version: 2020_07_20_142245) do
     t.bigint "sub_category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["club_group_id"], name: "index_coverages_on_club_group_id"
     t.index ["sub_category_id"], name: "index_coverages_on_sub_category_id"
+    t.index ["user_id"], name: "index_coverages_on_user_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -160,6 +162,7 @@ ActiveRecord::Schema.define(version: 2020_07_20_142245) do
   add_foreign_key "coverage_carriers", "coverages"
   add_foreign_key "coverages", "club_groups"
   add_foreign_key "coverages", "sub_categories"
+  add_foreign_key "coverages", "users"
   add_foreign_key "leagues", "sports"
   add_foreign_key "sub_categories", "categories"
 end

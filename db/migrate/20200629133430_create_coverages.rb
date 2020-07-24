@@ -8,7 +8,6 @@ class CreateCoverages < ActiveRecord::Migration[5.2]
       t.boolean :verified
       t.references :club_group, null: false, foreign_key: true
       t.references :sub_category, null: false, foreign_key: true
-
       t.timestamps
     end
   end

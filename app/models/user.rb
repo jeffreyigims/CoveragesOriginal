@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   # Relationships
   has_many :user_clubs
+  has_many :coverages
   has_many :clubs, through: :user_club
 
   # Scopes
