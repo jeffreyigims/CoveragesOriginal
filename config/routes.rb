@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get "coverages/:id", to: "coverages#show", as: :coverage
   post "coverages", to: "coverages#create"
   patch "coverages/:id", to: "coverages#update"
+  patch "coverages/verify/:id", to: "coverages#verify"
   delete "coverages/:id", to: "coverages#destroy"
 
   get "leagues", to: "leagues#index"

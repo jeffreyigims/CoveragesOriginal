@@ -1,7 +1,7 @@
 class DashboardsController < ApplicationController
   def admin_dashboard
-    @coveragesRecent = Coverage.chronological.paginate(page: params[:pageRecent]).per_page(5)
-    @coveragesUnverified = Coverage.unverified.paginate(page: params[:pageUnverified]).per_page(5)
+    @coveragesRecent = Coverage.most_recent.paginate(page: params[:pageRecent]).per_page(5)
+    @coveragesUnverified = Coverage.unverified.most_recent.paginate(page: params[:pageUnverified]).per_page(5)
     respond_to do |format|
       format.html { @coveragesRecent }
       format.json {

@@ -1,5 +1,5 @@
 class CoveragesController < ApplicationController
-  before_action :set_coverage, only: [:show, :update, :destroy]
+  before_action :set_coverage, only: [:show, :update, :verify, :destroy]
 
   include Filterable
   include Orderable
@@ -46,6 +46,13 @@ class CoveragesController < ApplicationController
     if !@coverage.update(coverage_params)
       render json: @coverage.errors, status: :unprocessable_entity
     end
+  end
+
+  def verify
+    @coverage.verify
+    # if !@coverage.verify
+    #   render json: @coverage.errors, status: :unprocessable_entity
+    # end
   end
 
   def destroy

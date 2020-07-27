@@ -21,8 +21,14 @@ class Coverage < ApplicationRecord
   scope :for_club, ->(club_id) { joins(:club_group).where('club_id = ?', club_id) } 
   scope :for_club_group, ->(club_group_id) { where('club_group_id = ?', club_group_id) } 
   scope :chronological, -> { order(Arel.sql('start_date DESC, end_date IS NOT NULL, end_date DESC')) }
+  scope :most_recent, -> { order(Arel.sql('created_at DESC')) }
 
   before_destroy :destroy_attachments
+
+  def verify 
+    self.update_attribute("verified", true) 
+    self.reload
+  end 
 
   private
 
