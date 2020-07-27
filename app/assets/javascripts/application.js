@@ -17,7 +17,7 @@
 //= require moment
 //= require jquery3
 //= require popper
-//= require bootstrap
+//= require bootstrap-sprockets
 
 // Sticky footer js
 // Thanks to Charles Smith for this -- http://foundation.zurb.com/forum/posts/629-sticky-footer
@@ -44,14 +44,3 @@
 //      $(this).delay(3700).fadeOut();
 //   });
 // });
-
-$('.dropdown-toggle').dropdown()
-
-$(document).ready(function() {
-    $('a[href="' + this.location.pathname + '"]').parent().addClass('active');
-});
-
-$('.navbar-nav .nav-link').click(function(){
-    $('.navbar-nav .nav-link').removeClass('active');
-    $(this).addClass('active');
-});
