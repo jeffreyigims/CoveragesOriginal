@@ -129,7 +129,7 @@ class Coverages extends React.Component {
         <NewCoverage
           name={"modal_new"}
           show={this.state.modal_new}
-          run_ajax={this.props.run_ajax}
+          // run_ajax={this.run_ajax}
           switchModal={this.switchModal}
         />
       </React.Fragment>

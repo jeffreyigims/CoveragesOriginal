@@ -36,6 +36,7 @@ class CoveragesController < ApplicationController
     @coverage = Coverage.new(coverage_params)
     if @coverage.save
       render json: @coverage
+      # redirect_to @coverage
     else
       render json: @coverage.errors, status: :unprocessable_entity
     end
@@ -61,6 +62,6 @@ class CoveragesController < ApplicationController
   end
 
   def coverage_params
-    params.require(:coverage).permit(:id, :has_coverage_line, :notes, :start_date, :end_date, :verified, :sub_category_id, :club_group_id)
+    params.require(:coverage).permit(:id, :has_coverage_line, :notes, :start_date, :end_date, :verified, :sub_category_id, :club_group_id, :user_id)
   end
 end

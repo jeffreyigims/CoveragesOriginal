@@ -9,7 +9,7 @@ import Col from "react-bootstrap/Col";
 import EditClub from "./EditClub";
 import NewClub from "./NewClub";
 import NewClubGroup from "../club_groups/NewClubGroup";
-import NewCoverage from "../coverages/NewCoverage";
+import NewCoverage from "./NewCoverage";
 import GeneralTable from "../GeneralTable.js";
 import { EyeFill } from "react-bootstrap-icons";
 import { run_ajax, switchModal, handleDelete } from "../Utils.js";
@@ -58,7 +58,7 @@ class ClubDetails extends React.Component {
       "GET",
       {},
       (res) => {
-        this.setState({ coverages: res.data, selectedCoverages: res.data });
+        this.setState({ coverages: res.coverages.data, selectedCoverages: res.coverages.data });
       }
     );
   };

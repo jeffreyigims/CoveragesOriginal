@@ -9,11 +9,21 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Alert from 'react-bootstrap/Alert';
+import Alert from "react-bootstrap/Alert";
 
 import { run_ajax } from "../Utils.js";
 
-const schema = yup.object({});
+const schema = yup.object({
+  // club: yup.string().required(),
+  // group: yup.string().required(),
+  // category: yup.string().required(),
+  // sub_category: yup.string().required(),
+  // notes: yup.string().required(),
+  // start_date: yup.string().required(),
+  // end_date: yup.string().required(),
+  // has_coverage_line: yup.string().required(),
+  // verified: yup.string().required(),
+});
 
 class NewCoverage extends React.Component {
   constructor() {
@@ -26,6 +36,7 @@ class NewCoverage extends React.Component {
     subCategories: [],
     carriers: [],
     brokers: [],
+    clubs: [],
   };
 
   componentDidMount() {
@@ -44,6 +55,9 @@ class NewCoverage extends React.Component {
     });
     this.run_ajax("/carriers.json", "GET", {}, (res) => {
       this.setState({ carriers: res.data });
+    });
+    this.run_ajax("/clubs.json", "GET", {}, (res) => {
+      this.setState({ clubs: res.data });
     });
   }
 
@@ -69,6 +83,30 @@ class NewCoverage extends React.Component {
     });
   };
 
+  clubOptions = () => {
+    return this.state.clubs.map((club, index) => {
+      return (
+        <option key={index} value={index}>
+          {" "}
+          {club.attributes.name}
+        </option>
+      );
+    });
+  };
+
+  groupOptions = (index) => {
+    return this.state.clubs[index]?.attributes.club_groups.map(
+      (group, index) => {
+        return (
+          <option key={index} value={index}>
+            {" "}
+            {group.data.attributes.group.name}
+          </option>
+        );
+      }
+    );
+  };
+
   createCoverageCarriers = (objects) => {
     for (let i = 0; i < objects.length; i++) {
       let data = {
@@ -90,8 +128,8 @@ class NewCoverage extends React.Component {
   };
 
   handleSubmitCarriersBrokers = (response, carriers, brokers) => {
-    let id = response.id
-    console.log(response)
+    let id = response.id;
+    console.log(response);
     for (let i = 0; i < carriers.length; i++) {
       let data = {
         coverage_id: id,
@@ -106,19 +144,29 @@ class NewCoverage extends React.Component {
       };
       this.run_ajax("/coverage_brokers.json", "POST", data, () => {});
     }
-  }
+  };
 
   handleCreate = (values) => {
     let data = {
-      club_group_id: this.props.group?.id,
-      sub_category_id: this.state.subCategories[values.sub_category_id].attributes.id,
+      club_group_id: this.state.clubs[values.club].attributes.club_groups[
+        values.group
+      ].data.attributes.id,
+      sub_category_id: this.state.subCategories[values.sub_category_id]
+        .attributes.id,
       notes: values.notes,
       start_date: values.start_date,
       end_date: values.end_date,
       has_coverage_line: values.has_coverage_line,
       verified: values.verified,
+      user_id: 1,
     };
-    this.props.run_ajax("/coverages.json", "POST", data, (response) => { this.handleSubmitCarriersBrokers(response, values.carriers, values.brokers) });
+    this.run_ajax("/coverages.json", "POST", data, (response) => {
+      this.handleSubmitCarriersBrokers(
+        response,
+        values.carriers,
+        values.brokers
+      );
+    });
     this.handleClose();
   };
 
@@ -159,16 +207,17 @@ class NewCoverage extends React.Component {
           <Formik
             validationSchema={schema}
             onSubmit={(values) => this.handleCreate(values)}
+            enableReinitialize
             initialValues={{
-              club: this.props.club?.name,
-              group: this.props.group?.group.name,
+              club: 0,
+              group: 0,
               category_id: 1,
               sub_category_id: 1,
               carriers: [],
               brokers: [],
               notes: "",
               start_date: new Date(),
-              end_date: new Date(),
+              end_date: null,
               has_coverage_line: false,
               verified: false,
             }}
@@ -188,21 +237,28 @@ class NewCoverage extends React.Component {
                   <Form.Group as={Col}>
                     <Form.Label>Club:</Form.Label>
                     <Form.Control
-                      type="text"
+                      as="select"
                       name="club"
                       value={values.club}
-                      disabled
-                    />
+                      onChange={(e) => {
+                        handleChange(e);
+                        setFieldValue("group", 0);
+                      }}
+                    >
+                      {this.clubOptions()}
+                    </Form.Control>
                   </Form.Group>
 
                   <Form.Group as={Col}>
                     <Form.Label>Group:</Form.Label>
                     <Form.Control
-                      type="text"
+                      as="select"
                       name="group"
                       value={values.group}
-                      disabled
-                    />
+                      onChange={handleChange}
+                    >
+                      {this.groupOptions(values.club)}
+                    </Form.Control>
                   </Form.Group>
                 </Row>
 
@@ -288,20 +344,21 @@ class NewCoverage extends React.Component {
 
                 <Row>
                   <Form.Group as={Col}>
-                    <Form.Label>Start Date:</Form.Label>
+                    <Form.Label>{"Start Date:"}</Form.Label>
                     <DatePicker
                       name="start_date"
                       selected={values.start_date}
-                      onChange={handleChange}
+                      onChange={(val) => setFieldValue("start_date", val)}
                     />
                   </Form.Group>
 
                   <Form.Group as={Col}>
-                    <Form.Label>End Date:</Form.Label>
+                    <Form.Label>{"Ending Date:"}</Form.Label>
+
                     <DatePicker
                       name="end_date"
                       selected={values.end_date}
-                      onChange={handleChange}
+                      onChange={(val) => setFieldValue("end_date", val)}
                     />
                   </Form.Group>
                 </Row>

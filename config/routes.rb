@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   delete "sports/:id", to: "sports#destroy"
 
   get "coverages", to: "coverages#index"
-  get "coverages/:id", to: "coverages#show"
+  get "coverages/:id", to: "coverages#show", as: :coverage
   post "coverages", to: "coverages#create"
   patch "coverages/:id", to: "coverages#update"
   delete "coverages/:id", to: "coverages#destroy"
