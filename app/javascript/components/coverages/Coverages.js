@@ -8,6 +8,7 @@ import NewCoverage from "./NewCoverage";
 import { switchModal } from "../Utils.js";
 import PaginatedTable from "../PaginatedTable.js";
 import { EyeFill } from "react-bootstrap-icons";
+import Moment from "react-moment";
 
 class Coverages extends React.Component {
   constructor() {
@@ -20,46 +21,59 @@ class Coverages extends React.Component {
   };
 
   showCoverages = (objects) => {
-    return objects.map((coverage, index) => {
+    return objects.map((object, index) => {
       return (
         <tr key={index}>
           <td width="200" align="left">
             <Button
               variant="link"
-              href={"/clubs/" + coverage.attributes.club.id}
+              href={"/clubs/" + object.attributes.club.id}
               style={{ color: "black" }}
             >
-              {coverage.attributes.club.name}
-            </Button>{" "}
+              {object.attributes.club.name}
+            </Button>
           </td>
           <td width="200" align="left">
-            {coverage.attributes.group.name}
+            {object.attributes.group.name}
           </td>
           <td width="200" align="left">
             <Button
               variant="link"
-              href={"/categories/" + coverage.attributes.category.id}
+              href={"/categories/" + object.attributes.category.id}
               style={{ color: "black" }}
             >
-              {coverage.attributes.category.name}
-            </Button>{" "}
+              {object.attributes.category.name}
+            </Button>
           </td>
           <td width="200" align="left">
             <Button
               variant="link"
-              href={"/sub_categories/" + coverage.attributes.sub_category.id}
+              href={"/sub_categories/" + object.attributes.sub_category.id}
               style={{ color: "black" }}
             >
-              {coverage.attributes.sub_category.name}
-            </Button>{" "}
+              {object.attributes.sub_category.name}
+            </Button>
           </td>
           <td width="200" align="left">
-            {coverage.attributes.verified ? "true" : "false"}
+            <Button
+              variant="link"
+              href={"/users/" + object.attributes.user.id}
+              style={{ color: "black" }}
+            >
+              {object.attributes.user.first_name}{" "}
+              {object.attributes.user.last_name}
+            </Button>
+          </td>
+          <td width="200" align="left">
+            {moment(object.attributes.created_at).format("MMMM Do YYYY")}
+          </td>
+          <td width="200" align="left">
+            {moment(object.attributes.updated_at).format("MMMM Do YYYY")}
           </td>
           <td width="100" align="center">
             <Button
               variant="link"
-              href={"/coverages/" + coverage.attributes.id}
+              href={"/coverages/" + object.attributes.id}
               style={{ color: "black" }}
             >
               <EyeFill />
@@ -85,7 +99,9 @@ class Coverages extends React.Component {
                     "Group",
                     "Category",
                     "Sub",
-                    "Verified",
+                    "Entered By",
+                    "Date Created",
+                    "Last Updated",
                     "View",
                   ]}
                   showObjects={this.showCoverages}
@@ -104,7 +120,9 @@ class Coverages extends React.Component {
                     "Group",
                     "Category",
                     "Sub",
-                    "Verified",
+                    "Entered By",
+                    "Date Created",
+                    "Last Updated",
                     "View",
                   ]}
                   showObjects={this.showCoverages}

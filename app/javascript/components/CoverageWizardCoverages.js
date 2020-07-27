@@ -264,7 +264,7 @@ class CoverageWizardCoverages extends React.Component {
                     brokers: [],
                     notes: "",
                     start_date: new Date(),
-                    end_date: new Date(),
+                    end_date: null,
                     has_coverage_line: false,
                     verified: false,
                   }}
@@ -389,20 +389,21 @@ class CoverageWizardCoverages extends React.Component {
 
                       <Row>
                         <Form.Group as={Col}>
-                          <Form.Label>Start Date:</Form.Label>
+                          <Form.Label>{"Start Date:"}</Form.Label>
                           <DatePicker
                             name="start_date"
                             selected={values.start_date}
-                            onChange={handleChange}
+                            onChange={(val) => setFieldValue("start_date", val)}
                           />
                         </Form.Group>
 
                         <Form.Group as={Col}>
-                          <Form.Label>End Date:</Form.Label>
+                          <Form.Label>{"Ending Date:"}</Form.Label>
+
                           <DatePicker
                             name="end_date"
                             selected={values.end_date}
-                            onChange={handleChange}
+                            onChange={(val) => setFieldValue("end_date", val)}
                           />
                         </Form.Group>
                       </Row>

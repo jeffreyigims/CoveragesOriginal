@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Formik } from "formik";
 import * as yup from "yup";
+import Moment from "react-moment";
 
 import { run_ajax, getObjects, switchModal } from "../Utils.js";
 
@@ -84,9 +85,12 @@ class CoverageDetails extends React.Component {
 
   handleCarriers = (objects) => {
     let curr = this.state.coverageCarriers;
-    let needAdded = objects.filter((object) => !this.includesCarrier(object, curr));
+    let needAdded = objects.filter(
+      (object) => !this.includesCarrier(object, curr)
+    );
     let needDestroyed = curr.filter(
-      (object) => !objects.includes(object.data.attributes.carrier_id.toString())
+      (object) =>
+        !objects.includes(object.data.attributes.carrier_id.toString())
     );
     for (let i = 0; i < needAdded.length; i++) {
       let data = {
@@ -97,7 +101,12 @@ class CoverageDetails extends React.Component {
     }
     for (let i = 0; i < needDestroyed.length; i++) {
       let id = needDestroyed[i].data.attributes.id;
-      this.run_ajax("/coverage_carriers/" + id + ".json", "DELETE", {}, () => {});
+      this.run_ajax(
+        "/coverage_carriers/" + id + ".json",
+        "DELETE",
+        {},
+        () => {}
+      );
     }
   };
 
@@ -127,13 +136,20 @@ class CoverageDetails extends React.Component {
     }
     for (let i = 0; i < needDestroyed.length; i++) {
       let id = needDestroyed[i].data.attributes.id;
-      this.run_ajax("/coverage_brokers/" + id + ".json", "DELETE", {}, () => {});
+      this.run_ajax(
+        "/coverage_brokers/" + id + ".json",
+        "DELETE",
+        {},
+        () => {}
+      );
     }
   };
 
   handleUpdate = (values) => {
     let data = {
       notes: values.notes,
+      start_date: moment(values.start_date),
+      end_date: moment(values.end_date),
       has_coverage_line: values.has_coverage_line,
       verified: values.verified,
     };
@@ -159,20 +175,22 @@ class CoverageDetails extends React.Component {
               validationSchema={schema}
               onSubmit={(values) => this.handleUpdate(values)}
               initialValues={{
-                club: this.state.object?.attributes.club.name,
-                group: this.state.object?.attributes.group.name,
-                category: this.state.object?.attributes.category.name,
-                sub_category: this.state.object?.attributes.sub_category.name,
+                club: this.state.object?.attributes.club.name || "",
+                group: this.state.object?.attributes.group.name || "",
+                category: this.state.object?.attributes.category.name || "",
+                sub_category: this.state.object?.attributes.sub_category.name || "",
                 carriers: this.state.coverageCarriers.map(
                   (carrier) => carrier.data.attributes.carrier_id
                 ),
                 brokers: this.state.coverageBrokers.map(
                   (broker) => broker.data.attributes.broker_id
                 ),
-                notes: this.state.object?.attributes.notes,
+                notes: this.state.object?.attributes.notes || "",
+                start_date: Date.parse(this.state.object?.attributes.start_date) || new Date(),
+                end_date: Date.parse(this.state.object?.attributes.end_date) || new Date(),
                 has_coverage_line: this.state.object?.attributes
-                  .has_coverage_line,
-                verified: this.state.object?.attributes.verified,
+                  .has_coverage_line || false,
+                verified: this.state.object?.attributes.verified || false,
               }}
               enableReinitialize={true}
             >
@@ -285,13 +303,22 @@ class CoverageDetails extends React.Component {
                   </Form.Group>
                   <Row>
                     <Form.Group as={Col}>
-                      <Form.Label>{"Start Date: "}</Form.Label>
-                      <DatePicker name="start_date" selected={new Date()} />
+                      <Form.Label>{"Start Date:"}</Form.Label>
+                      <DatePicker
+                        name="start_date"
+                        selected={values.start_date}
+                        onChange={(val) => setFieldValue("start_date", val)}
+                      />
                     </Form.Group>
 
                     <Form.Group as={Col}>
-                      <Form.Label>{"End Date: "}</Form.Label>
-                      <DatePicker name="end_date" selected={new Date()} />
+                      <Form.Label>{"Ending Date:"}</Form.Label>
+
+                      <DatePicker
+                        name="end_date"
+                        selected={values.end_date}
+                        onChange={(val) => setFieldValue("end_date", val)}
+                      />
                     </Form.Group>
                   </Row>
                   <Row>

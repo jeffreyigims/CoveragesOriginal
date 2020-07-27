@@ -9,7 +9,7 @@ class CoveragesController < ApplicationController
   ORDERING_PARAMS = []
 
   def index
-    @coverages = boolean_filter(Coverage.all, BOOLEAN_FILTERING_PARAMS)
+    @coverages = boolean_filter(Coverage.most_recent, BOOLEAN_FILTERING_PARAMS)
     @coverages = param_filter(@coverages, PARAM_FILTERING_PARAMS)
     @coverages = order(@coverages, ORDERING_PARAMS)
     @coverages = @coverages.paginate(page: params[:page]).per_page(10)
