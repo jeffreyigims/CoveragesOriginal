@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import Table from "react-bootstrap/Table";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import GeneralTable from "./GeneralTable.js";
 
-class GeneralTable extends React.Component {
+class GenericTable extends React.Component {
   render() {
     return (
       <>
@@ -16,16 +17,11 @@ class GeneralTable extends React.Component {
               this.props.plural.slice(1)}
           </Card.Title>
           <Card.Body>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  {this.props.tableHeaders.map((header) => (
-                    <th key={header}>{header}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>{this.props.showObjects(this.props.objects)}</tbody>
-            </Table>
+            <GeneralTable
+              tableHeaders={this.props.tableHeaders}
+              showObjects={this.props.showObjects}
+              objects={this.props.objects}
+            />
           </Card.Body>
           <Card.Footer>
             <Button
@@ -44,4 +40,4 @@ class GeneralTable extends React.Component {
   }
 }
 
-export default GeneralTable;
+export default GenericTable;

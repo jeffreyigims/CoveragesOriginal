@@ -10,14 +10,15 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require jquery
+//= require turbolinks
+//= require bootstrap-sprockets
+//= require_tree .
+
+//= require moment
 //= require rails-ujs
 //= require activestorage
-//= require turbolinks
-//= require_tree .
-//= require moment
-//= require jquery3
-//= require popper
-//= require bootstrap-sprockets
+
 
 // Sticky footer js
 // Thanks to Charles Smith for this -- http://foundation.zurb.com/forum/posts/629-sticky-footer

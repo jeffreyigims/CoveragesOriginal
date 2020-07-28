@@ -86,6 +86,7 @@ end
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "jquery-rails"
+gem 'jquery-ui-rails', '6.0.1'
 gem "popper_js", "~> 1.14.5"
 # gem 'bootstrap-sass', '~> 3.4.1'
 gem "sassc-rails", ">= 2.1.0"
@@ -96,6 +97,7 @@ gem "bootstrap", "~> 4.4.1"
 gem "cancancan"
 # Use ActiveModel has_secure_password
 gem "bcrypt", "~> 3.1.7"
+gem 'jquery-turbolinks'
 
 # gem 'formic'# , '~> 0.2.5'
 # gem 'yup', '~> 0.2.1'

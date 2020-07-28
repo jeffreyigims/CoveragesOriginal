@@ -68,7 +68,7 @@ class NewLeague extends React.Component {
             initialValues={{
               name: "",
               level: "",
-              sport_id: this.props.selected || this.state.sports[0]?.id,
+              sport_id: this.props.selected.attributes.id || this.state.sports[0]?.id,
             }}
           >
             {({
