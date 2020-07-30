@@ -4,7 +4,7 @@ module Populator
 
     def create_all
       puts("Create users")
-      @admin = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "admin", username: "admin", password: "secret", password_confirmation: "secret")
+      @admin = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "admin", username: "user", password: "secret", password_confirmation: "secret")
       @contact_steelers = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "contact", username: "steelers", password: "secret", password_confirmation: "secret")
       @contact_pirates = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "contact", username: "pirates", password: "secret", password_confirmation: "secret")
 
@@ -105,13 +105,13 @@ module Populator
       @wtw = FactoryBot.create(:company, name: "WTW")
 
       clubs = [@steelers, @patriots, @pirates, @yankees, @penguins, @rangers, @impact, @united,
-               @rams, @giants, @dodgers, @astros, @bruins, @capitols, @galaxy, @sounders, @warriors, 
+               @rams, @giants, @dodgers, @astros, @bruins, @capitols, @galaxy, @sounders, @warriors,
                @heat, @lakers, @cavaliers, @bayhawks, @hounds, @rattlers, @blaze]
       groups = [@players, @front_office, @operations, @crew]
       companies = [@team_scotti, @alliant, @associated_administrators, @bwd, @mj_insurance, @usi, @wtw]
       carriers = [@bcc, @highmark, @united_concordia, @anthem, @centene, @cigna, @aetna, @united_health]
-      categories = [@individual_term, @worker_liability, @whole_life, @league_wide_life, @league_disaster_ad, 
-                    @league_disaster_ptd, @vendor, @sponsorship, @prospective, @retrospective, @dental, @vision, 
+      categories = [@individual_term, @worker_liability, @whole_life, @league_wide_life, @league_disaster_ad,
+                    @league_disaster_ptd, @vendor, @sponsorship, @prospective, @retrospective, @dental, @vision,
                     @employer, @environmental, @compensation, @auto, @medical, @property]
 
       club_groups = []
@@ -121,11 +121,11 @@ module Populator
       for club in clubs
         for group in groups
           club_groups.append(FactoryBot.create(:club_group, club: club, group: group))
-        end 
-      end 
+        end
+      end
 
       puts("Create brokers")
-      for company in companies 
+      for company in companies
         6.times do
           brokers.append(FactoryBot.create(:broker, name: Faker::Name.first_name, company: company))
         end
@@ -133,7 +133,7 @@ module Populator
 
       users = [@admin, @contact_steelers, @contact_pirates]
       puts("Create coverages")
-      1000.times do 
+      1000.times do
         club_group = club_groups[rand(club_groups.length)]
         carrier = carriers[rand(carriers.length)]
         broker = brokers[rand(brokers.length)]
@@ -144,6 +144,67 @@ module Populator
         FactoryBot.create(:coverage_broker, coverage: @coverage, broker: broker)
         FactoryBot.create(:coverage_carrier, coverage: @coverage, carrier: carrier)
       end
-    end 
+    end
+
+    def create_base
+      puts("Create users")
+      @admin = FactoryBot.create(:user, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, role: "admin", username: "user", password: "secret", password_confirmation: "secret")
+
+      puts("Create sports")
+      @baseball = FactoryBot.create(:sport, name: "baseball")
+
+      puts("Create leagues")
+      @baseball_mlb = FactoryBot.create(:league, level: "1", name: "MLB", sport: @baseball)
+      @baseball_milb = FactoryBot.create(:league, level: "2", name: "MiLB", sport: @baseball)
+
+      mlb_teams = ["Arizona Diamondbacks", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox", "Chicago White Sox",
+                   "Chicago Cubs", "Cincinnati Reds", "Cleveland Indians", "Colorado Rockies", "Detroit Tigers", "Houston Astros",
+                   "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers", "Miami Marlins", "Milwaukee Brewers",
+                   "Minnesota Twins", "New York Yankees", "New York Mets", "Oakland Athletics", "Philadelphia Phillies",
+                   "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners", "St. Louis Cardinals",
+                   "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"]
+      carriers = ["BCC", "Highmark", "United Concordia", "Davis Vision", "PFS", "Lloyds", "TMHCC", "MetLife", "Guardian",
+                  "Dearborn", "Unum", "ProBenefits", "Benefits Administrators", "The Standard"]
+
+      puts("Create groups")
+      @players = FactoryBot.create(:group, name: "players")
+      @front_office = FactoryBot.create(:group, name: "front office")
+
+      puts("Create clubs")
+      for team in mlb_teams
+        @club = FactoryBot.create(:club, name: team, abbreviation: "", league: @baseball_mlb)
+        FactoryBot.create(:club_group, club: @club, group: @players)
+        FactoryBot.create(:club_group, club: @club, group: @front_office)
+      end
+
+      puts("Create carriers")
+      for carrier in carriers
+        FactoryBot.create(:carrier, name: carrier)
+      end
+
+      puts("Create companies")
+      @company = FactoryBot.create(:company, name: "Team Scotti")
+      FactoryBot.create(:broker, name: "John Scotti", company: @company)
+
+      puts("Create categories")
+      @life = FactoryBot.create(:category, name: "DI & Life")
+      @group_health = FactoryBot.create(:category, name: "Group Health")
+      @pc = FactoryBot.create(:category, name: "P&C")
+
+      subs = [["Aggregate League Wide Life Excess", "League Disaster AD", "League Disaster PTD", "League Wide Life", "Group CAP Rider",
+               "Roster AD Excess League Wide Life", "Individual AD/CAP", "Whole Life ", "Executive Excess Disability"],
+              ["COBRA Vendor", "Medical", "Dental", "Health Reimbursement Account", "Vision", "$10,000 Wellness Credit", "ACA Value Plan",
+               "Covid-19 Premium Deferral", "Life/AD&D/LTD/STD", "Retrospective Funding", "Team Scotti Perks", "Preventive Schedule Rider",
+               "Prospective Funding", "Health Spending Account", "Flexible Spending Account", "Sponsorship "]]
+
+      puts("Create subs")
+      for sub in subs[0]
+        FactoryBot.create(:sub_category, name: sub, category: @life)
+      end
+
+      for sub in subs[1]
+        FactoryBot.create(:sub_category, name: sub, category: @group_health)
+      end
+    end
   end
 end

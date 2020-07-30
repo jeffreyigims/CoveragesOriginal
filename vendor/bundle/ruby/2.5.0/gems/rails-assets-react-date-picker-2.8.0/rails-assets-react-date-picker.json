@@ -1,0 +1,30 @@
+{
+  "name": "rails-assets-react-date-picker",
+  "downloads": null,
+  "version": "2.8.0",
+  "version_downloads": null,
+  "platform": "ruby",
+  "authors": "rails-assets.org",
+  "info": "",
+  
+  "metadata": {
+
+  },
+  "sha": null,
+  "project_uri": "https://github.com/Hacker0x01/react-datepicker",
+  "gem_uri": null,
+  "homepage_uri": "https://github.com/Hacker0x01/react-datepicker",
+  "wiki_uri": null,
+  "documentation_uri": null,
+  "mailing_list_uri": null,
+  "source_code_uri": "https://github.com/Hacker0x01/react-datepicker",
+  "bug_tracker_uri": null,
+  "dependencies": {
+    "development": [
+    
+    ],
+    "runtime": [
+
+    ]
+  }
+}

@@ -87,7 +87,7 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "jquery-rails"
 gem 'jquery-ui-rails', '6.0.1'
-gem "popper_js", "~> 1.14.5"
+# gem "popper_js", "~> 1.14.5"
 # gem 'bootstrap-sass', '~> 3.4.1'
 gem "sassc-rails", ">= 2.1.0"
 gem "react-rails"

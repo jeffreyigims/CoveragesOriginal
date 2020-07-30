@@ -398,7 +398,6 @@ DEPENDENCIES
   minitest-rails (= 3.0.0)
   minitest-reporters (= 1.1.19)
   pg
-  popper_js (~> 1.14.5)
   populator
   puma (~> 3.11)
   rack-cors (= 1.0.2)

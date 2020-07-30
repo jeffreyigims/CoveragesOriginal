@@ -90,7 +90,7 @@ class CoverageDetails extends React.Component {
     );
     let needDestroyed = curr.filter(
       (object) =>
-        !objects.includes(object.data.attributes.carrier_id.toString())
+        !objects.includes(object.data.attributes.carrier_id)
     );
     for (let i = 0; i < needAdded.length; i++) {
       let data = {
@@ -125,7 +125,7 @@ class CoverageDetails extends React.Component {
       (object) => !this.includesBroker(object, curr)
     );
     let needDestroyed = curr.filter(
-      (object) => !objects.includes(object.data.attributes.broker_id.toString())
+      (object) => !objects.includes(object.data.attributes.broker_id)
     );
     for (let i = 0; i < needAdded.length; i++) {
       let data = {
@@ -262,7 +262,7 @@ class CoverageDetails extends React.Component {
                             "carriers",
                             Array.from(
                               event.target.selectedOptions,
-                              (option) => option.value
+                              (option) => Number(option.value)
                             )
                           )
                         }
@@ -283,7 +283,7 @@ class CoverageDetails extends React.Component {
                             "brokers",
                             Array.from(
                               event.target.selectedOptions,
-                              (option) => option.value
+                              (option) => Number(option.value)
                             )
                           )
                         }

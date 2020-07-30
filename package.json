@@ -31,7 +31,6 @@
     "yup": "^0.29.1"
   },
   "devDependencies": {
-    "popper": "^1.0.1",
     "webpack-dev-server": "^3.11.0"
   }
 }

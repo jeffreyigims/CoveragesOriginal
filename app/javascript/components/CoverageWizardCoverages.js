@@ -65,7 +65,7 @@ class CoverageWizardCoverages extends React.Component {
   showCarriers = () => {
     return this.state.carriers.map((carrier, index) => {
       return (
-        <option key={index} value={carrier.attributes.id}>
+        <option key={index} value={index}>
           {" "}
           {carrier.attributes.name}{" "}
         </option>
@@ -76,7 +76,7 @@ class CoverageWizardCoverages extends React.Component {
   showBrokers = () => {
     return this.state.brokers.map((broker, index) => {
       return (
-        <option key={index} value={broker.attributes.id}>
+        <option key={index} value={index}>
           {" "}
           {broker.attributes.company.name} - {broker.attributes.name}{" "}
         </option>
