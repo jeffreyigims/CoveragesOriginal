@@ -35,7 +35,7 @@ class EditCompany extends React.Component {
 
   render() {
     return (
-      <Modal show={this.props.show} onHide={this.handleClose}>
+      <Modal show={this.props.show} onHide={() => this.handleClose(this.props.name)}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Company</Modal.Title>
         </Modal.Header>
