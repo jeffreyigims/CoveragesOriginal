@@ -229,7 +229,8 @@ GEM
     rack (2.2.3)
     rack-contrib (2.2.0)
       rack (~> 2.0)
-    rack-cors (1.0.2)
+    rack-cors (1.0.5)
+      rack (>= 1.6.0)
     rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
@@ -400,7 +401,7 @@ DEPENDENCIES
   pg
   populator
   puma (~> 3.11)
-  rack-cors (= 1.0.2)
+  rack-cors (= 1.0.5)
   rails (~> 5.2.4, >= 5.2.4.3)
   rails-assets-moment!
   rails-assets-react-date-picker!
