@@ -10,7 +10,7 @@
     "bootstrap": "^4.5.0",
     "formik": "^2.1.4",
     "jquery": "^3.5.1",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "plotly.js": "^1.54.6",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
