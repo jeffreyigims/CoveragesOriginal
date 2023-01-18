@@ -1,6 +1,11 @@
 GEM
-  remote: https://rubygems.org/
   remote: https://rails-assets.org/
+  specs:
+    rails-assets-moment (2.24.0)
+    rails-assets-react-date-picker (2.8.0)
+
+GEM
+  remote: https://rubygems.org/
   specs:
     actioncable (5.2.4.3)
       actionpack (= 5.2.4.3)
@@ -226,7 +231,7 @@ GEM
     public_suffix (4.0.5)
     puma (3.12.6)
     puma (3.12.6-java)
-    rack (2.2.3)
+    rack (2.2.6.2)
     rack-contrib (2.2.0)
       rack (~> 2.0)
     rack-cors (1.0.2)
@@ -247,8 +252,6 @@ GEM
       bundler (>= 1.3.0)
       railties (= 5.2.4.3)
       sprockets-rails (>= 2.0.0)
-    rails-assets-moment (2.24.0)
-    rails-assets-react-date-picker (2.8.0)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
